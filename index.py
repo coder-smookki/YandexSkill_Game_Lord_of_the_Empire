@@ -1,7 +1,8 @@
 from core.yandexskillcore import *
 from core.responseHelper import *
 
-dialogs = subscribeDialogs('./dialogs')
+# dialogs = subscribeDialogs('./dialogs')
+dialogs = subscribeDialogsByHands()
 
 def handler(event):
     if getCommand(event) == 'Да':
