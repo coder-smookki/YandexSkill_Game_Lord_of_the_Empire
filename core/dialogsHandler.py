@@ -18,6 +18,6 @@ def subscribeDialogs(path:str):
     files = getFilesInDirectory(path)
     dialogs = {}
     for filename in files:
-        dialogs[filename['basename']] = importDialog(filename['path'])
+        dialogs[filename['basename'].replace('.py', '')] = importDialog(filename['path'])
 
-    return {'files': files, 'dialogs': dialogs}
+    return dialogs
