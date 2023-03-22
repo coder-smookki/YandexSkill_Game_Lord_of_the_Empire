@@ -30,10 +30,10 @@ def subscribeDialogs(path: str):
     return dialogs
 
 
-
 import dialogs.no as no
-import dialogs.yes as yes 
+import dialogs.yes as yes
 import dialogs.yesorno as yesorno
+
 
 def subscribeDialogsByHands():
     return {
