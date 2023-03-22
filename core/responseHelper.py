@@ -59,3 +59,25 @@ def createButtons(buttons):
         result.append(button)
 
     return result
+
+def getSessionId(event):
+    return event["session"]["session_id"]
+
+
+def getUserId(event):
+    return event["session"]["user"]["user_id"]
+
+
+def getState(event, state):
+    return event["state"]["session"][state]
+
+
+def getOriginalUtterance(event):
+    return event["request"]["original_utterance"]
+
+def getCommand(event):
+    return event["request"]["command"]
+
+
+def getGlobalState(event, state):
+    return event["state"]["user"][state]
