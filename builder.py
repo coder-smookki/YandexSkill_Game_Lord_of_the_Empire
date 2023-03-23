@@ -33,7 +33,6 @@ def builder(q):
 
 
 
-
 dokaji = """'докажи'
     true:
         'верю'
