@@ -4,11 +4,13 @@ from core.responseHelper import *
 # dialogs = subscribeDialogs('./dialogs')
 dialogs = subscribeDialogsByHands()
 
+
 def handler(event):
-    if getCommand(event) == 'Да':
-        return dialogs['yes'](event)
-    if getCommand(event) == 'Нет':
-        return dialogs['no'](event)
-    return dialogs['yesorno'](event)
+    # if getCommand(event) == 'Да':
+    #    return dialogs['yes'](event)
+    # if getCommand(event) == 'Нет':
+    #    return dialogs['no'](event)
+    return dialogs['start_handler'](event)
+
 
 startServer(handler=handler)

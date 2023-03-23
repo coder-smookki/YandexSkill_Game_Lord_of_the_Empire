@@ -2,12 +2,12 @@ import copy
 
 
 def createCard(
-    event: dict,
-    message: str,
-    tts: str = None,
-    title: str = None,
-    imageCode: str = None,
-    buttons: list[str] = ["Нет", "Да"],
+        event: dict,
+        message: str,
+        tts: str = None,
+        title: str = None,
+        imageCode: str = None,
+        buttons: list[str] = ["Нет", "Да"],
 ):
     if imageCode is None:
         config = {
@@ -60,6 +60,7 @@ def createButtons(buttons):
 
     return result
 
+
 def getSessionId(event):
     return event["session"]["session_id"]
 
@@ -74,6 +75,7 @@ def getState(event, state):
 
 def getOriginalUtterance(event):
     return event["request"]["original_utterance"]
+
 
 def getCommand(event):
     return event["request"]["command"]
