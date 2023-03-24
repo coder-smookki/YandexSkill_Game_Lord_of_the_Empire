@@ -20,7 +20,13 @@ from dialogs.TenthExtension.TenthExtension import *
 
 from dialogs.EleventhExtension.EleventhExtension import *
 
+from dialogs.TwelfthExtension.TwelfthExtension import *
+
+from dialogs.ThirteenthExtension.ThirteenthExtension import *
+
 Cashed = {
+    'ThirteenthExtension': ThirteenthExtension,
+    'TwelfthExtension': TwelfthExtension,
     'EleventhExtension': EleventhExtension,
     'TenthExtension': TenthExtension,
     'NinethExtension': NinethExtension,
