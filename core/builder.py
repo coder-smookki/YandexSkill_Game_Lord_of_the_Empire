@@ -5,20 +5,42 @@ import yaml
 
 # заменить все ссылочные эпизоды
 def replaceLinkEpisodes(history, linkEpisodes):
+    # если попалась связка, то выполнить замену на все внутри 
     if type(history) == list:
         for episode in history:
             replaceLinkEpisodes(episode,linkEpisodes)
     
+    # если есть ссылка вида "{link}"
     elif '{' in history['response']:
+        # получить адрес ссылки
         key = history['response'][1:-1]
+
+        # если адрес существует, то заменить, иначе выдать ошибку
         if key in linkEpisodes:
-            history['response'] = linkEpisodes[key]
+            history['response'] = linkEpisodes[key][0]['response']
+            if 'onTrue' in linkEpisodes[key][0]:
+                history['onTrue'] = linkEpisodes[key][0]['onTrue']
+
+            if 'onFalse' in linkEpisodes[key][0]:
+                history['onFalse'] = linkEpisodes[key][0]['onFalse']
+
+            if '[chance]' in linkEpisodes[key][0]:
+                history['chance'] = linkEpisodes[key][0]['chance']
+            
         else: 
             raise IndexError('Попытка обратиться к несуществующей ссылке')
-    elif 'onTrue' in history:
-        replaceLinkEpisodes(history['onTrue'],linkEpisodes)
-    if 'onFalse' in history:
-        replaceLinkEpisodes(history['onFalse'],linkEpisodes)
+    
+    # выполнить внутреннюю замену
+    # случайного эпизода
+    elif 'chance' in history:
+        replaceLinkEpisodes(history['chance'],linkEpisodes)
+
+    # эпизода с ивентом
+    elif 'onTrue' in history or 'onFalse' in history:
+        if 'onTrue' in history:
+            replaceLinkEpisodes(history['onTrue'],linkEpisodes)
+        if 'onFalse' in history:
+            replaceLinkEpisodes(history['onFalse'],linkEpisodes)
 
     return history
 
@@ -49,6 +71,12 @@ def builder(q: str, linkEpisodes:dict = None):
         # аналогично для "false"
         if "false:" in n:
             n = n.replace("false", "  onFalse")
+            resultArr.append(n)
+            continue
+
+        # добавить пробел для "chance"
+        if "chance" in n and not ("[chance]" in n):
+            n = n.replace("chance", "  chance")
             resultArr.append(n)
             continue
 
