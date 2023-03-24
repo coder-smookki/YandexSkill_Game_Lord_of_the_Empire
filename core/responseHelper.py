@@ -1,12 +1,13 @@
 import copy
 
+
 def createCard(
-        event: dict,
-        message: str,
-        tts: str = None,
-        title: str = None,
-        imageCode: str = None,
-        buttons: list[str] = ["Нет", "Да"],
+    event: dict,
+    message: str,
+    tts: str = None,
+    title: str = None,
+    imageCode: str = None,
+    buttons: list[str] = ["Нет", "Да"],
 ):
     if imageCode is None:
         config = {
@@ -19,11 +20,11 @@ def createCard(
             "card": {
                 "type": "BigImage",
                 "image_id": imageCode,
-                "title": 'Not setted' if title is None else title,
+                "title": "Not setted" if title is None else title,
                 "description": message,
             },
             "tts": message if tts is None else tts,
-            "buttons": buttons
+            "buttons": buttons,
         }
     return createResponse(event, config)
 

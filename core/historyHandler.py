@@ -22,10 +22,12 @@ def getChanceIndex(response):
         lastSum += int(chances[i])
         if randomNum <= lastSum:
             return i
-            
 
     raise ValueError(
-        "По какой-то причине не получилось выбрать случайный сценарий:", response, ' ', randomNum
+        "По какой-то причине не получилось выбрать случайный сценарий:",
+        response,
+        " ",
+        randomNum,
     )
 
 
@@ -65,11 +67,18 @@ def getEpisode(pos: list, history: list):
 
 
 # пройти эпизод
-def passEpisode(info: dict, history: list, recursive=False):
+def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     # FOR DEBUG
     # if recursive:
     #     print("Recursive")
     # print(info)
+
+    # проверка на переполненность/недостаток фракций
+    for key in info["stats"]:
+        if info["stats"][key] >= 100:
+            return statsEnds[key]["full"]
+        elif info["stats"][key] <= 0:
+            return statsEnds[key]["empty"]
 
     # если прошлый эпизод имел ивент и выбор игрока совпадает с ивентом, то обработать ивент
     if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
@@ -93,7 +102,7 @@ def passEpisode(info: dict, history: list, recursive=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, history, True)
+        return passEpisode(info, history, statsEnds, True)
 
     # аналогично для "false"
     elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
@@ -118,7 +127,7 @@ def passEpisode(info: dict, history: list, recursive=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, history, True)
+        return passEpisode(info, history, statsEnds, True)
 
     # если какой-то ивент был, но пользователь ответил иначе
     elif not (info["pastHasEvent"] is None):
@@ -153,7 +162,6 @@ def passEpisode(info: dict, history: list, recursive=False):
 
             # добавить +1 к последнему индексу
             info["posEpisode"][-1] += 1
-
         else:
             break
 
@@ -162,26 +170,22 @@ def passEpisode(info: dict, history: list, recursive=False):
 
     # если эпизод имеет шанс
     if "[chance]" in episode["response"]:
-        allVariants = episode["chance"]
-        # allVariantsChances = []
         info["posEpisode"].append("chance")
         info["maxPosEpisode"].append("chance")
 
         chanceIndex = getChanceIndex(episode["response"])
 
-        info["posEpisode"].append(
-            chanceIndex
-        )  # строка с шансом, генерировать индекс случайно
+        info["posEpisode"].append(chanceIndex)
         info["maxPosEpisode"].append(chanceIndex)
 
-        return passEpisode(info, history)
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод - связка, то зарегистрировать его для дальнейшего вывода
     # и запустить функцию еще раз для вывода эпизода
     if type(episode) == list:
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(len(episode) - 1)
-        return passEpisode(info, history, True)
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод имеет ивент, то записать его, чтобы на следующем запуске функции он отработался
     if "onTrue" in episode and "onFalse" in episode:
@@ -195,5 +199,24 @@ def passEpisode(info: dict, history: list, recursive=False):
         # и стоит сместить позицию на 1 вправо
         info["pastPosEpisode"] = info["posEpisode"]
         info["posEpisode"][-1] += 1
+
+    episodeInfo = episode["response"].split("//")
+    if len(episodeInfo) < 5:
+        raise ValueError("Неправильный формат текста: " + episode["response"])
+
+    # Формат: "text // trueBtn // falseBtn // church army nation coffers // cardId"
+    # Пример: "text // asd // zxc // 0 0 -10 5 // zxc"
+    stats = episodeInfo[3].split(" ")[1:-1]
+    stats = {
+        "church": int(stats[0]),
+        "army": int(stats[1]),
+        "nation": int(stats[2]),
+        "coffers": int(stats[3]),
+    }
+
+    info["stats"]["church"] += stats["church"]
+    info["stats"]["army"] += stats["army"]
+    info["stats"]["nation"] += stats["nation"]
+    info["stats"]["coffers"] += stats["coffers"]
 
     return episode
