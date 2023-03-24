@@ -10,21 +10,21 @@ FirstExtension = """
                 true:
                     "*Армия перегрупировалась и сокрушила наступление* // Продолжить // None // None"
                     true:
-                        {SecondExtension}
+                        "{SecondExtension}"
                 false:
                     "65% 35% // Продолжить // None // None"
                     true:
-                        {SecondExtension}
+                        "{SecondExtension}"
             false:
-                 "У нас кончается вооружение, что нам делать, сэр!? // Срочно отступаем! // Бог с нами! // None"
+                "У нас кончается вооружение, что нам делать, сэр!? // Срочно отступаем! // Бог с нами! // None"
                 true:
                     "*Армия перегрупировалась и сокрушила наступление* // Продолжить // None // None"
                     true:
-                        {SecondExtension}
+                        "{SecondExtension}"
                 false:
                     "65% 35% // Продолжить // None // None"
                     true:
-                        {SecondExtension}
+                        "{SecondExtension}"
         false:
             "Владыка! Армия соседней страны группируется у Западной  границы нашего государства, отправить армию? // Да // Нет // None"
             true:
@@ -32,17 +32,17 @@ FirstExtension = """
                 true:
                     "*Армия перегрупировалась и сокрушила наступление* // Продолжить // None // None"
                     true:
-                        {SecondExtension}
+                        "{SecondExtension}"
                 false:
                     "65% 35% // Продолжить // None // None"
                     true:
-                        {SecondExtension}
+                        "{SecondExtension}"
             false:
                 "Армия врага развернулась, ложная тревога, нам больше ничего не угрожает! // Да // Нет // None"
                 true:
-                    {SecondExtension}
+                    "{SecondExtension}"
                 false:
-                    {SecondExtension}
+                    "{SecondExtension}"
 
     
     
@@ -58,17 +58,17 @@ FirstExtension = """
             true:
                 "*Армия перегрупировалась и сокрушила наступление* // Продолжить // None // None"
                 true:
-                    {SecondExtension}
+                    "{SecondExtension}"
             false:
                 "65% 35% // Продолжить // None // None"
                 true:
-                    {SecondExtension}
+                    "{SecondExtension}"
         false:
             "Армия врага развернулась, ложная тревога, нам больше ничего не угрожает! // Да // Нет // None"
             true:
-                {SecondExtension}
+                "{SecondExtension}"
             false:
-                {SecondExtension}
+                "{SecondExtension}"
 
 
 

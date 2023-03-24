@@ -9,29 +9,29 @@ FifthExtension = """
             true:
                 "Мы хотим построить рынок, который откроет для нас новые возможности на международной арене. // Да // Нет // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
             false:
                 "Я сделал это не специально! Казни - это скучно, нам нужны салюты и веселые анекдоты! // Казнить // Помиловать // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
         false:
             "Шут Радмир разбил вашу статую в главном зале. Что прикажете с ним делать? // Казнить! // Приведите его ко мне"
             true:
                 "Мы хотим построить рынок, который откроет для нас новые возможности на международной арене. // Да // Нет // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
             false:
                 "Я сделал это не специально! Казни - это скучно, нам нужны салюты и веселые анекдоты! // Казнить // Помиловать // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
     
     
     
@@ -46,29 +46,29 @@ FifthExtension = """
             true:
                 "Мы хотим построить рынок, который откроет для нас новые возможности на международной арене. // Да // Нет // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
             false:
                 "Я сделал это не специально! Казни - это скучно, нам нужны салюты и веселые анекдоты! // Казнить // Помиловать // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
         false:
             "Шут Радмир разбил вашу статую в главном зале. Что прикажете с ним делать? // Казнить! // Приведите его ко мне"
             true:
                 "Мы хотим построить рынок, который откроет для нас новые возможности на международной арене. // Да // Нет // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
             false:
                 "Я сделал это не специально! Казни - это скучно, нам нужны салюты и веселые анекдоты! // Казнить // Помиловать // None"
                 true:
-                    {SixthExtension}
+                    "{SixthExtension}"
                 false:
-                    {SixthExtension}
+                    "{SixthExtension}"
 
 
 
