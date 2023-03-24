@@ -1,6 +1,6 @@
 from dialogs.FirstExtension.FirstExtension import *
 
-Opening = f'''
+Opening = f"""
     "Ты - истинный влыдыка? // Да // Нет // None"
     true:
         "Значит, из-за тебя мне пришлось покинуть этот мир // Да // Нет // None"
@@ -72,4 +72,4 @@ Opening = f'''
                             {FirstExtension}
         
 
-'''
+"""

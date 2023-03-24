@@ -19,11 +19,11 @@ FirstExtension = f'''
                         {SecondExtension}
             false:
                  "У нас кончается вооружение, что нам делать, сэр!? // Срочно отступаем! // Бог с нами! // None"
-                 true:
+                true:
                     "*Армия перегрупировалась и сокрушила наступление* // Продолжить // None // None"
                     true:
                         {SecondExtension}
-                 false:
+                false:
                     "65% 35% // Продолжить // None // None"
                     true:
                         {SecondExtension}
@@ -39,7 +39,6 @@ FirstExtension = f'''
                     "65% 35% // Продолжить // None // None"
                     true:
                         {SecondExtension}
-                     
             false:
                 "Армия врага развернулась, ложная тревога, нам больше ничего не угрожает! // Да // Нет // None"
                 true:

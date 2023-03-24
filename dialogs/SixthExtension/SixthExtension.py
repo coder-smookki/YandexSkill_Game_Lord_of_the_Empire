@@ -48,9 +48,9 @@ SixthExtension = f'''
                 false:
                     "*Гадалка удаляется, бормоча что-то о большой опасности* // Продолжить // None // None"
                     true:
-                       "*Вы очень взволнованы, но пути назад уже нет* // Продолжить // None // None"
-                       true:
-                          {SeventhExtension} 
+                        "*Вы очень взволнованы, но пути назад уже нет* // Продолжить // None // None"
+                        true:
+                            {SeventhExtension} 
     
     
     
@@ -87,7 +87,6 @@ SixthExtension = f'''
                     "*Вы очень взволнованы, но пути назад уже нет* // Продолжить // None // None"
                     true:
                         {SeventhExtension}
-               
         false:
             "Сэр, мы никак не смогли её сдержать // Продолжить // None // None"
             true:

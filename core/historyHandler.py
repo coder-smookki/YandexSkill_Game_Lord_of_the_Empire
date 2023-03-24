@@ -1,7 +1,7 @@
 import copy
 
 # получить эпизод или связку по пути
-def getEpisode(pos: list):
+def getEpisode(pos: list, history: list):
     # самый последний эпизод на текущий момент
     lastEpisode = history
 
@@ -30,7 +30,7 @@ def getEpisode(pos: list):
 
 
 # пройти эпизод
-def passEpisode(info: dict, recursive=False):
+def passEpisode(info: dict, history:list, recursive=False):
     # FOR DEBUG
     # if recursive:
     #     print("Recursive")
@@ -45,7 +45,7 @@ def passEpisode(info: dict, recursive=False):
         info["posEpisode"].append("true")
 
         # получить эпизод по ветке ивента
-        episode = getEpisode(info["posEpisode"])
+        episode = getEpisode(info["posEpisode"], history)
 
         # добавляю 0 в путь после получения эпизода,
         # т.к. мне нужно получить именно массив "onTrue" в качестве эпизода
@@ -56,7 +56,7 @@ def passEpisode(info: dict, recursive=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, True)
+        return passEpisode(info, history, True)
 
     # аналогично для "false"
     elif info["pastHasEvent"] == "false" and info["choice"] == "false":
@@ -67,7 +67,7 @@ def passEpisode(info: dict, recursive=False):
         info["posEpisode"].append("false")
 
         # получить эпизод по ветке ивента
-        episode = getEpisode(info["posEpisode"])
+        episode = getEpisode(info["posEpisode"], history)
 
         # добавляю 0 в путь только после получения эпизода,
         # т.к. далее для изменения ограничителя нужно получить
@@ -79,7 +79,7 @@ def passEpisode(info: dict, recursive=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, True)
+        return passEpisode(info, history, True)
 
     # если какой-то ивент был, но пользователь ответил иначе
     elif not (info["pastHasEvent"] is None):
@@ -114,14 +114,14 @@ def passEpisode(info: dict, recursive=False):
             break
 
     # получить эпизод
-    episode = getEpisode(info["posEpisode"])
+    episode = getEpisode(info["posEpisode"], history)
 
     # если эпизод - связка, то зарегистрировать его для дальнейшего вывода
     # и запустить функцию еще раз для вывода эпизода
     if type(episode) == list:
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(len(episode) - 1)
-        return passEpisode(info, True)
+        return passEpisode(info, history, True)
 
     # если эпизод имеет ивент, то записать его, чтобы на следующем запуске функции он отработался
     if "onTrue" in episode:
