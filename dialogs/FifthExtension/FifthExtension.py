@@ -1,4 +1,4 @@
-from dialogs.SixthExtension.SixthExtension import *
+
 
 FifthExtension = """
     "Господин, мы хотим построить новые школы // Да // Нет // None"
