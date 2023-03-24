@@ -31,5 +31,4 @@ def subscribeDialogs(path: str):
 
 
 def subscribeDialogsByHands():
-    return {
-    }
+    return {}
