@@ -7,4 +7,8 @@ from core.historyHandler import passEpisode
 
 from core.historyHandler import *
 
+import sys
+sys.setrecursionlimit(5000)
+
+
 skillEmulate(Opening, Cashed)

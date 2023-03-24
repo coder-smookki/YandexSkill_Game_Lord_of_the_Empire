@@ -43,7 +43,9 @@ def replaceLinkEpisodes(history, linkEpisodes):
 
 
 # трансформировать ssd-format в словарное представление 
-def builder(q: str, linkEpisodes:dict = None, transformLinkEpisodes:bool=True):
+def builder(q: str, linkEpisodes:dict = None, transformLinkEpisodes:bool=True, printAboutStart:bool=False):
+    if printAboutStart:
+        print('Синтезирование истории...')
     # заменить одинарные кавычки на двойные
     q = q.replace("'", '"')
 
@@ -92,8 +94,8 @@ def builder(q: str, linkEpisodes:dict = None, transformLinkEpisodes:bool=True):
 
     # трансформировать ssd-format в словарное представление в ссылочных эпизодах
     if transformLinkEpisodes and not (linkEpisodes is None):
+        print('Синтезирование ссылочных эпизодов...')
         for key in linkEpisodes:
-            print(key)
             linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
     
     replaceLinkEpisodes(result, linkEpisodes)

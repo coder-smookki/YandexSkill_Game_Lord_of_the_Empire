@@ -21,15 +21,15 @@ from dialogs.TenthExtension.TenthExtension import *
 from dialogs.EleventhExtension.EleventhExtension import *
 
 Cashed = {
-    'FirstExtension': FirstExtension,
-    'SecondExtension': SecondExtension,
-    'ThirdExtension': ThirdExtension,
-    'FourthExtension': FourthExtension,
-    'FifthExtension': FifthExtension,
-    'SixthExtension': SixthExtension,
-    'SeventhExtension': SeventhExtension,
-    'EighthExtension': EighthExtension,
-    'NinethExtension': NinethExtension,
+    'EleventhExtension': EleventhExtension,
     'TenthExtension': TenthExtension,
-    'EleventhExtension': EleventhExtension
+    'NinethExtension': NinethExtension,
+    'EighthExtension': EighthExtension,
+    'SeventhExtension': SeventhExtension,
+    'SixthExtension': SixthExtension,
+    'FifthExtension': FifthExtension,
+    'FourthExtension': FourthExtension,
+    'ThirdExtension': ThirdExtension,
+    'SecondExtension': SecondExtension,
+    'FirstExtension': FirstExtension,
 }

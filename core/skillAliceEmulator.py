@@ -1,13 +1,14 @@
 from .builder import builder
 from datetime import datetime
 from .historyHandler import passEpisode
+from termcolor import colored
 
 def skillEmulate(historyText, linkEpisodes=None):
-    print('Синтезирование истории...')
+    print(colored('+', 'green'), 'Старт синтезирования')
     startTime = datetime.now()
-    history = builder(historyText, linkEpisodes)
+    history = builder(historyText, linkEpisodes, printAboutStart=True)
     endTime = datetime.now()
-    print('Синтезирование завершено с кайфом за: ' + str(endTime - startTime))
+    print(colored('+', 'green'), 'Синтезирование завершено с кайфом за: ' + str(endTime - startTime))
 
     info = {
         "posEpisode": [0],
