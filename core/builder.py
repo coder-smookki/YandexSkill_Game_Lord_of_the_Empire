@@ -5,7 +5,7 @@ import yaml
 
 # заменить все ссылочные эпизоды
 def replaceLinkEpisodes(history, linkEpisodes):
-    # если попалась связка, то выполнить замену на все внутри 
+    # если попалась связка, то выполнить замену для всего внутри 
     if type(history) == list:
         for episode in history:
             replaceLinkEpisodes(episode,linkEpisodes)
@@ -20,13 +20,10 @@ def replaceLinkEpisodes(history, linkEpisodes):
             history['response'] = linkEpisodes[key][0]['response']
             if 'onTrue' in linkEpisodes[key][0]:
                 history['onTrue'] = linkEpisodes[key][0]['onTrue']
-
             if 'onFalse' in linkEpisodes[key][0]:
                 history['onFalse'] = linkEpisodes[key][0]['onFalse']
-
             if '[chance]' in linkEpisodes[key][0]:
                 history['chance'] = linkEpisodes[key][0]['chance']
-            
         else: 
             raise IndexError('Попытка обратиться к несуществующей ссылке')
     
@@ -46,7 +43,7 @@ def replaceLinkEpisodes(history, linkEpisodes):
 
 
 # трансформировать ssd-format в словарное представление 
-def builder(q: str, linkEpisodes:dict = None):
+def builder(q: str, linkEpisodes:dict = None, transformLinkEpisodes:bool=True):
     # заменить одинарные кавычки на двойные
     q = q.replace("'", '"')
 
@@ -92,9 +89,13 @@ def builder(q: str, linkEpisodes:dict = None):
     # трансформировать yaml в словарное представление
     result = yaml.load(yamlResult, Loader=yaml.Loader)
 
-    if not (linkEpisodes is None):
-        # трансформировать ssd-format в словарное представление в ссылочных эпизодах
+
+    # трансформировать ssd-format в словарное представление в ссылочных эпизодах
+    if transformLinkEpisodes and not (linkEpisodes is None):
         for key in linkEpisodes:
-            linkEpisodes[key] = builder(linkEpisodes[key])
-        result = replaceLinkEpisodes(result, linkEpisodes)
+            print(key)
+            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
+    
+    replaceLinkEpisodes(result, linkEpisodes)
+
     return result
