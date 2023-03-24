@@ -2,10 +2,10 @@ from .builder import builder
 from datetime import datetime
 from .historyHandler import passEpisode
 
-def skillEmulate(historyText):
+def skillEmulate(historyText, linkEpisodes):
     print('Синтезирование истории...')
     startTime = datetime.now()
-    history = builder(historyText)
+    history = builder(historyText, linkEpisodes)
     endTime = datetime.now()
     print('Синтезирование завершено с кайфом за: ' + str(endTime - startTime))
 
