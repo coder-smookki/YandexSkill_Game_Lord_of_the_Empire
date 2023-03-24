@@ -3,8 +3,28 @@
 # из которого уже и происходит трансформация в словарь при помощи библиотеки pyyaml
 import yaml
 
+# заменить все ссылочные эпизоды
+def replaceLinkEpisodes(history, linkEpisodes):
+    if type(history) == list:
+        for episode in history:
+            replaceLinkEpisodes(episode,linkEpisodes)
+    
+    elif '{' in history['response']:
+        key = history['response'][1:-1]
+        if key in linkEpisodes:
+            history['response'] = linkEpisodes[key]
+        else: 
+            raise IndexError('Попытка обратиться к несуществующей ссылке')
+    elif 'onTrue' in history:
+        replaceLinkEpisodes(history['onTrue'],linkEpisodes)
+    if 'onFalse' in history:
+        replaceLinkEpisodes(history['onFalse'],linkEpisodes)
+
+    return history
+
+
 # трансформировать ssd-format в словарное представление 
-def builder(q: str):
+def builder(q: str, linkEpisodes:dict = None):
     # заменить одинарные кавычки на двойные
     q = q.replace("'", '"')
 
@@ -39,7 +59,14 @@ def builder(q: str):
             continue
 
     # соединить все строки в одно целое. в итоге у нас получился yaml
-    result = "\n".join(resultArr)
+    yamlResult = "\n".join(resultArr)
 
     # трансформировать yaml в словарное представление
-    return yaml.load(result, Loader=yaml.Loader)
+    result = yaml.load(yamlResult, Loader=yaml.Loader)
+
+    if not (linkEpisodes is None):
+        # трансформировать ssd-format в словарное представление в ссылочных эпизодах
+        for key in linkEpisodes:
+            linkEpisodes[key] = builder(linkEpisodes[key])
+        result = replaceLinkEpisodes(result, linkEpisodes)
+    return result
