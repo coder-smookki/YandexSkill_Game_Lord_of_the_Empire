@@ -1,6 +1,4 @@
-from dialogs.SecondExtension.SecondExtension import *
-
-FirstExtension = f'''
+FirstExtension = """
     "Мы можем повысить арендную плату в домах, которые мы построили для малоимущих // Да // Нет // None"
     
     true:
@@ -76,4 +74,4 @@ FirstExtension = f'''
 
 
 
-'''
+"""

@@ -1,6 +1,6 @@
 from dialogs.FifthExtension.FifthExtension import *
 
-FourthExtension = f'''
+FourthExtension = """
     "В этом году прекрасный урожай! // Накормите всех людей! // Всё в казну! // None"
     true:
         "Мяу-мяу // Продолжить // None // None"
@@ -125,4 +125,4 @@ FourthExtension = f'''
 
 
 
-'''
+"""

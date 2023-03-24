@@ -1,4 +1,5 @@
 from core.builder import builder
-
-# a = builder(a, cached)
-# print(a)
+from dialogs.Opening.Opening import *
+from dialogs.Cashed import *
+a = builder(Opening, Cashed)
+print(a)

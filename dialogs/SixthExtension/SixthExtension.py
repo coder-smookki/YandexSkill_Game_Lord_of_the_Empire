@@ -1,7 +1,7 @@
-from dialogs.SeventhExtension.SeventhExtension import *
 
 
-SixthExtension = f'''
+
+SixthExtension = """
     "Шахтёры отказываются спускаться в шахту, они требуют повышения зарплаты // Да // Нет // None"
     true:
         "Владыка, незнакомка просится к вам, говорит, что она предскажет ваше будущее // Да // Нет // None"
@@ -115,4 +115,4 @@ SixthExtension = f'''
 
 
 
-'''
+"""

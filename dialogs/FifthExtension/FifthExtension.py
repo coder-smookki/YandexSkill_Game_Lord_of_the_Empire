@@ -1,6 +1,6 @@
 from dialogs.SixthExtension.SixthExtension import *
 
-FifthExtension = f'''
+FifthExtension = """
     "Господин, мы хотим построить новые школы // Да // Нет // None"
     true:
         "Мы нашли сокровище! Что будем делать? // Разделить между всеми // Всё в казну! // None"
@@ -86,4 +86,4 @@ FifthExtension = f'''
 
 
 
-'''
+"""

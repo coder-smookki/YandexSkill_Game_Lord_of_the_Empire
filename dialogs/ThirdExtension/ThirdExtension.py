@@ -1,6 +1,4 @@
-from dialogs.FourthExtension.FourthExtension import *
-
-ThirdExtension = f'''
+ThirdExtension = """
     "Военные жалуется на маленькую зарплату, нужно повысить плату // Повысить // Отказать // None"
     
     true:
@@ -72,4 +70,9 @@ ThirdExtension = f'''
 
 
 
-'''
+"""
+#example
+cashed = {
+    'Ending': "*Вирус распространился слишком быстро. Вы и ваши мозги были съедены.* // None // None // None"
+
+}

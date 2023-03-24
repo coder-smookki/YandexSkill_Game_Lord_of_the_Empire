@@ -1,6 +1,6 @@
 from dialogs.ThirdExtension.ThirdExtension import *
 
-SecondExtension = f'''
+SecondExtension = """
     "Улицы нашей прекрасной столицы воняют сточными водами, нужно построить канализацию // Да // Нет // None"
     
     true:
@@ -177,4 +177,4 @@ SecondExtension = f'''
 
 
 
-'''
+"""
