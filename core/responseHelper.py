@@ -1,6 +1,5 @@
 import copy
 
-
 def createCard(
         event: dict,
         message: str,
