@@ -14,7 +14,7 @@ from dialogs.SeventhExtension.SeventhExtension import *
 
 from dialogs.EighthExtension.EighthExtension import *
 
-from NinethExtension.NinethExtension import *
+from dialogs.NinethExtension.NinethExtension import *
 
 Cashed = {
     'FirstExtension': FirstExtension,

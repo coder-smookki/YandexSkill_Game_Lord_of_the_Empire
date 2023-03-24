@@ -6,3 +6,5 @@ from dialogs.SecondExtension.SecondExtension import *
 from core.historyHandler import passEpisode
 
 from core.historyHandler import *
+
+skillEmulate(Opening, Cashed)
