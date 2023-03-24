@@ -5,7 +5,6 @@ import yaml
 
 # трансформировать ssd-format в словарное представление 
 def builder(q: str):
-
     # заменить одинарные кавычки на двойные
     q = q.replace("'", '"')
 
@@ -23,19 +22,19 @@ def builder(q: str):
 
         # если строка с условием "true", то заменить само условие на "onTrue" (нужно для обработчика)
         if "true:" in n:
-            n = n.replace("true", "onTrue")
+            n = n.replace("true", "  onTrue")
             resultArr.append(n)
             continue
 
         # аналогично для "false"
         if "false:" in n:
-            n = n.replace("false", "onFalse")
+            n = n.replace("false", "  onFalse")
             resultArr.append(n)
             continue
 
-        # если строка содержит в себе response, то добавить ключ "response"
+        # если строка содержит в себе response, то добавить ключ "response" и обернуть блок в массив
         if '"' in n:
-            n = n.replace('"', 'response: "', 1)
+            n = n.replace('"', '- response: "', 1)
             resultArr.append(n)
             continue
 

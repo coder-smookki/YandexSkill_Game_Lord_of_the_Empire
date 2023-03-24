@@ -1,8 +1,5 @@
 import copy
 
-history = []
-
-
 # получить эпизод или связку по пути
 def getEpisode(pos: list):
     # самый последний эпизод на текущий момент
@@ -35,41 +32,67 @@ def getEpisode(pos: list):
 # пройти эпизод
 def passEpisode(info: dict, recursive=False):
     # FOR DEBUG
-    if recursive:
-        print('Recursive')
-    print(info)
+    # if recursive:
+    #     print("Recursive")
+    # print(info)
 
-    # if info["choice"] == "true":
-    #     info["posEpisode"].append("true")
-    #     info["posEpisode"].append(0)
-        
-    #     episode = getEpisode(info["posEpisode"])
+    # если прошлый эпизод имел ивент и выбор игрока совпадает с ивентом, то обработать ивент
+    if info["pastHasEvent"] == "true" and info["choice"] == "true":
+        # очистить детектор ивента
+        info["pastHasEvent"] = None
 
-    #     info["maxPosEpisode"].append("true")
-    #     info["maxPosEpisode"].append(len(episode) - 1)
+        # изменить путь
+        info["posEpisode"].append("true")
 
-    #     return passEpisode(info)
+        # получить эпизод по ветке ивента
+        episode = getEpisode(info["posEpisode"])
 
-    # if info["choice"] == "false":
-    #     info["posEpisode"].append("false")
-    #     info["posEpisode"].append(0)
-        
-    #     episode = getEpisode(info["posEpisode"])
+        # добавляю 0 в путь после получения эпизода,
+        # т.к. мне нужно получить именно массив "onTrue" в качестве эпизода
+        info["posEpisode"].append(0)
 
-    #     info["maxPosEpisode"].append("false")
-    #     info["maxPosEpisode"].append(len(episode) - 1)
+        # изменить ограничитель
+        info["maxPosEpisode"].append("true")
+        info["maxPosEpisode"].append(len(episode) - 1)
 
-        # return passEpisode(info)
+        # пройтись по новой ветке
+        return passEpisode(info, True)
+
+    # аналогично для "false"
+    elif info["pastHasEvent"] == "false" and info["choice"] == "false":
+        # очистить детектор ивента
+        info["pastHasEvent"] = None
+
+        # изменить путь
+        info["posEpisode"].append("false")
+
+        # получить эпизод по ветке ивента
+        episode = getEpisode(info["posEpisode"])
+
+        # добавляю 0 в путь только после получения эпизода,
+        # т.к. далее для изменения ограничителя нужно получить
+        # длину массива "onFalse"
+        info["posEpisode"].append(0)
+
+        # изменить ограничитель
+        info["maxPosEpisode"].append("false")
+        info["maxPosEpisode"].append(len(episode) - 1)
+
+        # пройтись по новой ветке
+        return passEpisode(info, True)
+
+    # если какой-то ивент был, но пользователь ответил иначе
+    elif not (info["pastHasEvent"] is None):
+        # очистить детектор ивента
+        info["pastHasEvent"] = None
+
+        # перейти на шаг вправо, т.к. мы это не сделали раньше (на 131 строке)
+        info["posEpisode"][-1] += 1
 
     # цикл, занимающийся отслеживанием ситуаций,
     # когда на последнем уровне вложенности получился несуществующий индекс
-    # или значение "true" или "false"
     while True:
-        if (
-            info["posEpisode"][-1] > info["maxPosEpisode"][-1]
-            or info["posEpisode"][-1] == "true"
-            or info["posEpisode"][-1] == "false"
-        ):
+        if info["posEpisode"][-1] > info["maxPosEpisode"][-1]:
             # обрезать на 1 элемент
             info["posEpisode"] = info["posEpisode"][:-1]
             info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
@@ -77,6 +100,12 @@ def passEpisode(info: dict, recursive=False):
             # если массив пустой => обрезалось все => пройдены все эпизоды => история закончена
             if len(info["posEpisode"]) == 0:
                 return "its all"
+
+            # если после обрезанного индекса у нас стоит "true" или "false"
+            if info["posEpisode"][-1] == "true" or info["posEpisode"][-1] == "false":
+                # обрезать "true" или "false"
+                info["posEpisode"] = info["posEpisode"][:-1]
+                info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
 
             # добавить +1 к последнему индексу
             # if type(info["posEpisode"][-1]) == int:
@@ -87,62 +116,24 @@ def passEpisode(info: dict, recursive=False):
     # получить эпизод
     episode = getEpisode(info["posEpisode"])
 
-    # если эпизод - связка, то зарегестрировать его для дальнейшего вывода
-    # и запустить функцию еще раз для корректного вывода
+    # если эпизод - связка, то зарегистрировать его для дальнейшего вывода
+    # и запустить функцию еще раз для вывода эпизода
     if type(episode) == list:
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(len(episode) - 1)
         return passEpisode(info, True)
 
-    # если все условия выше прошли стороной, то мы дошли до обычного эпизода
-    # и стоит сместить позицию на 1 вправо
-    info["pastPosEpisode"] = info["posEpisode"] 
-    info["posEpisode"][-1] += 1
-    
+    # если эпизод имеет ивент, то записать его, чтобы на следующем запуске функции он отработался
+    if "onTrue" in episode:
+        info["pastHasEvent"] = "true"
+
+    elif "onFalse" in episode:
+        info["pastHasEvent"] = "false"
+
+    else:
+        # если все условия выше прошли стороной, то мы дошли до обычного эпизода
+        # и стоит сместить позицию на 1 вправо
+        info["pastPosEpisode"] = info["posEpisode"]
+        info["posEpisode"][-1] += 1
+
     return episode
-
-
-history = [
-    {
-        "response": "1 // btn1 // btn2 // cardid",
-        "onTrue": [{"response": "1.t // btn1 // btn2 // cardid"}],
-    },
-    {
-        "response": "2 // btn1 // btn2 // cardid"
-    }
-]
-
-
-
-
-
-
-
-
-
-info = {"posEpisode": [0], "maxPosEpisode": [len(history) - 1], "pastPosEpisode": None, "choice": "none"}
-
-
-
-def skillEmulate(times):
-    for i in range(times):
-        episode = passEpisode(info)
-        if type(episode) == str:
-            return print(episode)
-        episodeInfo = episode["response"].split("//")
-
-        buttons = episodeInfo[1]
-        if episodeInfo[2] != "none":
-            buttons += episodeInfo[2]
-
-        print(episodeInfo[0])
-        choice = input(buttons + "\n")
-
-        if choice == "t":
-            info["choice"] = "true"
-        else:
-            info["choice"] = "false"
-
-
-skillEmulate(2)
-# skillEmulate(len(history))
