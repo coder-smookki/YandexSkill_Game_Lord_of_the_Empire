@@ -1,4 +1,33 @@
 import copy
+import random
+
+
+# выбрать сценарий в случайном эпизоде
+def getChanceIndex(response):
+    # поделить строку вида "[chance] 1 2 3" на числа и убрать "[chance]"
+    chances = response.split(" ")[1:]
+
+    # суммировать все числа
+    chancesSum = 0
+    for chance in chances:
+        chancesSum += int(chance)
+
+    # получить случайное число от 1 до суммы всех чисел
+    randomNum = random.randint(1, chancesSum)
+
+    # выявить удачное число и вернуть его индекс в массиве,
+    # который равен индексу в массиве случайных эпизодов
+    lastSum = 0
+    for i in range(len(chances)):
+        lastSum += int(chances[i])
+        if randomNum <= lastSum:
+            return i
+            
+
+    raise ValueError(
+        "По какой-то причине не получилось выбрать случайный сценарий:", response, ' ', randomNum
+    )
+
 
 # получить эпизод или связку по пути
 def getEpisode(pos: list, history: list):
@@ -17,8 +46,14 @@ def getEpisode(pos: list, history: list):
                 lastEpisode = lastEpisode["onFalse"]
                 continue
 
+            # если путь идет по случайному сценарию
+            if pos[depth] == "chance":
+                lastEpisode = lastEpisode["chance"]
+                continue
+
             # если идет индекс
             lastEpisode = lastEpisode[pos[depth]]
+
     # если случилась ошибка, значит была попытка обратиться к несуществующему индексу/полю
     # => неправильный путь
     except:
@@ -30,14 +65,16 @@ def getEpisode(pos: list, history: list):
 
 
 # пройти эпизод
-def passEpisode(info: dict, history:list, recursive=False):
+def passEpisode(info: dict, history: list, recursive=False):
     # FOR DEBUG
     # if recursive:
     #     print("Recursive")
     # print(info)
 
     # если прошлый эпизод имел ивент и выбор игрока совпадает с ивентом, то обработать ивент
-    if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info["choice"] == "true":
+    if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
+        "choice"
+    ] == "true":
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -59,7 +96,9 @@ def passEpisode(info: dict, history:list, recursive=False):
         return passEpisode(info, history, True)
 
     # аналогично для "false"
-    elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info["choice"] == "false":
+    elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
+        "choice"
+    ] == "false":
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -91,6 +130,7 @@ def passEpisode(info: dict, history:list, recursive=False):
 
     # цикл, занимающийся отслеживанием ситуаций,
     # когда на последнем уровне вложенности получился несуществующий индекс
+    # из-за сдвигов
     while True:
         if info["posEpisode"][-1] > info["maxPosEpisode"][-1]:
             # обрезать на 1 элемент
@@ -101,20 +141,40 @@ def passEpisode(info: dict, history:list, recursive=False):
             if len(info["posEpisode"]) == 0:
                 return "its all"
 
-            # если после обрезанного индекса у нас стоит "true" или "false"
-            if info["posEpisode"][-1] == "true" or info["posEpisode"][-1] == "false":
-                # обрезать "true" или "false"
+            # если после обрезанного индекса у нас стоит "true", "false" или "chance"
+            if (
+                info["posEpisode"][-1] == "true"
+                or info["posEpisode"][-1] == "false"
+                or info["posEpisode"][-1] == "chance"
+            ):
+                # обрезать "true", "false" или "chance"
                 info["posEpisode"] = info["posEpisode"][:-1]
                 info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
 
             # добавить +1 к последнему индексу
-            # if type(info["posEpisode"][-1]) == int:
             info["posEpisode"][-1] += 1
+
         else:
             break
 
     # получить эпизод
     episode = getEpisode(info["posEpisode"], history)
+
+    # если эпизод имеет шанс
+    if "[chance]" in episode["response"]:
+        allVariants = episode["chance"]
+        # allVariantsChances = []
+        info["posEpisode"].append("chance")
+        info["maxPosEpisode"].append("chance")
+
+        chanceIndex = getChanceIndex(episode["response"])
+
+        info["posEpisode"].append(
+            chanceIndex
+        )  # строка с шансом, генерировать индекс случайно
+        info["maxPosEpisode"].append(chanceIndex)
+
+        return passEpisode(info, history)
 
     # если эпизод - связка, то зарегистрировать его для дальнейшего вывода
     # и запустить функцию еще раз для вывода эпизода
@@ -135,5 +195,5 @@ def passEpisode(info: dict, history:list, recursive=False):
         # и стоит сместить позицию на 1 вправо
         info["pastPosEpisode"] = info["posEpisode"]
         info["posEpisode"][-1] += 1
-    
+
     return episode
