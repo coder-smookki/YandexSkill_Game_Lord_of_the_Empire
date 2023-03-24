@@ -22,6 +22,7 @@ def skillEmulate(historyText, linkEpisodes):
         episode = passEpisode(info, history)
         if type(episode) == str:
             break
+
         episodeInfo = episode["response"].split("//")
         if len(episodeInfo) < 4:
             raise ValueError('Неправильный формат текста: ' + episode["response"])
@@ -37,7 +38,7 @@ def skillEmulate(historyText, linkEpisodes):
             if choice == "t" or choice == "y":
                 info["choice"] = "true"
                 break
-            elif choice == "t" or choice == "n":
+            elif choice == "f" or choice == "n":
                 info["choice"] = "false"
                 break
     print("=> История закончилась <=")

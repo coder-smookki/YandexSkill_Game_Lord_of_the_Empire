@@ -37,7 +37,7 @@ def passEpisode(info: dict, history:list, recursive=False):
     # print(info)
 
     # если прошлый эпизод имел ивент и выбор игрока совпадает с ивентом, то обработать ивент
-    if info["pastHasEvent"] == "true" and info["choice"] == "true":
+    if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info["choice"] == "true":
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -59,7 +59,7 @@ def passEpisode(info: dict, history:list, recursive=False):
         return passEpisode(info, history, True)
 
     # аналогично для "false"
-    elif info["pastHasEvent"] == "false" and info["choice"] == "false":
+    elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info["choice"] == "false":
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -124,16 +124,16 @@ def passEpisode(info: dict, history:list, recursive=False):
         return passEpisode(info, history, True)
 
     # если эпизод имеет ивент, то записать его, чтобы на следующем запуске функции он отработался
-    if "onTrue" in episode:
+    if "onTrue" in episode and "onFalse" in episode:
+        info["pastHasEvent"] = "both"
+    elif "onTrue" in episode:
         info["pastHasEvent"] = "true"
-
     elif "onFalse" in episode:
         info["pastHasEvent"] = "false"
-
     else:
         # если все условия выше прошли стороной, то мы дошли до обычного эпизода
         # и стоит сместить позицию на 1 вправо
         info["pastPosEpisode"] = info["posEpisode"]
         info["posEpisode"][-1] += 1
-
+    
     return episode

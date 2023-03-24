@@ -12,13 +12,20 @@ def replaceLinkEpisodes(history, linkEpisodes):
     elif '{' in history['response']:
         key = history['response'][1:-1]
         if key in linkEpisodes:
-            history['response'] = linkEpisodes[key]
+            history['response'] = linkEpisodes[key][0]['response']
+            if 'onTrue' in linkEpisodes[key][0]:
+                history['onTrue'] = linkEpisodes[key][0]['onTrue']
+
+            if 'onFalse' in linkEpisodes[key][0]:
+                history['onFalse'] = linkEpisodes[key][0]['onFalse']
+            
         else: 
             raise IndexError('Попытка обратиться к несуществующей ссылке')
-    elif 'onTrue' in history:
-        replaceLinkEpisodes(history['onTrue'],linkEpisodes)
-    if 'onFalse' in history:
-        replaceLinkEpisodes(history['onFalse'],linkEpisodes)
+    elif 'onTrue' in history or 'onFalse' in history:
+        if 'onTrue' in history:
+            replaceLinkEpisodes(history['onTrue'],linkEpisodes)
+        else:
+            replaceLinkEpisodes(history['onFalse'],linkEpisodes)
 
     return history
 
