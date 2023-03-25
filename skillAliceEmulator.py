@@ -1,6 +1,6 @@
-from .builder import builder
+from core.builder import builder
 from datetime import datetime
-from .historyHandler import passEpisode
+from core.historyHandler import passEpisode
 from termcolor import colored
 
 
@@ -15,7 +15,9 @@ def skillEmulate(historyText, statsEnds, linkEpisodes=None):
     for key in statsEnds:
         for kkey in statsEnds[key]:
             statsEnds[key][kkey] = builder(
-                statsEnds[key][kkey], None, "концовки: " + key + "-" + kkey
+                statsEnds[key][kkey],
+                transformLinkEpisodes=False,
+                printText="концовки: " + key + "-" + kkey,
             )
 
     endTime = datetime.now()
@@ -49,23 +51,22 @@ def skillEmulate(historyText, statsEnds, linkEpisodes=None):
             break
 
         # показать статы
-        print(episode['stats'])
+        print(episode["stats"])
 
         # показать сообщение
         print(episode["text"])
 
-
         # получить ответ пользователя
         while True:
-            # если конец игры, то 
-            if len(episode['buttons']) == 0:
+            # если конец игры, то
+            if len(episode["buttons"]) == 0:
                 break
 
             # выдать кнопоки
             choice = input(" ".join(episode["buttons"]) + "\n")
 
             # если у нас есть только 1 кнопка
-            if len(episode['buttons']) == 1:
+            if len(episode["buttons"]) == 1:
                 info["choice"] = "true"
                 break
 

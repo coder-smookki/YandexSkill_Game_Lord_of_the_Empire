@@ -1,6 +1,6 @@
 from dialogs.Opening.Opening import *
 from dialogs.Cashed import *
-from core.skillAliceEmulator import *
+from skillAliceEmulator import *
 from core.historyHandler import *
 from core.yandexskillcore import startServer
 from core.responseHelper import createCard
@@ -35,12 +35,14 @@ false:
     "full? // true // None // 100 100 100 100 // card"
 """
 
-skillEmulate(Opening, statsEnds, Cashed)
-
-# host = os.environ.get('HOST')
-# if host:
-#     print(colored("+", "green"),'HOST найден:', host)
-#     startServer(Opening, statsEnds, Cashed, host=host, handler=handler)
-# else:
-#     print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
-#     startServer(Opening, statsEnds, Cashed, handler=handler)
+host = os.environ.get('HOST')
+emulator = os.environ.get('EMULATOR')
+if emulator == 'true':
+    skillEmulate(Opening, statsEnds, Cashed)
+else:
+    if host:
+        print(colored("+", "green"), 'HOST найден:', host)
+        startServer(Opening, statsEnds, Cashed, host=host, handler=handler)
+    else:
+        print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
+        startServer(Opening, statsEnds, Cashed, handler=handler)

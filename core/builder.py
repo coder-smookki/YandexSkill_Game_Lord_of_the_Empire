@@ -107,7 +107,7 @@ def builder(
 
     # форматирование ssd-format => словарное-представление для ссылочных эпизодов
     if transformLinkEpisodes and not (linkEpisodes is None):
-        print("Синтезирование ссылочных эпизодов...")
+        print(colored("=", "yellow"),"Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
             linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
 
