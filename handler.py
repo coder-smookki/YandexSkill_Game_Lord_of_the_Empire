@@ -8,11 +8,16 @@ def tipaIgraesh(event):
     return card
 
 def handler(event):
+    # если игрок хочет выйти в главное меню
     if isInCommandOr(event, ['меню', 'выйди', 'выход']):
         setCommandInEvent(event, '')
 
+    # если идет игра
     if haveState(event, 'playing') and getState(event, 'playing') == True:
         return tipaIgraesh(event)
+
+    #------------------------------#
+    # если игрок в меню
 
     # если человек хочет начать новую игру
     if isInCommandAnd(event, ['новая', 'игра']):

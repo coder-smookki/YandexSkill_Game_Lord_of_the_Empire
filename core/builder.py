@@ -55,10 +55,10 @@ def builder(
     history: str, # основная история 
     linkEpisodes: dict = None, # ссылочные эпизоды
     transformLinkEpisodes: bool = True, # нужно ли трансформировать ссылочные эпизоды
-    printAboutStart: bool = False, # вывести о начале работы билдера (чтоб красиво было :c)
+    printText: str = None, # вывести о начале работы билдера (чтоб красиво было :c)
 ):
-    if printAboutStart:
-        print("Синтезирование истории...")
+    if printText:
+        print("Синтезирование " + printText + '...')
 
     # заменить одинарные кавычки на двойные
     history = history.replace("'", '"')
@@ -109,7 +109,7 @@ def builder(
     if transformLinkEpisodes and not (linkEpisodes is None):
         print("Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
-            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
+            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes)
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
     replaceLinkEpisodes(result, linkEpisodes)

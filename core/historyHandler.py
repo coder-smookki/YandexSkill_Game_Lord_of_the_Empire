@@ -1,6 +1,31 @@
 import copy
 import random
 
+# отформатировать статы
+# если стат нет => вернется None
+# если стата одна => вернется массив вида [0,0,0,0]
+# если статы две => вернется массив с двумя массивами вида [0,0,0,0]
+def formatStats(statsString):
+    try:
+        arr = statsString[1:-1].split(' $ ')
+        if arr[0] == '':
+            return None
+
+        if len(arr) == 1:
+            stats = list(map(int, arr[0].split(' ')))
+            if len(stats) != 4:
+                raise ValueError('Неправильная структура стат:',statsString)
+            return stats
+
+        trueStats = list(map(int, arr[0].split(' ')))
+        falseStats = list(map(int, arr[1].split(' ')))
+        if len(trueStats) != 4 or len(falseStats) != 4:
+                raise ValueError('Неправильная структура стат:',statsString)
+
+        return [trueStats, falseStats]
+    except:
+        raise ValueError('Неправильная структура стат:',statsString)
+
 
 # выбрать сценарий в случайном эпизоде
 def getChanceIndex(response):
@@ -35,7 +60,6 @@ def getChanceIndex(response):
 def getEpisode(pos: list, history: list):
     # самый последний эпизод на текущий момент
     lastEpisode = history
-
     # перебирание пути, запись конечной точки
     try:
         for depth in range(len(pos)):
@@ -56,11 +80,10 @@ def getEpisode(pos: list, history: list):
             # если идет индекс
             lastEpisode = lastEpisode[pos[depth]]
 
-    # если случилась ошибка, значит была попытка обратиться к несуществующему индексу/полю
-    # => неправильный путь
+    # # если случилась ошибка, значит была попытка обратиться к несуществующему индексу/полю
+    # # => неправильный путь
     except:
-        print(pos)
-        raise IndexError("Неправильный путь")
+        raise IndexError("Неправильный путь:", pos)
 
     # вернуть эпизод
     return lastEpisode
@@ -73,17 +96,20 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     #     print("Recursive")
     # print(info)
 
-    # проверка на переполненность/недостаток фракций
-    for key in info["stats"]:
-        if info["stats"][key] >= 100:
-            return statsEnds[key]["full"]
-        elif info["stats"][key] <= 0:
-            return statsEnds[key]["empty"]
-
-    # если прошлый эпизод имел ивент и выбор игрока совпадает с ивентом, то обработать ивент
+    # если прошлый эпизод имел ивент "true" и выбор игрока совпадает с ивентом, то обработать ивент
     if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "true":
+        # применить статы
+        info['stats']['church'] += info['notAppliedStats']['true'][0]
+        info['stats']['army'] += info['notAppliedStats']['true'][1]
+        info['stats']['nation'] += info['notAppliedStats']['true'][2]
+        info['stats']['coffers'] += info['notAppliedStats']['true'][3]
+        
+        # очистить статы
+        info['notAppliedStats']['true'] = [0,0,0,0]
+        info['notAppliedStats']['false'] = [0,0,0,0]
+
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -108,6 +134,16 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "false":
+        # применить статы
+        info['stats']['church'] += info['notAppliedStats']['false'][0]
+        info['stats']['army'] += info['notAppliedStats']['false'][1]
+        info['stats']['nation'] += info['notAppliedStats']['false'][2]
+        info['stats']['coffers'] += info['notAppliedStats']['false'][3]
+        
+        # очистить статы
+        info['notAppliedStats']['true'] = [0,0,0,0]
+        info['notAppliedStats']['false'] = [0,0,0,0]
+
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -204,19 +240,43 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     if len(episodeInfo) < 5:
         raise ValueError("Неправильный формат текста: " + episode["response"])
 
-    # Формат: "text // trueBtn // falseBtn // church army nation coffers // cardId"
-    # Пример: "text // asd // zxc // 0 0 -10 5 // zxc"
-    stats = episodeInfo[3].split(" ")[1:-1]
-    stats = {
-        "church": int(stats[0]),
-        "army": int(stats[1]),
-        "nation": int(stats[2]),
-        "coffers": int(stats[3]),
-    }
+    # применить статы независимые от ответа
+    info['stats']['church'] += info['notAppliedStats']['always'][0]
+    info['stats']['army'] += info['notAppliedStats']['always'][1]
+    info['stats']['nation'] += info['notAppliedStats']['always'][2]
+    info['stats']['coffers'] += info['notAppliedStats']['always'][3]
+        
+    print(info["stats"])
 
-    info["stats"]["church"] += stats["church"]
-    info["stats"]["army"] += stats["army"]
-    info["stats"]["nation"] += stats["nation"]
-    info["stats"]["coffers"] += stats["coffers"]
+    # проверка на переполненность/недостаток фракций
+    for key in info["stats"]:
+        if info["stats"][key] >= 100:
+            return statsEnds[key]["full"][0]
+        elif info["stats"][key] <= 0:
+            return statsEnds[key]["empty"][0]
 
+    # очистить статы
+    info['notAppliedStats']['always'] = [0,0,0,0]
+
+    # Формат: "text // trueBtn // falseBtn // church army nation coffers $ church army nation coffers // cardId"
+    # Пример: "text // asd // zxc // 0 0 -10 5 $ 10 0 0 -20 // zxc"
+    stats = formatStats(episodeInfo[3])
+    if stats is None:
+        trueStats = [0,0,0,0]
+        falseStats = [0,0,0,0]
+        alwaysStats = [0,0,0,0]
+    elif len(stats) == 4: # если указаны статы внезависимости от выбора
+        trueStats = [0,0,0,0]
+        falseStats = [0,0,0,0]
+        alwaysStats = stats
+    # если статы на true или false
+    elif len(stats) == 2:
+        trueStats = stats[0]
+        falseStats = stats[1]
+        alwaysStats = [0,0,0,0]
+    
+    info['notAppliedStats']['true'] = trueStats
+    info['notAppliedStats']['false'] = falseStats
+    info['notAppliedStats']['always'] = alwaysStats
+    
     return episode
