@@ -79,50 +79,71 @@ def createButtons(buttons:list):
     return result
 
 
+# получить ID сессии
 def getSessionId(event):
     return event["session"]["session_id"]
 
 
+# получить ID пользователя
 def getUserId(event):
     return event["session"]["user"]["user_id"]
 
 
+# получить State
 def getState(event, state):
     return event["state"]["session"][state]
 
 
+# получить оригинальную команду пользователя
 def getOriginalUtterance(event):
     return event["request"]["original_utterance"]
 
 
+# получить отформатированную команду пользователя
 def getCommand(event):
     return event["request"]["command"]
 
 
+# получить глобальный State
 def getGlobalState(event, state):
     return event["state"]["user"][state]
 
+
+# установить State в респонсе
 def setStatesInResponse(response, states:dict):
     response['session_state'] = states
 
+
+# установить глобальный State в респонсе
 def setGlobalStatesInResponse(response, globalStates:dict):
     response["user_state_update"] = globalStates
 
+
+# добавить State в респонс
 def addStateInResponse(response, stateName, stateValue):
     response['session_state'][stateName] = stateValue
 
+
+# добавить глобальный State в респонс
 def addGlobalStateInResponse(response, stateName, stateValue):
     if not ("user_state_update" in response):
         response["user_state_update"] = {}
     response["user_state_update"][stateName] = stateValue
 
+
+# установить State в Event
 def setStateInEvent(event, stateName, stateValue):
     event["state"]["session"][stateName] = stateValue
     return event
+
+
+# установить глобальный State в Event
 def setGlobalStateInEvent(event, stateName, stateValue):
     event["state"]["user"][stateName] = stateValue
     return event
 
+
+# установить отформатированную команду пользователя в Event
 def setCommandInEvent(event, command:str):
     event["request"]["command"] = command
     return event 
