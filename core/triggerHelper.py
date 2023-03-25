@@ -2,9 +2,9 @@
 def haveState(event, state):
     return state in event['state']['session']
 
-# есть глобальныйстейт или нет
+# есть глобальный стейт или нет
 def haveGlobalState(event, state):
-    return 'user' in event['state'] and state in event['state']['user']
+    return 'state' in event and 'user' in event['state'] and state in event['state']['user']
 
 # является ли сессия новой
 def isNewSession(event):

@@ -13,8 +13,13 @@ def startServer(
         "handler works!"
     ),  # хандлер, через который будут прогоняться запросы и который будет отдавать респонс
 ):
+
     # создать приложение фласка
     app = Flask(__name__)
+
+    # установить кодировку
+    app.config['JSON_AS_ASCII'] = False
+    app.config['JSONIFY_MIMETYPE'] = 'application/json;charset=utf-8'
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)
