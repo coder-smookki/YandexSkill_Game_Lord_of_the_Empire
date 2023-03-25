@@ -1,20 +1,27 @@
 import copy
 
 
+# создать ответ Алисе в удобном для игры формате
 def createCard(
-    event: dict,
-    message: str,
-    tts: str = None,
-    title: str = None,
-    imageCode: str = None,
-    buttons: list[str] = ["Нет", "Да"],
+    event: dict, # реквест Алисы
+    message: str, # сообщение
+    tts: str = None, # tts
+    buttons: list[str] = ["Нет", "Да"], # кнопки
+    # если нет "imageCode", то поля ниже не используются
+    imageCode: str = None, # айди картинки
+    title: str = None, # заголовок
+    
 ):
+    if tts is None:
+        tts = message
+    # если нет картинки, то вернуть текстовой респонс
     if imageCode is None:
         config = {
             "message": message,
             "tts": message if tts is None else tts,
             "buttons": buttons,
         }
+    # если есть, то вернуть респонс с картинкой
     else:
         config = {
             "card": {
@@ -26,32 +33,43 @@ def createCard(
             "tts": message if tts is None else tts,
             "buttons": buttons,
         }
+
+    # создать
     return createResponse(event, config)
 
-
+# функция, которая превращает конфиг с информацией о будующем респонсе в сам респонс
+# сделано, чтобы не запариваться по поводу полей в респонсе (их реально много и они неудобные :c)
 def createResponse(event, originalConfig):
+    # скопировать конфиг, чтобы 100% избежать его изменения в другом файле (если там он создан глобально)
     config = copy.deepcopy(originalConfig)
+    
+    # возращаемый респонс
     returnResponse = {
         "response": {
-            "text": config["message"] if "message" in config else "",
-            "tts": config["tts"],
-            "card": config["card"] if "card" in config else None,
-            "buttons": createButtons(config["buttons"]),
-            "end_session": config["end_session"] if "end_session" in config else False,
+            "text": config["message"] if "message" in config else "", # если есть сообщение (текстовой респонс)
+            "tts": config["tts"], # tts
+            "card": config["card"] if "card" in config else None, # если есть карточка (респонс с картинкой)
+            "buttons": createButtons(config["buttons"]), # кнопки
+            "end_session": config["end_session"] if "end_session" in config else False, # если нужно закончить сессию
         },
-        "session": event["session"],
-        "session_state": config["session_state"]
-        if "session_state" in config
-        else {"branch": ""},
-        "version": event["version"],
+        "session": event["session"], # инфа для Алисы - сессия
+        "session_state": config["session_state"] if "session_state" in config else {}, # передаваемые стейты
+        "version": event["version"], # инфа для Алисы - версия
     }
-    if "user_state_update" in config:
-        returnResponse["user_state_update"] = config["user_state_update"]
-    return returnResponse
+    #
+    if "user_state_update" in config: # если нужно обновить глобальные стейты
+        # установить поле
+        returnResponse["user_state_update"] = config["user_state_update"] 
+    
+    # вернуть получившийся респонс
+    return returnResponse 
 
-
-def createButtons(buttons):
+# метод, занимающийся преобразованием кнопок из строк в формат кнопки
+# если кнопка не является строкой, то просто переносит ее как она есть
+def createButtons(buttons:list):
+    # сюда будут складываться кнопки
     result = []
+    # пройтись по кнопкам
     for button in buttons:
         if isinstance(button, str):
             result.append({"title": button, "hide": True})
@@ -83,3 +101,18 @@ def getCommand(event):
 
 def getGlobalState(event, state):
     return event["state"]["user"][state]
+
+def setStatesInResponse(response, states:dict):
+    response['session_state'] = states
+
+def setGlobalStatesInResponse(response, globalStates:dict):
+    response["user_state_update"] = globalStates
+
+def addStateInResponse(response, stateName, stateValue):
+    response['session_state'][stateName] = stateValue
+
+def addGlobalStateInResponse(response, stateName, stateValue):
+    if not ("user_state_update" in response):
+        response["user_state_update"] = {}
+    response["user_state_update"][stateName] = stateValue
+    

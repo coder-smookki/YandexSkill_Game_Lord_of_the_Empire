@@ -1,29 +1,33 @@
-# >>> moduleNames = ['sys', 'os', 're', 'unittest']
-# >>> moduleNames
-# ['sys', 'os', 're', 'unittest']
-# >>> modules = map(__import__, moduleNames)
 from flask import Flask, request
-from .dialogsHandler import *
+from .notused.dialogsHandler import *
+from termcolor import colored
 
 
+# функция для удобного запуска фласка
 def startServer(
-    route: str = "/",
-    methods: list[str] = ["POST"],
-    host: str = "localhost",
-    port: int = 8443,
-    handler: callable = lambda data: print("handler works!"),
+    route: str = "/",  # роут, по которому будет приходить реквесты
+    methods: list[str] = ["POST"],  # методы, принимаемые фласком
+    host: str = "localhost",  # хост
+    port: int = 8443,  # порт
+    handler: callable = lambda data: print(
+        "handler works!"
+    ),  # хандлер, через который будут прогоняться запросы и который будет отдавать респонс
 ):
+    # создать приложение фласка
     app = Flask(__name__)
 
+    # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)
     def content():
         data = request.get_json()
         response = handler(data)
         return response
 
+    # метод запуска сервера
     def start():
-        print("Server starting...")
+        print(colored("+", "green"), "Сервер запускается...")
         app.run(host=host, port=port)
-        print("Shutdown!")
+        print(colored("-", "red"), "Остановка!")
 
+    # запуск
     start()

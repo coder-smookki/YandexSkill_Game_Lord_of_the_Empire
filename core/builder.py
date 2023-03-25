@@ -4,7 +4,7 @@
 import yaml
 
 
-# заменить все ссылочные эпизоды
+# заменить ссылки в "response"ах в виде строк "{link}" на ссылочные эпизоды в словарном представлении
 def replaceLinkEpisodes(history, linkEpisodes):
     # если попалась связка, то выполнить замену для всего внутри
     if type(history) == list:
@@ -18,45 +18,53 @@ def replaceLinkEpisodes(history, linkEpisodes):
 
         # если адрес существует, то заменить, иначе выдать ошибку
         if key in linkEpisodes:
+            # перенести респонс
             history["response"] = linkEpisodes[key][0]["response"]
+            # перенести true-ивент
             if "onTrue" in linkEpisodes[key][0]:
                 history["onTrue"] = linkEpisodes[key][0]["onTrue"]
+            # перенести false-ивент
             if "onFalse" in linkEpisodes[key][0]:
                 history["onFalse"] = linkEpisodes[key][0]["onFalse"]
+            # перенести эпизоды, если респонс случайного эпизода
             if "[chance]" in linkEpisodes[key][0]:
                 history["chance"] = linkEpisodes[key][0]["chance"]
         else:
-            raise IndexError("Попытка обратиться к несуществующей ссылке")
+            # если такой ссылки нет 
+            raise IndexError("Попытка обратиться к несуществующей ссылке:",history["response"])
+
 
     # выполнить внутреннюю замену
-    # случайного эпизода
+    # - случайного эпизода
     elif "chance" in history:
         replaceLinkEpisodes(history["chance"], linkEpisodes)
 
-    # эпизода с ивентом
+    # - эпизода с ивентом
     elif "onTrue" in history or "onFalse" in history:
         if "onTrue" in history:
             replaceLinkEpisodes(history["onTrue"], linkEpisodes)
         if "onFalse" in history:
             replaceLinkEpisodes(history["onFalse"], linkEpisodes)
 
+    # вернуть историю
     return history
 
 
 # трансформировать ssd-format в словарное представление
 def builder(
-    q: str,
-    linkEpisodes: dict = None,
-    transformLinkEpisodes: bool = True,
-    printAboutStart: bool = False,
+    history: str, # основная история 
+    linkEpisodes: dict = None, # ссылочные эпизоды
+    transformLinkEpisodes: bool = True, # нужно ли трансформировать ссылочные эпизоды
+    printAboutStart: bool = False, # вывести о начале работы билдера (чтоб красиво было :c)
 ):
     if printAboutStart:
         print("Синтезирование истории...")
+
     # заменить одинарные кавычки на двойные
-    q = q.replace("'", '"')
+    history = history.replace("'", '"')
 
     # поделить на строки для дальнейшей обработки
-    arr = q.split("\n")
+    arr = history.split("\n")
 
     # форматирование ssd-format => yaml
     resultArr = []  # список, куда будут записываться уже отформатированные строки
@@ -73,13 +81,13 @@ def builder(
             resultArr.append(n)
             continue
 
-        # аналогично для "false"
+        # если строка с условием "false", то заменить само условие на "onFalse" (нужно для обработчика)
         if "false:" in n:
             n = n.replace("false", "  onFalse")
             resultArr.append(n)
             continue
 
-        # добавить пробел для "chance"
+        # добавить пробел для "chance" (для обработчика)
         if "chance" in n and not ("[chance]" in n):
             n = n.replace("chance", "  chance")
             resultArr.append(n)
@@ -91,18 +99,20 @@ def builder(
             resultArr.append(n)
             continue
 
-    # соединить все строки в одно целое. в итоге у нас получился yaml
+    # соединить все строки в одно целое. в итоге у нас получится yaml
     yamlResult = "\n".join(resultArr)
 
-    # трансформировать yaml в словарное представление
+    # форматирование yaml => словарное-представление
     result = yaml.load(yamlResult, Loader=yaml.Loader)
 
-    # трансформировать ssd-format в словарное представление в ссылочных эпизодах
+    # форматирование ssd-format => словарное-представление для ссылочных эпизодов
     if transformLinkEpisodes and not (linkEpisodes is None):
         print("Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
             linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
 
+    # заменить ссылки в "response"ах в виде строк "{link}" на словари
     replaceLinkEpisodes(result, linkEpisodes)
 
+    # вернуть результат
     return result
