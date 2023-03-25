@@ -1,50 +1,34 @@
 from core.triggerHelper import *
 from core.responseHelper import *
-from dialogs.Opening import Opening
+from core.historyHandler import passEpisode
 
 def tipaIgraesh(event):
     card = createCard(event, 'Типа играешь...', '', ['Новая игра'])
     addStateInResponse(card, 'playing', True)
     return card
 
-def handler(event):
-    # если игрок хочет выйти в главное меню
-    if isInCommandOr(event, ['меню', 'выйди', 'выход']):
-        setCommandInEvent(event, '')
+def createStartInfo(history):
+    return {
+        "posEpisode": [0],
+        "maxPosEpisode": [len(history) - 1],
+        "pastPosEpisode": None,
+        "choice": "none",
+        "pastHasEvent": None,
+        "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
+    }
 
-    # если идет игра
-    if haveState(event, 'playing') and getState(event, 'playing') == True:
-        return tipaIgraesh(event)
 
-    #------------------------------#
-    # если игрок в меню
+def handler(event, history, statsEnds):
+    if not getGlobalState(event, 'save'):
+        info = createStartInfo(history)
+    else:
+        info = getGlobalState(event, 'save')
 
-    # если человек хочет начать новую игру
-    if isInCommandAnd(event, ['новая', 'игра']):
-        return tipaIgraesh(event)
-
-    # если человек хочет продолжить с последнего места
-    if isInCommandAnd(event, ['продолжить']):
-        return tipaIgraesh(event)
-
-    # если человек не имеет сохранения, то предложить начать новую игру
-    if not haveGlobalState(event, 'info'):
-        card = createCard(event, 'У вас нет сохранения. Хотите начать новую игру?', 'У вас нет сохранения. Хотите начать новую игру?', ['Новая игра'])
-        return card
-
-    # если человек имеет сохранение, то предложить продолжить игру или начать новую
-    if haveGlobalState(event, 'info'):
-        card = createCard(event, 'У вас есть сохранение. Хотите продолжить с последнего момента или начать новую игру?', 'У вас есть сохранение. Хотите продолжить с последнего момента или начать новую игру?', ['Продолжить','Новая игра'])
-        return card
-
-    # info = {
-    #     "posEpisode": [0],
-    #     "maxPosEpisode": [len(Opening) - 1],
-    #     "pastPosEpisode": None,
-    #     "choice": "none",
-    #     "pastHasEvent": None,
-    #     "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-    # }
+    response = passEpisode(info, history, statsEnds)
+    addGlobalStateInResponse(response, 'save', info)
+    return response
 
     # return createCard(event, "test", "test", "title")
+
+
 

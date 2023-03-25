@@ -39,10 +39,10 @@ false:
 host = os.environ.get('HOST')
 if host:
     print(colored("+", "green"),'HOST найден:', host)
-    startServer(host=host, handler=handler)
+    startServer(Opening, statsEnds, Cashed, host=host, handler=handler)
 else:
     print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
-    startServer(handler=handler)
+    startServer(Opening, statsEnds, Cashed, handler=handler)
 
 
 

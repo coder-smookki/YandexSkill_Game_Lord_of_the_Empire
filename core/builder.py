@@ -2,7 +2,7 @@
 # Для превращения ssd-format в python-словарь, промежуточно ssd-format превращается в формат yaml,
 # из которого уже и происходит трансформация в словарь при помощи библиотеки pyyaml
 import yaml
-
+from termcolor import colored
 
 # заменить ссылки в "response"ах в виде строк "{link}" на ссылочные эпизоды в словарном представлении
 def replaceLinkEpisodes(history, linkEpisodes):
@@ -58,7 +58,7 @@ def builder(
     printText: str = None, # вывести о начале работы билдера (чтоб красиво было :c)
 ):
     if printText:
-        print("Синтезирование " + printText + '...')
+        print(colored("=", "yellow"),"Синтезирование " + printText + '...')
 
     # заменить одинарные кавычки на двойные
     history = history.replace("'", '"')
@@ -109,7 +109,7 @@ def builder(
     if transformLinkEpisodes and not (linkEpisodes is None):
         print("Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
-            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes)
+            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
     replaceLinkEpisodes(result, linkEpisodes)
