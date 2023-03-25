@@ -43,25 +43,3 @@ else:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-text // btntrue // btnfalse // 0 0 0 0 $ 0 0 0 0 // card
-
-
-
-
-
