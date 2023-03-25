@@ -130,13 +130,20 @@ def addGlobalStateInResponse(response, stateName, stateValue):
         response["user_state_update"] = {}
     response["user_state_update"][stateName] = stateValue
 
+
+# установить State в Event
 def setStateInEvent(event, stateName, stateValue):
     event["state"]["session"][stateName] = stateValue
     return event
+
+
+# установить глобальный State в Event
 def setGlobalStateInEvent(event, stateName, stateValue):
     event["state"]["user"][stateName] = stateValue
     return event
 
+
+# установить отформатированную команду пользователя в Event
 def setCommandInEvent(event, command:str):
     event["request"]["command"] = command
     return event 
