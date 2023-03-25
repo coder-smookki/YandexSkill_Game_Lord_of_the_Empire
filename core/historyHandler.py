@@ -1,6 +1,20 @@
 import copy
 import random
 
+def formateEpisodeInfo(episodeInfo):
+    trueButton = episodeInfo[1][1:-1]
+    falseButton = episodeInfo[2][1:-1]
+    buttons = []    
+    if trueButton != 'None':
+        buttons.append(trueButton)
+        if falseButton != 'None':
+            buttons.append(falseButton)            
+    return {
+        'text': episodeInfo[0][:-1],
+        'buttons': buttons,
+        'card': episodeInfo[4][1:]
+    }
+
 # отформатировать статы
 # если стат нет => вернется None
 # если стата одна => вернется массив вида [0,0,0,0]
@@ -248,7 +262,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         
     print(info["stats"])
 
-    # проверка на переполненность/недостаток фракций
+    # проверка на переполненность/недостаток стат
     for key in info["stats"]:
         if info["stats"][key] >= 100:
             return statsEnds[key]["full"][0]
@@ -279,4 +293,18 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     info['notAppliedStats']['false'] = falseStats
     info['notAppliedStats']['always'] = alwaysStats
     
+    # trueButton = episodeInfo[1][1:-1]
+    # falseButton = episodeInfo[2][1:-1]
+    # buttons = []    
+    # if trueButton != 'None':
+    #     buttons.append(trueButton)
+    #     if falseButton != 'None':
+    #         buttons.append(falseButton)   
+
+    # result = formateEpisodeInfo(episodeInfo) # отформатировать инфу с респонса эпизода
+    # result['stats'] = info["stats"] # добавить в результат еще текущую статистику
+    # result['changeStats'] = stats # и возможные изменения на каждый выбор
+    # return result
+
     return episode
+
