@@ -24,21 +24,37 @@ def createStartInfo(history):
         },
     }
 
-
 def handler(event, history, statsEnds):
     if not haveGlobalState(event, "save"):
         info = createStartInfo(history)
     else:
         info = getGlobalState(event, "save")
+        command = getOriginalUtterance(event)
 
     episode = passEpisode(info, history, statsEnds)
-    response = 1
-
+    response = createCard(event, episode['text'], None, episode['buttons'])
     
+    if not (info['lastFalseButton'] is None) and info['lastFalseButton'] == command:
+        info['choice'] =  'false'
+    else: 
+        info['choice'] =  'true'
 
-    # addGlobalStateInResponse(response, "save", info)
+    info['lastTrueButton'] = None
+    info['lastFalseButton'] = None
 
+    if len(episode['buttons']) == 0:
+        addGlobalStateInResponse(response, "save", createStartInfo(history))
+        return response
+    
+    elif len(episode['buttons']) == 1:
+        info['lastTrueButton'] = episode['buttons'][0]
 
-    return episode
+    elif len(episode['buttons']) == 2:        
+        info['lastTrueButton'] = episode['buttons'][0]
+        info['lastFalseButton'] = episode['buttons'][1]
+
+    addGlobalStateInResponse(response, "save", info)
+
+    return response
 
     # return createCard(event, "test", "test", "title")
