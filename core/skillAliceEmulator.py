@@ -14,7 +14,9 @@ def skillEmulate(historyText, statsEnds, linkEpisodes=None):
     # билдинг концовок
     for key in statsEnds:
         for kkey in statsEnds[key]:
-            statsEnds[key][kkey] = builder(statsEnds[key][kkey], None, 'концовки: ' + key + '-' + kkey)
+            statsEnds[key][kkey] = builder(
+                statsEnds[key][kkey], None, "концовки: " + key + "-" + kkey
+            )
 
     endTime = datetime.now()
     print(
@@ -46,46 +48,24 @@ def skillEmulate(historyText, statsEnds, linkEpisodes=None):
         if episode == "its all":
             break
 
-        # получить массив информации из "response" эпизода
-        episodeInfo = episode["response"].split("//")
-
-        # если массив состоит из <5 элементов - значит его труктура не соответствует
-        # правильному формату
-        if len(episodeInfo) < 5:
-            raise ValueError(
-                colored("=>", "darkred"),
-                "Неправильный формат текста: " + episode["response"],
-            )
-
-        # Формат: "text // trueBtn // falseBtn // church army nation coffers // cardId"
-        # Пример: "text // asd // zxc // 0 0 -10 5 // cardId123"
-        text = episodeInfo[0]  # сообщение
-        btns = [episodeInfo[1], episodeInfo[2]]  # две кнопки
-        cardId = episodeInfo[4]  # айди картинки, загруженной на яндекс
+        # показать статы
+        print(episode['stats'])
 
         # показать сообщение
-        print(text)
+        print(episode["text"])
 
-        # если первая кнопка == "None", значит вторая тоже => кнопки отображать не надо => конец игры
-        # если только вторая кнопка == "None", значит нужно вывести одну и внезависимости от ответа
-        # игрока, выдать событие "true"
-        # иначе кнопки 2. первая выдает событие "true", вторая - "false"
-        countBtns = 2
-        if btns[0].strip() == "None":
-            countBtns = 0
-        elif btns[1].strip() == "None":
-            countBtns = 1
 
         # получить ответ пользователя
         while True:
-            if countBtns == 0:
+            # если конец игры, то 
+            if len(episode['buttons']) == 0:
                 break
 
-            # выдать столько кнопок, сколько указано в "countBtns"
-            choice = input(" ".join(btns[:countBtns]) + "\n")
+            # выдать кнопоки
+            choice = input(" ".join(episode["buttons"]) + "\n")
 
             # если у нас есть только 1 кнопка
-            if countBtns == 1:
+            if len(episode['buttons']) == 1:
                 info["choice"] = "true"
                 break
 

@@ -259,15 +259,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     info['stats']['army'] += info['notAppliedStats']['always'][1]
     info['stats']['nation'] += info['notAppliedStats']['always'][2]
     info['stats']['coffers'] += info['notAppliedStats']['always'][3]
-        
-    print(info["stats"])
-
-    # проверка на переполненность/недостаток стат
-    for key in info["stats"]:
-        if info["stats"][key] >= 100:
-            return statsEnds[key]["full"][0]
-        elif info["stats"][key] <= 0:
-            return statsEnds[key]["empty"][0]
 
     # очистить статы
     info['notAppliedStats']['always'] = [0,0,0,0]
@@ -293,18 +284,16 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     info['notAppliedStats']['false'] = falseStats
     info['notAppliedStats']['always'] = alwaysStats
     
-    # trueButton = episodeInfo[1][1:-1]
-    # falseButton = episodeInfo[2][1:-1]
-    # buttons = []    
-    # if trueButton != 'None':
-    #     buttons.append(trueButton)
-    #     if falseButton != 'None':
-    #         buttons.append(falseButton)   
+    trueButton = episodeInfo[1][1:-1]
+    falseButton = episodeInfo[2][1:-1]
+    buttons = []    
+    if trueButton != 'None':
+        buttons.append(trueButton)
+        if falseButton != 'None':
+            buttons.append(falseButton)   
 
-    # result = formateEpisodeInfo(episodeInfo) # отформатировать инфу с респонса эпизода
-    # result['stats'] = info["stats"] # добавить в результат еще текущую статистику
-    # result['changeStats'] = stats # и возможные изменения на каждый выбор
-    # return result
-
-    return episode
+    result = formateEpisodeInfo(episodeInfo) # отформатировать инфу с респонса эпизода
+    result['stats'] = info["stats"] # добавить в результат еще текущую статистику
+    result['changeStats'] = stats # и возможные изменения на каждый выбор
+    return result
 
