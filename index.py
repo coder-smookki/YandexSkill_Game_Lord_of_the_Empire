@@ -40,3 +40,28 @@ if host:
 else:
     print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
     startServer(handler=handler)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+text // btntrue // btnfalse // 0 0 0 0 $ 0 0 0 0 // card
+
+
+
+
+
