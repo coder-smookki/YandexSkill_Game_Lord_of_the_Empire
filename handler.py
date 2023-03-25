@@ -34,7 +34,7 @@ def handler(event, history, statsEnds):
     episode = passEpisode(info, history, statsEnds)
     response = createCard(event, episode['text'], None, episode['buttons'])
     
-    if not (info['lastFalseButton'] is None) and info['lastFalseButton'] == command:
+    if 'lastFalseButton' in info and not (info['lastFalseButton'] is None) and info['lastFalseButton'] == command:
         info['choice'] =  'false'
     else: 
         info['choice'] =  'true'
