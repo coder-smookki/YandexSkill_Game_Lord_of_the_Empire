@@ -1,6 +1,6 @@
 # есть стейт или нет
 def haveState(event, state):
-    return state in event['state']['session']
+    return 'state' in event and state in event['state']['session']
 
 # есть глобальный стейт или нет
 def haveGlobalState(event, state):
