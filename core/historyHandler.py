@@ -49,12 +49,11 @@ def getShuffleIndex(total: int, used: list):
     for i in range(len(values) - 1, 0, -1):
         j = random.randint(0, i)
         values[i], values[j] = values[j], values[i]
-    
+
     if len(values) == 0:
         raise ValueError('Не получилось взять новый индекс:', total, used)
-    
-    return values[-1]
 
+    return values[-1]
 
 
 # выбрать сценарий в случайном эпизоде
@@ -230,7 +229,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
 
             # получить сколько всего нужно показать эпизодов
             shuffleTotalShows = int(re.findall(r"\d+", info["maxPosEpisode"][-1])[0])
-            
+
             # получить уже использованные эпизоды
             shuffleUsedIndexes = list(map(int, re.findall(r"\d+", info["posEpisode"][-1])))
 
@@ -244,16 +243,16 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
                 info["posEpisode"][-1] += 1
 
             # иначе показать еще эпизод
-            else: 
+            else:
                 # получить новый индекс
                 newShuffleIndex = getShuffleIndex(shuffleTotalShows, shuffleUsedIndexes)
-                
+
                 # вставить эпизод как использованный
-                if len(shuffleUsedIndexes) == 0: # если первый элемент
+                if len(shuffleUsedIndexes) == 0:  # если первый элемент
                     info["posEpisode"][-1] += str(newShuffleIndex)
                 else:
                     info["posEpisode"][-1] += ',' + str(newShuffleIndex)
-                
+
                 # вставить индексы
                 info["posEpisode"].append(newShuffleIndex)
                 info["maxPosEpisode"].append(newShuffleIndex)
@@ -270,10 +269,10 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
 
             # если после обрезанного индекса у нас стоит "true", "false", "chance" или "bundle"
             if (
-                info["posEpisode"][-1] == "true"
-                or info["posEpisode"][-1] == "false"
-                or info["posEpisode"][-1] == "chance"
-                or info["posEpisode"][-1] == "bundle"
+                    info["posEpisode"][-1] == "true"
+                    or info["posEpisode"][-1] == "false"
+                    or info["posEpisode"][-1] == "chance"
+                    or info["posEpisode"][-1] == "bundle"
             ):
                 # обрезать "true", "false", "chance" или "bundle"
                 info["posEpisode"] = info["posEpisode"][:-1]
@@ -315,7 +314,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         info["posEpisode"].append("shuffle-")
         # shuffle-totalShows
         info["maxPosEpisode"].append("shuffle-" + str(totalShows))
-        
+
         info["posEpisode"].append(shuffleIndex)
         info["maxPosEpisode"].append(shuffleIndex)
 

@@ -24,6 +24,7 @@ def createStartInfo(history):
         },
     }
 
+
 def handler(event, history, statsEnds):
     if not haveGlobalState(event, "save"):
         info = createStartInfo(history)
@@ -33,11 +34,11 @@ def handler(event, history, statsEnds):
 
     episode = passEpisode(info, history, statsEnds)
     response = createCard(event, episode['text'], None, episode['buttons'])
-    
+
     if 'lastFalseButton' in info and not (info['lastFalseButton'] is None) and info['lastFalseButton'] == command:
-        info['choice'] =  'false'
-    else: 
-        info['choice'] =  'true'
+        info['choice'] = 'false'
+    else:
+        info['choice'] = 'true'
 
     info['lastTrueButton'] = None
     info['lastFalseButton'] = None
@@ -45,11 +46,11 @@ def handler(event, history, statsEnds):
     if len(episode['buttons']) == 0:
         addGlobalStateInResponse(response, "save", createStartInfo(history))
         return response
-    
+
     elif len(episode['buttons']) == 1:
         info['lastTrueButton'] = episode['buttons'][0]
 
-    elif len(episode['buttons']) == 2:        
+    elif len(episode['buttons']) == 2:
         info['lastTrueButton'] = episode['buttons'][0]
         info['lastFalseButton'] = episode['buttons'][1]
 

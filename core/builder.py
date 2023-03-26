@@ -4,8 +4,9 @@
 import yaml
 from termcolor import colored
 
-
 temp = None
+
+
 # заменить ссылки в "response"ах в виде строк "{link}" на ссылочные эпизоды в словарном представлении
 def replaceLinkEpisodes(history, linkEpisodes):
     global temp
@@ -26,24 +27,24 @@ def replaceLinkEpisodes(history, linkEpisodes):
                 history['shuffle'] = replaceLinkEpisodes(history['shuffle'], linkEpisodes)
             elif 'chance' in history:
                 history['chance'] = replaceLinkEpisodes(history['chance'], linkEpisodes)
-            else: 
+            else:
                 if 'onTrue' in history:
                     history['onTrue'] = replaceLinkEpisodes(history['onTrue'], linkEpisodes)
                 if 'onFalse' in history:
                     history['onFalse'] = replaceLinkEpisodes(history['onFalse'], linkEpisodes)
     temp = history
     return history
-        
+
 
 # трансформировать ssd-format в словарное представление
 def builder(
-    history: str, # основная история 
-    linkEpisodes: dict = None, # ссылочные эпизоды
-    transformLinkEpisodes: bool = True, # нужно ли трансформировать ссылочные эпизоды
-    printText: str = None, # вывести о начале работы билдера (чтоб красиво было :c)
+        history: str,  # основная история
+        linkEpisodes: dict = None,  # ссылочные эпизоды
+        transformLinkEpisodes: bool = True,  # нужно ли трансформировать ссылочные эпизоды
+        printText: str = None,  # вывести о начале работы билдера (чтоб красиво было :c)
 ):
     if printText:
-        print(colored("=", "yellow"),"Синтезирование " + printText + '...')
+        print(colored("=", "yellow"), "Синтезирование " + printText + '...')
 
     # заменить одинарные кавычки на двойные
     history = history.replace("'", '"')
@@ -105,13 +106,13 @@ def builder(
 
     # форматирование ssd-format => словарное-представление для ссылочных эпизодов
     if transformLinkEpisodes and not (linkEpisodes is None):
-        print(colored("=", "yellow"),"Синтезирование ссылочных эпизодов...")
+        print(colored("=", "yellow"), "Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
             print(colored("=", "yellow"), 'Синтезирование ссылок:', key)
             linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
-    print(colored("=", "yellow"),"Замена ссылок...")
+    print(colored("=", "yellow"), "Замена ссылок...")
     # print(result)
     result = replaceLinkEpisodes(result, linkEpisodes)
     # print(result)
