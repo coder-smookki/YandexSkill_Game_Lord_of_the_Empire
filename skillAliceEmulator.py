@@ -44,7 +44,6 @@ def skillEmulate(historyText, statsEnds, linkEpisodes=None):
     # старт истории
     print(colored("=>", "blue"), "История началась", colored("<=", "blue"))
     while True:
-        print(info["posEpisode"])
         # пройти и получить эпизод
         episode = passEpisode(info, history, statsEnds)
 

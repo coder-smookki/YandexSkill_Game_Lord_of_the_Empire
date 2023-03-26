@@ -107,7 +107,7 @@ def builder(
     if transformLinkEpisodes and not (linkEpisodes is None):
         print(colored("=", "yellow"),"Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
-            print(key)
+            print(colored("=", "yellow"), 'Синтезирование ссылок:', key)
             linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
