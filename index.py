@@ -34,20 +34,33 @@ statsEnds = {
 # bundle:
 #     'hehe // true // false // // card'
 #     true:
-#         '{link1}'
+#         '{link3}'
 #     false:
 #         'ok // None // None // // asd'
 # """
 
 # Cashed = {
-    
+
 #     "link1" : """
-#     "[chance] 1 1"
-#     chance:
-#         "bundlzxc1 // true // false // // card"
-#         "bundlzxc2 // true // false // // card"
-#     """
+#     "[bundle]"
+#     bundle:
+#         "[bundle]"
+#         bundle:
+#             "bundlzxc1 // true // false // // card"
+#         "[bundle]"
+#         bundle:
+#             "zbundlzxc1 // true // false // // card"
     
+#     """,
+#     "link2": """
+#     "{link1}"
+#     """,
+
+#     "link3": """
+#     "{link2}"
+
+    
+#     """,    
 # }
 
 
