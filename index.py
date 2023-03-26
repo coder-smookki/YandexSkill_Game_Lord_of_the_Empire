@@ -14,9 +14,6 @@ load_dotenv()
 
 sys.setrecursionlimit(5000)
 
-
-
-
 host = os.environ.get('HOST')
 emulator = os.environ.get('EMULATOR')
 if emulator == 'true':

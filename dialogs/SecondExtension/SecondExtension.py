@@ -1,4 +1,3 @@
-
 SecondExtension = """
     "Улицы нашей прекрасной столицы воняют сточными водами, нужно построить канализацию // Да // Нет // 0 0 +20 -10 $ 0 0 -10 +5 // None"    
     true:
@@ -93,15 +92,7 @@ SecondExtension = """
                         "Вы разворачиваетесь и убегаете.. // Продолжить // None //  // None"
                         "{ThirdExtension}"
                 false:
-                    "{ThirdExtension}"
-    
-    
-    
-    
-    
-    
-    
-    
+                    "{ThirdExtension}" 
     false:
         "[bundle]"
         bundle:
@@ -192,12 +183,4 @@ SecondExtension = """
                         "{ThirdExtension}"
                 false:
                     "{ThirdExtension}"
-
-
-
-
-
-
-
-
 """

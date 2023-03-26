@@ -1,5 +1,3 @@
-
-
 FifthExtension = """
     "Господин, мы хотим построить новые школы // Да // Нет //  // None"
     true:
@@ -32,13 +30,6 @@ FifthExtension = """
                     "{SixthExtension}"
                 false:
                     "{SixthExtension}"
-    
-    
-    
-    
-    
-    
-    
     false:
         "Мы нашли сокровище! Что будем делать? // Разделить между всеми // Всё в казну! // None"
         true:
@@ -69,21 +60,4 @@ FifthExtension = """
                     "{SixthExtension}"
                 false:
                     "{SixthExtension}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """

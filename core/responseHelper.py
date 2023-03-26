@@ -3,14 +3,14 @@ import copy
 
 # создать ответ Алисе в удобном для игры формате
 def createCard(
-    event: dict, # реквест Алисы
-    message: str, # сообщение
-    tts: str = None, # tts
-    buttons: list[str] = ["Нет", "Да"], # кнопки
-    # если нет "imageCode", то поля ниже не используются
-    imageCode: str = None, # айди картинки
-    title: str = None, # заголовок
-    
+        event: dict,  # реквест Алисы
+        message: str,  # сообщение
+        tts: str = None,  # tts
+        buttons: list[str] = ["Нет", "Да"],  # кнопки
+        # если нет "imageCode", то поля ниже не используются
+        imageCode: str = None,  # айди картинки
+        title: str = None,  # заголовок
+
 ):
     if tts is None:
         tts = message
@@ -37,36 +37,38 @@ def createCard(
     # создать
     return createResponse(event, config)
 
+
 # функция, которая превращает конфиг с информацией о будующем респонсе в сам респонс
 # сделано, чтобы не запариваться по поводу полей в респонсе (их реально много и они неудобные :c)
 def createResponse(event, originalConfig):
     # скопировать конфиг, чтобы 100% избежать его изменения в другом файле (если там он создан глобально)
     config = copy.deepcopy(originalConfig)
-    
+
     # возращаемый респонс
     returnResponse = {
         "response": {
-            "text": config["message"] if "message" in config else "", # если есть сообщение (текстовой респонс)
-            "tts": config["tts"], # tts
-            "card": config["card"] if "card" in config else None, # если есть карточка (респонс с картинкой)
-            "buttons": createButtons(config["buttons"]), # кнопки
-            "end_session": config["end_session"] if "end_session" in config else False, # если нужно закончить сессию
+            "text": config["message"] if "message" in config else "",  # если есть сообщение (текстовой респонс)
+            "tts": config["tts"],  # tts
+            "card": config["card"] if "card" in config else None,  # если есть карточка (респонс с картинкой)
+            "buttons": createButtons(config["buttons"]),  # кнопки
+            "end_session": config["end_session"] if "end_session" in config else False,  # если нужно закончить сессию
         },
-        "session": event["session"], # инфа для Алисы - сессия
-        "session_state": config["session_state"] if "session_state" in config else {}, # передаваемые стейты
-        "version": event["version"], # инфа для Алисы - версия
+        "session": event["session"],  # инфа для Алисы - сессия
+        "session_state": config["session_state"] if "session_state" in config else {},  # передаваемые стейты
+        "version": event["version"],  # инфа для Алисы - версия
     }
     #
-    if "user_state_update" in config: # если нужно обновить глобальные стейты
+    if "user_state_update" in config:  # если нужно обновить глобальные стейты
         # установить поле
-        returnResponse["user_state_update"] = config["user_state_update"] 
-    
-    # вернуть получившийся респонс
-    return returnResponse 
+        returnResponse["user_state_update"] = config["user_state_update"]
+
+        # вернуть получившийся респонс
+    return returnResponse
+
 
 # метод, занимающийся преобразованием кнопок из строк в формат кнопки
 # если кнопка не является строкой, то просто переносит ее как она есть
-def createButtons(buttons:list):
+def createButtons(buttons: list):
     # сюда будут складываться кнопки
     result = []
     # пройтись по кнопкам
@@ -110,12 +112,12 @@ def getGlobalState(event, state):
 
 
 # установить State в респонсе
-def setStatesInResponse(response, states:dict):
+def setStatesInResponse(response, states: dict):
     response['session_state'] = states
 
 
 # установить глобальный State в респонсе
-def setGlobalStatesInResponse(response, globalStates:dict):
+def setGlobalStatesInResponse(response, globalStates: dict):
     response["user_state_update"] = globalStates
 
 
@@ -127,7 +129,7 @@ def addStateInResponse(response, stateName, stateValue):
 # добавить глобальный State в респонс
 def addGlobalStateInResponse(response, stateName, stateValue):
     if not ("user_state_update" in response):
-        response["user_state_update"] = {} 
+        response["user_state_update"] = {}
     response["user_state_update"][stateName] = stateValue
 
 
@@ -144,6 +146,6 @@ def setGlobalStateInEvent(event, stateName, stateValue):
 
 
 # установить отформатированную команду пользователя в Event
-def setCommandInEvent(event, command:str):
+def setCommandInEvent(event, command: str):
     event["request"]["command"] = command
-    return event 
+    return event
