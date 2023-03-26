@@ -93,6 +93,18 @@ def builder(
             resultArr.append(n)
             continue
 
+        # добавить пробел для "bundle" (для обработчика)
+        if "bundle" in n and not ("[bundle]" in n):
+            n = n.replace("bundle", "  bundle")
+            resultArr.append(n)
+            continue
+
+        # добавить пробел для "shuffle" (для обработчика)
+        if "shuffle" in n and not ("[shuffle" in n):
+            n = n.replace("shuffle", "  shuffle")
+            resultArr.append(n)
+            continue
+
         # если строка содержит в себе response, то добавить ключ "response" и обернуть блок в массив
         if '"' in n:
             n = n.replace('"', '- response: "', 1)

@@ -42,6 +42,7 @@ def startServer(
     @app.route(route, methods=methods)
     def content():
         data = request.get_json()
+        print(data)
         response = handler(data, history, statsEnds)
         return response
 
