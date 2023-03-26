@@ -37,6 +37,8 @@ SecondExtension = """
                             "{ThirdExtension}"
                         false:
                             "{ThirdExtension}"       
+                    false:
+                        "{ThirdExtension}"
             false:
                 "[bundle]"
                 bundle:
