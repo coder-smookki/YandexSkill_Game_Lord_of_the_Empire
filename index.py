@@ -18,13 +18,22 @@ sys.setrecursionlimit(5000)
 # full - когда стата заполняется на 100+
 # empty - когда стата опускается до 0-
 statsEnds = {
-    "church": {"full": "\"fullChurch // None // None // // card\"",
-               "empty": "\"emptyChurch // None // None // // card\""},
-    "army": {"full": "\"fullArmy // None // None // // card\"", "empty": "\"emptyArmy // None // None // // card\""},
-    "nation": {"full": "\"fullNation // None // None // // card\"",
-               "empty": "\"emptyNation // None // None // // card\""},
-    "coffers": {"full": "\"fullCoffers // None // None // // card\"",
-                "empty": "\"emptyCoffers // None // None // // card\""},
+    "church": {
+        "full": '"fullChurch // None // None // // card"',
+        "empty": '"emptyChurch // None // None // // card"',
+    },
+    "army": {
+        "full": '"fullArmy // None // None // // card"',
+        "empty": '"emptyArmy // None // None // // card"',
+    },
+    "nation": {
+        "full": '"fullNation // None // None // // card"',
+        "empty": '"emptyNation // None // None // // card"',
+    },
+    "coffers": {
+        "full": '"fullCoffers // None // None // // card"',
+        "empty": '"emptyCoffers // None // None // // card"',
+    },
 }
 
 
@@ -40,8 +49,7 @@ statsEnds = {
 # """
 
 # Cashed = {
-
-#     "link1" : """
+#     "link1": """
 #     "[bundle]"
 #     bundle:
 #         "[bundle]"
@@ -53,17 +61,49 @@ statsEnds = {
     
 #     """,
 #     "link2": """
-#     "{link1}"
+#     "link2 // true // false // // card"
+#     true:
+#         "{link1}"
+#     false:
+#         "{link1}"
 #     """,
-
 #     "link3": """
-#     "{link2}"
-
-    
-#     """,    
+#     "link3 // true // false // // card"
+#     true:
+#         "{link2}"
+#     false:
+#         "{link2}"
+#     """,
 # }
 
 
+# from core.builder import *
+
+# a = [
+#     {
+#         "response": "[bundle]",
+#         "bundle": [
+#             {
+#                 "response": "hehe // true // false // // card",
+#                 "onTrue": [{"response": "{link3}"}],
+#                 "onFalse": [{"response": "ok // None // None // // asd"}],
+#             }
+#         ],
+#     }
+# ]
+# links = {
+#     'link3': {
+#         "response": "abema"
+#     }
+# }
+# a = replaceLinkEpisodes(a, links)
+# print(a)
+# links['link3']['response'] = 'gg tima rakov'
+# print(a)
+
+# Opening = builder(Opening,Cashed)
+
+# print(Opening)
 
 host = os.environ.get('HOST')
 emulator = os.environ.get('EMULATOR')

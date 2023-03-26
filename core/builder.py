@@ -4,83 +4,36 @@
 import yaml
 from termcolor import colored
 
-temp = None
 
+temp = None
 # заменить ссылки в "response"ах в виде строк "{link}" на ссылочные эпизоды в словарном представлении
 def replaceLinkEpisodes(history, linkEpisodes):
     global temp
-    # если попалась связка, то выполнить замену для всего внутри
+    # print('ИСТОРИЯ',history)
+
     if type(history) == list:
-        print('list')
-        for episode in history:
-            # print(episode)
-            print('list-for')
-            replaceLinkEpisodes(episode, linkEpisodes)
-
-    elif type(history) == str:
-        # print(temp)
-        raise ValueError('di4\' proizoshla')
-
-    elif not ("response" in history):
-        raise ValueError(history)
-
-    # если есть ссылка вида "{link}"
-    elif "{" in history["response"]:
-        # получить адрес ссылки
-        key = history["response"][1:-1]
-        # если адрес существует, то заменить, иначе выдать ошибку
-        if key in linkEpisodes:
-            # print(linkEpisodes[key][0])
-            # перенести респонс
-            history["response"] = linkEpisodes[key][0]["response"]
-            # перенести true-ивент
-            if "onTrue" in linkEpisodes[key][0]:
-                history["onTrue"] = linkEpisodes[key][0]["onTrue"]
-            # перенести false-ивент
-            if "onFalse" in linkEpisodes[key][0]:
-                history["onFalse"] = linkEpisodes[key][0]["onFalse"]
-            # перенести эпизоды, если респонс случайного эпизода
-            if "chance" in linkEpisodes[key][0]:
-                history["chance"] = linkEpisodes[key][0]["chance"]
-            # # перенести эпизоды, если респонс бандла
-            if "bundle" in linkEpisodes[key][0]:
-                # print('bbbbb')
-                history["bundle"] = linkEpisodes[key][0]["bundle"]
-            # перенести эпизоды, если респонс шафла
-            if "shuffle" in linkEpisodes[key][0]:
-                history["shuffle"] = linkEpisodes[key][0]["shuffle"]
+        for i in range(len(history)):
+            history[i] = replaceLinkEpisodes(history[i], linkEpisodes)
+    elif not (history is None):
+        if '{' in history['response']:
+            linkCode = history['response'][1:-1]
+            history = linkEpisodes[linkCode][0]
+            # print('ИТОГ',history)
         else:
-            # если такой ссылки нет 
-            raise IndexError("Попытка обратиться к несуществующей ссылке:",history["response"])
-
-    # выполнить внутреннюю замену
-
-    # - теговой связки
-    if 'bundle' in history:
-        print('bundle')
-        # print(history['bundle'])
-        replaceLinkEpisodes(history['bundle'], linkEpisodes)
-
-    # - случайного эпизода
-    elif "chance" in history:
-        print('chance')
-        replaceLinkEpisodes(history["chance"], linkEpisodes)
-
-    # - шафла
-    elif 'shuffle' in history:
-        print('shuffle')
-        replaceLinkEpisodes(history['shuffle'], linkEpisodes)
-
-    # - эпизода с ивентом
-    if "onTrue" in history or "onFalse" in history:
-        if "onTrue" in history:
-            replaceLinkEpisodes(history["onTrue"], linkEpisodes)
-        if "onFalse" in history:
-            replaceLinkEpisodes(history["onFalse"], linkEpisodes)
-
-    # вернуть историю
+            if 'bundle' in history:
+                history['bundle'] = replaceLinkEpisodes(history['bundle'], linkEpisodes)
+            elif 'shuffle' in history:
+                history['shuffle'] = replaceLinkEpisodes(history['shuffle'], linkEpisodes)
+            elif 'chance' in history:
+                history['chance'] = replaceLinkEpisodes(history['chance'], linkEpisodes)
+            else: 
+                if 'onTrue' in history:
+                    history['onTrue'] = replaceLinkEpisodes(history['onTrue'], linkEpisodes)
+                if 'onFalse' in history:
+                    history['onFalse'] = replaceLinkEpisodes(history['onFalse'], linkEpisodes)
+    temp = history
     return history
-
+        
 
 # трансформировать ssd-format в словарное представление
 def builder(
@@ -158,8 +111,9 @@ def builder(
             linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
-    replaceLinkEpisodes(result, linkEpisodes)
-
+    print(colored("=", "yellow"),"Замена ссылок...")
+    # print(result)
+    result = replaceLinkEpisodes(result, linkEpisodes)
     # print(result)
 
     # вернуть результат
