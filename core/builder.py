@@ -14,6 +14,7 @@ def replaceLinkEpisodes(history, linkEpisodes):
         print('list')
         for episode in history:
             # print(episode)
+            print('list-for')
             replaceLinkEpisodes(episode, linkEpisodes)
 
     elif type(history) == str:
