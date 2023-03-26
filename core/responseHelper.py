@@ -127,7 +127,7 @@ def addStateInResponse(response, stateName, stateValue):
 # добавить глобальный State в респонс
 def addGlobalStateInResponse(response, stateName, stateValue):
     if not ("user_state_update" in response):
-        response["user_state_update"] = {}
+        response["user_state_update"] = {} 
     response["user_state_update"][stateName] = stateValue
 
 

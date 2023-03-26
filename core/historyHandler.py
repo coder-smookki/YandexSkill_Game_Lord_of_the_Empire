@@ -1,19 +1,18 @@
 import copy
 import random
+import re
+
 
 def formateEpisodeInfo(episodeInfo):
     trueButton = episodeInfo[1][1:-1]
     falseButton = episodeInfo[2][1:-1]
-    buttons = []    
-    if trueButton != 'None':
+    buttons = []
+    if trueButton != "None":
         buttons.append(trueButton)
-        if falseButton != 'None':
-            buttons.append(falseButton)            
-    return {
-        'text': episodeInfo[0][:-1],
-        'buttons': buttons,
-        'card': episodeInfo[4][1:]
-    }
+        if falseButton != "None":
+            buttons.append(falseButton)
+    return {"text": episodeInfo[0][:-1], "buttons": buttons, "card": episodeInfo[4][1:]}
+
 
 # отформатировать статы
 # если стат нет => вернется None
@@ -21,24 +20,41 @@ def formateEpisodeInfo(episodeInfo):
 # если статы две => вернется массив с двумя массивами вида [0,0,0,0]
 def formatStats(statsString):
     try:
-        arr = statsString[1:-1].split(' $ ')
-        if arr[0] == '':
+        arr = statsString[1:-1].split(" $ ")
+        if arr[0] == "":
             return None
 
         if len(arr) == 1:
-            stats = list(map(int, arr[0].split(' ')))
+            stats = list(map(int, arr[0].split(" ")))
             if len(stats) != 4:
-                raise ValueError('Неправильная структура стат:',statsString)
+                raise ValueError("Неправильная структура стат:", statsString)
             return stats
 
-        trueStats = list(map(int, arr[0].split(' ')))
-        falseStats = list(map(int, arr[1].split(' ')))
+        trueStats = list(map(int, arr[0].split(" ")))
+        falseStats = list(map(int, arr[1].split(" ")))
         if len(trueStats) != 4 or len(falseStats) != 4:
-                raise ValueError('Неправильная структура стат:',statsString)
+            raise ValueError("Неправильная структура стат:", statsString)
 
         return [trueStats, falseStats]
     except:
-        raise ValueError('Неправильная структура стат:',statsString)
+        raise ValueError("Неправильная структура стат:", statsString)
+
+
+# получить следующий рандомный неиспользуемый индекс шафла
+# total - максимальный индекс
+# used - список уже используемых значений
+def getShuffleIndex(total: int, used: list):
+    values = [x for x in range(0, total + 1) if x not in used]
+
+    for i in range(len(values) - 1, 0, -1):
+        j = random.randint(0, i)
+        values[i], values[j] = values[j], values[i]
+    
+    if len(values) == 0:
+        raise ValueError('Не получилось взять новый индекс:', total, used)
+    
+    return values[-1]
+
 
 
 # выбрать сценарий в случайном эпизоде
@@ -91,6 +107,16 @@ def getEpisode(pos: list, history: list):
                 lastEpisode = lastEpisode["chance"]
                 continue
 
+            # если путь идет по теговой связке
+            if pos[depth] == "bundle":
+                lastEpisode = lastEpisode["bundle"]
+                continue
+
+            # если путь идет по шафлу
+            if type(pos[depth]) == str and "shuffle" in pos[depth]:
+                lastEpisode = lastEpisode["shuffle"]
+                continue
+
             # если идет индекс
             lastEpisode = lastEpisode[pos[depth]]
 
@@ -115,14 +141,14 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         "choice"
     ] == "true":
         # применить статы
-        info['stats']['church'] += info['notAppliedStats']['true'][0]
-        info['stats']['army'] += info['notAppliedStats']['true'][1]
-        info['stats']['nation'] += info['notAppliedStats']['true'][2]
-        info['stats']['coffers'] += info['notAppliedStats']['true'][3]
-        
+        info["stats"]["church"] += info["notAppliedStats"]["true"][0]
+        info["stats"]["army"] += info["notAppliedStats"]["true"][1]
+        info["stats"]["nation"] += info["notAppliedStats"]["true"][2]
+        info["stats"]["coffers"] += info["notAppliedStats"]["true"][3]
+
         # очистить статы
-        info['notAppliedStats']['true'] = [0,0,0,0]
-        info['notAppliedStats']['false'] = [0,0,0,0]
+        info["notAppliedStats"]["true"] = [0, 0, 0, 0]
+        info["notAppliedStats"]["false"] = [0, 0, 0, 0]
 
         # очистить детектор ивента
         info["pastHasEvent"] = None
@@ -149,14 +175,14 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         "choice"
     ] == "false":
         # применить статы
-        info['stats']['church'] += info['notAppliedStats']['false'][0]
-        info['stats']['army'] += info['notAppliedStats']['false'][1]
-        info['stats']['nation'] += info['notAppliedStats']['false'][2]
-        info['stats']['coffers'] += info['notAppliedStats']['false'][3]
-        
+        info["stats"]["church"] += info["notAppliedStats"]["false"][0]
+        info["stats"]["army"] += info["notAppliedStats"]["false"][1]
+        info["stats"]["nation"] += info["notAppliedStats"]["false"][2]
+        info["stats"]["coffers"] += info["notAppliedStats"]["false"][3]
+
         # очистить статы
-        info['notAppliedStats']['true'] = [0,0,0,0]
-        info['notAppliedStats']['false'] = [0,0,0,0]
+        info["notAppliedStats"]["true"] = [0, 0, 0, 0]
+        info["notAppliedStats"]["false"] = [0, 0, 0, 0]
 
         # очистить детектор ивента
         info["pastHasEvent"] = None
@@ -191,7 +217,46 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     # когда на последнем уровне вложенности получился несуществующий индекс
     # из-за сдвигов
     while True:
-        if info["posEpisode"][-1] > info["maxPosEpisode"][-1]:
+        # условие для шафла
+        if len(info["posEpisode"]) >= 2 and type(info["posEpisode"][-2]) == str and 'shuffle' in info["posEpisode"][-2]:
+            info["posEpisode"] = info["posEpisode"][:-1]
+            info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
+
+            # на этом моменте последняя позиция 100% - "shuffle-n,n,n..."
+
+            # Формат posEpisode: "shuffle-usedIndex,usedIndex,usedIndex..."
+            # Формат maxPosEpisode: "shuffle-totalShows"
+
+            # получить сколько всего нужно показать эпизодов
+            shuffleTotalShows = int(re.findall(r"\d+", info["maxPosEpisode"][-1])[0])
+            
+            # получить уже использованные эпизоды
+            shuffleUsedIndexes = list(map(int, re.findall(r"\d+", info["posEpisode"][-1])))
+
+            # если было показано столько эпизодов, сколько нужно
+            if len(shuffleUsedIndexes) >= shuffleTotalShows:
+                print('cut')
+                # обрезать на 1 элемент
+                info["posEpisode"] = info["posEpisode"][:-1]
+                info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
+
+                # перейти на следующий эпизод после шафла
+                info["posEpisode"][-1] += 1
+
+            # иначе показать еще эпизод
+            else: 
+                # получить новый индекс
+                newShuffleIndex = getShuffleIndex(shuffleTotalShows, shuffleUsedIndexes)
+                
+                # вставить эпизод как использованный
+                info["posEpisode"][-1] += ',' + str(newShuffleIndex)
+                
+                # вставить индексы
+                info["posEpisode"].append(newShuffleIndex)
+                info["maxPosEpisode"].append(newShuffleIndex)
+
+        # для всего остального
+        if (info["posEpisode"][-1] > info["maxPosEpisode"][-1]):
             # обрезать на 1 элемент
             info["posEpisode"] = info["posEpisode"][:-1]
             info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
@@ -200,13 +265,14 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
             if len(info["posEpisode"]) == 0:
                 return "its all"
 
-            # если после обрезанного индекса у нас стоит "true", "false" или "chance"
+            # если после обрезанного индекса у нас стоит "true", "false", "chance" или "bundle"
             if (
                 info["posEpisode"][-1] == "true"
                 or info["posEpisode"][-1] == "false"
                 or info["posEpisode"][-1] == "chance"
+                or info["posEpisode"][-1] == "bundle"
             ):
-                # обрезать "true", "false" или "chance"
+                # обрезать "true", "false", "chance" или "bundle"
                 info["posEpisode"] = info["posEpisode"][:-1]
                 info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
 
@@ -217,6 +283,33 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
 
     # получить эпизод
     episode = getEpisode(info["posEpisode"], history)
+
+    # если эпизод - теговая связка
+    if "[bundle]" in episode["response"]:
+        info["posEpisode"].append("bundle")
+        info["maxPosEpisode"].append("bundle")
+
+        maxIndex = len(episode["bundle"]) - 1
+
+        info["posEpisode"].append(0)
+        info["maxPosEpisode"].append(maxIndex)
+
+        return passEpisode(info, history, statsEnds, True)
+
+    # если эпизод - шафл
+    if "[shuffle" in episode["response"]:
+        totalShows = int(re.findall(r"\d+", episode["response"])[0])
+        shuffleIndex = getShuffleIndex(len(episode["shuffle"]), [])
+
+        # shuffle-usedIndexes
+        info["posEpisode"].append("shuffle-")
+        # shuffle-totalShows
+        info["maxPosEpisode"].append("shuffle-" + str(totalShows))
+        
+        info["posEpisode"].append(shuffleIndex)
+        info["maxPosEpisode"].append(shuffleIndex)
+
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод имеет шанс
     if "[chance]" in episode["response"]:
@@ -255,45 +348,44 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         raise ValueError("Неправильный формат текста: " + episode["response"])
 
     # применить статы независимые от ответа
-    info['stats']['church'] += info['notAppliedStats']['always'][0]
-    info['stats']['army'] += info['notAppliedStats']['always'][1]
-    info['stats']['nation'] += info['notAppliedStats']['always'][2]
-    info['stats']['coffers'] += info['notAppliedStats']['always'][3]
+    info["stats"]["church"] += info["notAppliedStats"]["always"][0]
+    info["stats"]["army"] += info["notAppliedStats"]["always"][1]
+    info["stats"]["nation"] += info["notAppliedStats"]["always"][2]
+    info["stats"]["coffers"] += info["notAppliedStats"]["always"][3]
 
     # очистить статы
-    info['notAppliedStats']['always'] = [0,0,0,0]
+    info["notAppliedStats"]["always"] = [0, 0, 0, 0]
 
     # Формат: "text // trueBtn // falseBtn // church army nation coffers $ church army nation coffers // cardId"
     # Пример: "text // asd // zxc // 0 0 -10 5 $ 10 0 0 -20 // zxc"
     stats = formatStats(episodeInfo[3])
     if stats is None:
-        trueStats = [0,0,0,0]
-        falseStats = [0,0,0,0]
-        alwaysStats = [0,0,0,0]
-    elif len(stats) == 4: # если указаны статы внезависимости от выбора
-        trueStats = [0,0,0,0]
-        falseStats = [0,0,0,0]
+        trueStats = [0, 0, 0, 0]
+        falseStats = [0, 0, 0, 0]
+        alwaysStats = [0, 0, 0, 0]
+    elif len(stats) == 4:  # если указаны статы внезависимости от выбора
+        trueStats = [0, 0, 0, 0]
+        falseStats = [0, 0, 0, 0]
         alwaysStats = stats
     # если статы на true или false
     elif len(stats) == 2:
         trueStats = stats[0]
         falseStats = stats[1]
-        alwaysStats = [0,0,0,0]
-    
-    info['notAppliedStats']['true'] = trueStats
-    info['notAppliedStats']['false'] = falseStats
-    info['notAppliedStats']['always'] = alwaysStats
-    
+        alwaysStats = [0, 0, 0, 0]
+
+    info["notAppliedStats"]["true"] = trueStats
+    info["notAppliedStats"]["false"] = falseStats
+    info["notAppliedStats"]["always"] = alwaysStats
+
     trueButton = episodeInfo[1][1:-1]
     falseButton = episodeInfo[2][1:-1]
-    buttons = []    
-    if trueButton != 'None':
+    buttons = []
+    if trueButton != "None":
         buttons.append(trueButton)
-        if falseButton != 'None':
-            buttons.append(falseButton)   
+        if falseButton != "None":
+            buttons.append(falseButton)
 
-    result = formateEpisodeInfo(episodeInfo) # отформатировать инфу с респонса эпизода
-    result['stats'] = info["stats"] # добавить в результат еще текущую статистику
-    result['changeStats'] = stats # и возможные изменения на каждый выбор
+    result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
+    result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
+    result["changeStats"] = stats  # и возможные изменения на каждый выбор
     return result
-
