@@ -4,20 +4,31 @@
 import yaml
 from termcolor import colored
 
+temp = None
+
 # заменить ссылки в "response"ах в виде строк "{link}" на ссылочные эпизоды в словарном представлении
 def replaceLinkEpisodes(history, linkEpisodes):
+    global temp
     # если попалась связка, то выполнить замену для всего внутри
     if type(history) == list:
         for episode in history:
             replaceLinkEpisodes(episode, linkEpisodes)
 
+    elif type(history) == str:
+        # print(temp)
+        raise ValueError('di4\' proizoshla')
+
+    elif not ("response" in history):
+        raise ValueError(history)
+
     # если есть ссылка вида "{link}"
     elif "{" in history["response"]:
         # получить адрес ссылки
         key = history["response"][1:-1]
-
+        print('KEY',key)
         # если адрес существует, то заменить, иначе выдать ошибку
         if key in linkEpisodes:
+            # print(linkEpisodes[key][0])
             # перенести респонс
             history["response"] = linkEpisodes[key][0]["response"]
             # перенести true-ивент
@@ -27,25 +38,41 @@ def replaceLinkEpisodes(history, linkEpisodes):
             if "onFalse" in linkEpisodes[key][0]:
                 history["onFalse"] = linkEpisodes[key][0]["onFalse"]
             # перенести эпизоды, если респонс случайного эпизода
-            if "[chance]" in linkEpisodes[key][0]:
+            if "chance" in linkEpisodes[key][0]:
                 history["chance"] = linkEpisodes[key][0]["chance"]
+            # перенести эпизоды, если респонс бандла
+            if "bundle]" in linkEpisodes[key][0]:
+                # print('gahsdjhkdas')
+                history["bundle"] = linkEpisodes[key][0]["bundle"]
+            # перенести эпизоды, если респонс шафла
+            if "shuffle" in linkEpisodes[key][0]:
+                history["shuffle"] = linkEpisodes[key][0]["shuffle"]
         else:
             # если такой ссылки нет 
             raise IndexError("Попытка обратиться к несуществующей ссылке:",history["response"])
 
-
     # выполнить внутреннюю замену
     # - случайного эпизода
-    elif "chance" in history:
+    if "chance" in history:
         replaceLinkEpisodes(history["chance"], linkEpisodes)
 
+    # - шафла
+    if 'shuffle' in history:
+        replaceLinkEpisodes(history['shuffle'], linkEpisodes)
+
+    # - теговой связки
+    if 'bundle' in history:
+        replaceLinkEpisodes(history['bundle'], linkEpisodes)
+
     # - эпизода с ивентом
-    elif "onTrue" in history or "onFalse" in history:
+    if "onTrue" in history or "onFalse" in history:
         if "onTrue" in history:
             replaceLinkEpisodes(history["onTrue"], linkEpisodes)
         if "onFalse" in history:
             replaceLinkEpisodes(history["onFalse"], linkEpisodes)
 
+
+    temp = history
     # вернуть историю
     return history
 
@@ -88,13 +115,13 @@ def builder(
             continue
 
         # добавить пробел для "chance" (для обработчика)
-        if "chance" in n and not ("[chance]" in n):
+        if "chance" in n and not ("[chance" in n):
             n = n.replace("chance", "  chance")
             resultArr.append(n)
             continue
 
         # добавить пробел для "bundle" (для обработчика)
-        if "bundle" in n and not ("[bundle]" in n):
+        if "bundle" in n and not ("[bundle" in n):
             n = n.replace("bundle", "  bundle")
             resultArr.append(n)
             continue
@@ -114,6 +141,7 @@ def builder(
     # соединить все строки в одно целое. в итоге у нас получится yaml
     yamlResult = "\n".join(resultArr)
     # print(yamlResult)
+
     # форматирование yaml => словарное-представление
     result = yaml.load(yamlResult, Loader=yaml.Loader)
 
@@ -125,6 +153,8 @@ def builder(
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
     replaceLinkEpisodes(result, linkEpisodes)
+
+    # print(result)
 
     # вернуть результат
     return result

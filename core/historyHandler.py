@@ -97,6 +97,7 @@ def getEpisode(pos: list, history: list):
             if pos[depth] == "true":
                 lastEpisode = lastEpisode["onTrue"]
                 continue
+
             # если путь идет по ветке onFalse
             if pos[depth] == "false":
                 lastEpisode = lastEpisode["onFalse"]
@@ -308,7 +309,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         else:
             totalShows = int(totalShows[0])
 
-        print('ASDASDASD',totalShows)
+        # print('ASDASDASD',totalShows)
 
         # shuffle-usedIndexes
         info["posEpisode"].append("shuffle-")
@@ -321,7 +322,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         return passEpisode(info, history, statsEnds, True)
 
     # если эпизод имеет шанс
-    if "[chance]" in episode["response"]:
+    if "[chance" in episode["response"]:
         info["posEpisode"].append("chance")
         info["maxPosEpisode"].append("chance")
 

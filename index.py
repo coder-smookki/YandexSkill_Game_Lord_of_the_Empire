@@ -28,6 +28,30 @@ statsEnds = {
 }
 
 
+
+# Opening = """
+# "[bundle]"
+# bundle:
+#     'hehe // true // false // // card'
+#     true:
+#         '{link1}'
+#     false:
+#         'ok // None // None // // asd'
+# """
+
+# Cashed = {
+    
+#     "link1" : """
+#     "[chance] 1 1"
+#     chance:
+#         "bundlzxc1 // true // false // // card"
+#         "bundlzxc2 // true // false // // card"
+#     """
+    
+# }
+
+
+
 host = os.environ.get('HOST')
 emulator = os.environ.get('EMULATOR')
 if emulator == 'true':
