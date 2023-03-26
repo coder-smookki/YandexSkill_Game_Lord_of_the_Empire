@@ -113,7 +113,7 @@ def builder(
 
     # соединить все строки в одно целое. в итоге у нас получится yaml
     yamlResult = "\n".join(resultArr)
-
+    print(yamlResult)
     # форматирование yaml => словарное-представление
     result = yaml.load(yamlResult, Loader=yaml.Loader)
 

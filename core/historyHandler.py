@@ -44,7 +44,7 @@ def formatStats(statsString):
 # total - максимальный индекс
 # used - список уже используемых значений
 def getShuffleIndex(total: int, used: list):
-    values = [x for x in range(0, total + 1) if x not in used]
+    values = [x for x in range(0, total) if x not in used]
 
     for i in range(len(values) - 1, 0, -1):
         j = random.randint(0, i)
@@ -235,7 +235,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
 
             # если было показано столько эпизодов, сколько нужно
             if len(shuffleUsedIndexes) >= shuffleTotalShows:
-                print('cut')
                 # обрезать на 1 элемент
                 info["posEpisode"] = info["posEpisode"][:-1]
                 info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
@@ -249,7 +248,10 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
                 newShuffleIndex = getShuffleIndex(shuffleTotalShows, shuffleUsedIndexes)
                 
                 # вставить эпизод как использованный
-                info["posEpisode"][-1] += ',' + str(newShuffleIndex)
+                if len(shuffleUsedIndexes) == 0: # если первый элемент
+                    info["posEpisode"][-1] += str(newShuffleIndex)
+                else:
+                    info["posEpisode"][-1] += ',' + str(newShuffleIndex)
                 
                 # вставить индексы
                 info["posEpisode"].append(newShuffleIndex)
@@ -298,8 +300,15 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
 
     # если эпизод - шафл
     if "[shuffle" in episode["response"]:
-        totalShows = int(re.findall(r"\d+", episode["response"])[0])
+        totalShows = re.findall(r"\d+", episode["response"])
         shuffleIndex = getShuffleIndex(len(episode["shuffle"]), [])
+
+        if len(totalShows) == 0:
+            totalShows = len(episode["shuffle"])
+        else:
+            totalShows = int(totalShows[0])
+
+        print('ASDASDASD',totalShows)
 
         # shuffle-usedIndexes
         info["posEpisode"].append("shuffle-")

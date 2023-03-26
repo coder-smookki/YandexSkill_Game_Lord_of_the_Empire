@@ -31,16 +31,20 @@ statsEnds = {
 
 
 Opening = """
-"[shuffle 3]"
+"[shuffle]"
 shuffle:
     "0shuffl // true // false // 0 0 0 0 // card"
     true:
         "0TRUEshuffl // true // false // 0 0 0 0 // card"
     false:
         "0FALSEshuffl // true // false // 0 0 0 0 // card"
+
     "1shuffl // true // false // 0 0 0 0 // card"
+    
     "2shuffl // true // false // 0 0 0 0 // card"
+    
     "3shuffl // true // false // 0 0 0 0 // card"
+
 "I am after shuffl // true // false // 0 0 0 0 // card"
 """
 
@@ -50,7 +54,7 @@ shuffle:
 host = os.environ.get('HOST')
 emulator = os.environ.get('EMULATOR')
 if emulator == 'true':
-    skillEmulate(Opening, statsEnds, Cashed)
+    skillEmulate(Opening, statsEnds)
 else:
     if host:
         print(colored("+", "green"), 'HOST найден:', host)
