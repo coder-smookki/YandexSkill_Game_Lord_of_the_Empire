@@ -1,5 +1,5 @@
 import mariadb
-
+import json
 
 
 def connect(user,password, databaseName):
@@ -21,8 +21,8 @@ def connect(user,password, databaseName):
 
     createTable = """
     CREATE TABLE IF NOT EXISTS saves (
-        userId VARCHAR(255),
-        gameInfo JSON
+        userId VARCHAR(255) PRIMARY KEY,
+        gameInfo TEXT
     );
     """
 
@@ -37,6 +37,11 @@ def selectGameInfo(cur, userId):
     return gameInfo 
 
 def updateSave(cur, userId, save):
-    pass
+    sql = """
+    INSERT INTO saves (userId, gameInfo)
+    VALUES (%s, %s)
+    ON DUPLICATE KEY UPDATE gameInfo = %s
+    """
+    cur.execute(sql, (userId, save, save))
 
 
