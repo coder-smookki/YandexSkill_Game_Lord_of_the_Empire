@@ -1,6 +1,6 @@
 def getConfig(event):
     config = {
-        "tts": """Вы всегда можете написать на нашу почту, superscriptsdebugers@yandex.ru""",
+        "tts": """Вы всегда можете написать на нашу почту, super, scripts, debugers, @ yandex.ru""",
         "buttons": [
             "Повторить ещё раз",
             "Что ты умеешь?",
