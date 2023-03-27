@@ -1,9 +1,8 @@
 from flask import Flask, request
-from .notused.dialogsHandler import *
 from termcolor import colored
-from core.builder import builder
+from gameCore.builder import builder
 from datetime import datetime
-
+from utils.globalStorage import setInGlobalStorage
 
 # функция для удобного запуска фласка
 def startServer(
@@ -31,6 +30,7 @@ def startServer(
             )
 
     endTime = datetime.now()
+
     print(
         colored("+", "green"),
         "Синтезирование завершено с кайфом за: " + str(endTime - startTime),
@@ -38,6 +38,9 @@ def startServer(
 
     # создать приложение фласка
     app = Flask(__name__)
+
+    # записать приложение в глобальное хранилище
+    setInGlobalStorage('app', app, saveLinks=True)
 
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
@@ -48,7 +51,7 @@ def startServer(
     def content():
         data = request.get_json()
         print(data)
-        response = handler(data, history, statsEnds)
+        response = handler(data)
         return response
 
     # метод запуска сервера

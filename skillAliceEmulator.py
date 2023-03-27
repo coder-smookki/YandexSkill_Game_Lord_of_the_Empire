@@ -1,6 +1,6 @@
-from core.builder import builder
+from gameCore.builder import builder
 from datetime import datetime
-from core.historyHandler import passEpisode
+from gameCore.historyHandler import passEpisode
 from termcolor import colored
 
 

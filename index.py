@@ -1,14 +1,16 @@
-from dialogs.Opening.Opening import *
-from dialogs.Cashed import *
+from gameCore.episodes.Opening.Opening import *
+from gameCore.episodes.Cashed import *
+from gameCore.episodes.StatsEnds import StatsEnds
+
 from skillAliceEmulator import *
-from core.historyHandler import *
-from core.yandexskillcore import startServer
-from core.responseHelper import createCard
+from gameCore.historyHandler import *
+from yandexskillcore import startServer
+from utils.responseHelper import createCard
 from handler import handler
 import sys
 from dotenv import load_dotenv
 import os
-from dialogs.StatsEnds import StatsEnds
+
 
 load_dotenv()
 

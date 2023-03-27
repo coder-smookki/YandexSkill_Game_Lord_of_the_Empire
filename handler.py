@@ -1,13 +1,9 @@
-from core.triggerHelper import *
-from core.responseHelper import *
-from core.historyHandler import passEpisode
+from utils.triggerHelper import *
+from utils.responseHelper import *
+from utils.branchHandler import *
 
-
-def tipaIgraesh(event):
-    card = createCard(event, "Типа играешь...", "", ["Новая игра"])
-    addStateInResponse(card, "playing", True)
-    return card
-
+from middlewares.allMiddlewares import allMiddlewares
+from dialogs.allDialogs import allDialogs
 
 def createStartInfo(history):
     return {
@@ -37,68 +33,34 @@ def createStartInfo(history):
 # }
 
 
-def handler(event, history, statsEnds):
-    if isNewSession(event):
-        # выдать главное меню
-        # поставить стейт положения
-        pass
-
-    # если человек хочет выйти и находится в игре
-    if isInCommandOr(event, ["выход", "выйти", "наигрался", "выключи"]):
-        # если человек хочет выйти и находится в игре
-        if haveState(event, "isInGame") and getState(event, "isInGame") == True:
-            # главное меню
-            return createCard(event, "главное меню типа")
-        else:
-            # выход
-            return createExitResponse(event)
-        # если человек хочет выйти и находится в меню
-
-    # что умеешь
-    if (
-        isInCommandOr(event, ["умеешь", "можешь"])
-        and isInCommandOr(event, ["как", "что"])
-    ) or isInCommandOr(event, ["помощь", "хэлп", "хелп"]):
-        return createCard(event, "помощь типа")
-
+def handler(event):
+    print(allDialogs)
     
+    if not isNewSession(event):
+        for key in allMiddlewares:
+            if not allMiddlewares[key]['isTriggered'](event):
+                continue
+            return allMiddlewares[key]['getResponse'](event, allDialogs)
 
-    # switch case стейтов положения и выдача менюшек
+    # искать диалог, подходящий под запрос
+    for key in allDialogs:
+        # если диалог не затриггерился
+        if not allDialogs[key]['isTriggered'](event):
+            continue
 
-    if not haveGlobalState(event, "save"):
-        info = createStartInfo(history)
-    else:
-        info = getGlobalState(event, "save")
-        command = getOriginalUtterance(event)
+        # если диалог затриггерился, получить его респонс
+        response = allDialogs[key]['getResponse'](event, allDialogs)
+        
+        # обработать брэнчи
+        branchedResponse = updateBranchToResponse(event, response, 'mainMenu')
+        
+        # FOR DEBUG
+        if branchedResponse and 'session_state' in branchedResponse:
+            print('Брэнчи: ' + str(branchedResponse['session_state']['branch']))
+        else:
+            print("Брэнчей нет")
+        print('---------------------------')
 
-    episode = passEpisode(info, history, statsEnds)
-    response = createCard(event, episode["text"], None, episode["buttons"])
-
-    if (
-        "lastFalseButton" in info
-        and not (info["lastFalseButton"] is None)
-        and info["lastFalseButton"] == command
-    ):
-        info["choice"] = "false"
-    else:
-        info["choice"] = "true"
-
-    info["lastTrueButton"] = None
-    info["lastFalseButton"] = None
-
-    if len(episode["buttons"]) == 0:
-        addGlobalStateInResponse(response, "save", createStartInfo(history))
-        return response
-
-    elif len(episode["buttons"]) == 1:
-        info["lastTrueButton"] = episode["buttons"][0]
-
-    elif len(episode["buttons"]) == 2:
-        info["lastTrueButton"] = episode["buttons"][0]
-        info["lastFalseButton"] = episode["buttons"][1]
-
-    addGlobalStateInResponse(response, "save", info)
+        return branchedResponse
 
     return response
-
-    # return createCard(event, "test", "test", "title")

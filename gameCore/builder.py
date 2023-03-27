@@ -40,8 +40,8 @@ def replaceLinkEpisodes(history, linkEpisodes):
 def builder(
         history: str,  # основная история
         linkEpisodes: dict = None,  # ссылочные эпизоды
-        transformLinkEpisodes: bool = True,  # нужно ли трансформировать ссылочные эпизоды
         printText: str = None,  # вывести о начале работы билдера (чтоб красиво было :c)
+        transformLinkEpisodes: bool = True,  # нужно ли трансформировать ссылочные эпизоды
 ):
     if printText:
         print(colored("=", "yellow"), "Синтезирование " + printText + '...')
@@ -109,7 +109,7 @@ def builder(
         print(colored("=", "yellow"), "Синтезирование ссылочных эпизодов...")
         for key in linkEpisodes:
             print(colored("=", "yellow"), 'Синтезирование ссылок:', key)
-            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, False)
+            linkEpisodes[key] = builder(linkEpisodes[key], linkEpisodes, None, False)
 
     # заменить ссылки в "response"ах в виде строк "{link}" на словари
     print(colored("=", "yellow"), "Замена ссылок...")
