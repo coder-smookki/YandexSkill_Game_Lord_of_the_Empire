@@ -73,7 +73,7 @@ def handler(event):
         else:
             print("Брэнчей нет")
         print("---------------------------")
-        
+        print(branchedResponse)
         return branchedResponse
 
     return response
