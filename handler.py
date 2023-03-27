@@ -44,6 +44,8 @@ def handler(event):
     ):
         return "привет =)"
     
+    print(event)
+
     if isNewSession(event):
         return allDialogs['mainMenu']["getResponse"](event, allDialogs)
 
