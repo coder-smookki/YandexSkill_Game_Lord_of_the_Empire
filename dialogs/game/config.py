@@ -57,7 +57,7 @@ def getConfig(event):
         "card": {
             "type": "BigImage",
             "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
-            "title": episode["title"],
+            "title": episode["name"],
             "description": episode["message"],
         },
     }
