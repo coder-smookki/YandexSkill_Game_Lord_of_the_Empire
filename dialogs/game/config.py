@@ -41,9 +41,10 @@ def getConfig(event):
         info = selectGameInfo(cur, userId)
         if not info:
             info = createStartInfo(history)
-            setInGlobalStorage("game_" + userId, info)
-
+            
     episode = passEpisode(info, history, statsEnds)
+    setInGlobalStorage("game_" + userId, info)
+    print('Эпизод:', episode)
 
     config = {
         "tts": episode["name"] + ' ' + episode["message"],
