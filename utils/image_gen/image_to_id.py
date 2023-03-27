@@ -3,9 +3,6 @@ import os
 import requests
 
 
-
-
-
 def image_to_id(image: bytes) -> str | None:
     oauth_key = os.environ.get('OAUTH_IMAGE_KEY')
     skill_id = os.environ.get("SKILL_ID")
