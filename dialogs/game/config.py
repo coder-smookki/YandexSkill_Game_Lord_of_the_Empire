@@ -3,6 +3,39 @@ from utils.responseHelper import *
 from utils.dbHandler import *
 from gameCore.historyHandler import passEpisode
 
+def compileResultFromEpisode(episode):
+    config = {
+        "tts": episode["name"] + ' ' + episode["message"],
+        "buttons": [
+            # "Повторить ещё раз", TODO: добавить повторение
+            "Что ты умеешь?",
+            "Помощь",
+            "Назад",
+            "Выход",
+        ],
+        "card": {
+            "type": "BigImage",
+            "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
+            "title": episode["name"],
+            "description": episode["message"],
+        },
+    }
+
+    if len(episode['buttons']) != 0:
+        config['buttons'] = episode['buttons'] + config['buttons']
+
+    session_state = {"branch": "game"}
+    
+    result = {
+        "tts": config["tts"],
+        "buttons": config["buttons"],
+        "card": config["card"],
+        "session_state": session_state,
+    }
+
+    result['user_state_update'] = {'lastEpisode': json.dumps(result)}
+    return result
+
 def createStartInfo(history):
     return {
         "posEpisode": [0],
@@ -46,7 +79,7 @@ def getConfig(event):
                 info["choice"] = 'false'
             else:
                 print('lastEP')
-                return lastEpisode
+                compileResultFromEpisode(lastEpisode)
 
         episode = passEpisode(info, history, statsEnds)
         
@@ -54,39 +87,8 @@ def getConfig(event):
         setInGlobalStorage("game_" + userId, info, True)
         print('info after', info)
 
-        config = {
-            "tts": episode["name"] + ' ' + episode["message"],
-            "buttons": [
-                # "Повторить ещё раз", TODO: добавить повторение
-                "Что ты умеешь?",
-                "Помощь",
-                "Назад",
-                "Выход",
-            ],
-            "card": {
-                "type": "BigImage",
-                "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
-                "title": episode["name"],
-                "description": episode["message"],
-            },
-        }
-
-
-
-        if len(episode['buttons']) != 0:
-            config['buttons'] = episode['buttons'] + config['buttons']
-
-        session_state = {"branch": "game"}
         
-        result = {
-            "tts": config["tts"],
-            "buttons": config["buttons"],
-            "card": config["card"],
-            "session_state": session_state,
-        }
-
-        result['user_state_update'] = {'lastEpisode': json.dumps(result)}
-        return result
+        return compileResultFromEpisode(episode)
 
     except:
         print('Эпизод:', episode)
