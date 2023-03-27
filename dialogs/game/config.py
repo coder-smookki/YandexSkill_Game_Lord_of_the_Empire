@@ -4,6 +4,7 @@ from utils.dbHandler import *
 from gameCore.historyHandler import passEpisode
 
 def compileResultFromEpisode(episode):
+    print('EPISODE', episode)
     config = {
         "tts": episode["name"] + ' ' + episode["message"],
         "buttons": [
