@@ -80,12 +80,18 @@ def getConfig(event):
     if not (canLastChoicedArr is None) and type(canLastChoicedArr) == list and len(canLastChoicedArr) >= 2:
         if canLastChoicedArr[0] == command:
             print('true')
+            print('command:')
+            print('canLastChoicedArr:',canLastChoicedArr[0])
             info["choice"] = 'true'
         elif canLastChoicedArr[1] == command:
             print('false')
+            print('command:')
+            print('canLastChoicedArr:',canLastChoicedArr[1])
             info["choice"] = 'false'
         else:
-            print('lastEP')
+            print('none')
+            print('command:')
+            print('canLastChoicedArr:',canLastChoicedArr)
             return compileResultFromEpisode(lastEpisode)
 
     episode = passEpisode(info, history, statsEnds)
