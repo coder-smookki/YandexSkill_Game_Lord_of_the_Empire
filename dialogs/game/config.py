@@ -30,8 +30,11 @@ def compileResultFromEpisode(episode):
 
     if len(episode['buttons']) != 0:
         config['buttons'] = episode['buttons'] + config['buttons']
+        user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
     else:
         config['buttons'] = ['В главное меню'] + config['buttons']
+        user_state_update = {'lastEpisode': None}
+
     session_state = {"branch": "game"}
     
     result = {
@@ -41,7 +44,7 @@ def compileResultFromEpisode(episode):
         "session_state": session_state,
     }
 
-    result['user_state_update'] = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
+    result['user_state_update'] = user_state_update
     return result
 
 def createStartInfo(history):
