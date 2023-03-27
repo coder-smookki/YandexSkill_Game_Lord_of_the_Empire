@@ -25,6 +25,7 @@ def compileResultFromEpisode(episode):
     print('EPISODE', episode)
     if episode["name"]:
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
+        print('VALUES',episode['stats'])
         cardId = get_id(
             person=episode["name"],
             replica=episode["message"],
