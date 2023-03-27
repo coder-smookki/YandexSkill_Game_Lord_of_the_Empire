@@ -6,7 +6,7 @@ from gameCore.historyHandler import passEpisode
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
     config = {
-        "tts": 'hi',
+        "tts": episode["name"] + ' ' + episode["message"],
         "buttons": [
             # "Повторить ещё раз", TODO: добавить повторение
             "Что ты умеешь?",
@@ -17,8 +17,8 @@ def compileResultFromEpisode(episode):
         "card": {
             "type": "BigImage",
             "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
-            "title": 'hi',
-            "description": 'hi',
+            "title": episode["name"],
+            "description": episode["message"],
         },
     }
 
@@ -34,7 +34,7 @@ def compileResultFromEpisode(episode):
         "session_state": session_state,
     }
 
-    result['user_state_update'] = {'lastEpisode': None}
+    result['user_state_update'] = {'lastEpisode': json.dumps(episode)}
     return result
 
 def createStartInfo(history):
