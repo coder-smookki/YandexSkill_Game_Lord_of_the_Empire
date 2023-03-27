@@ -7,7 +7,7 @@ from gameCore.historyHandler import passEpisode
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
     config = {
-        "tts": episode["name"] + ' ' + episode["message"],
+        "tts": episode["name"] + ': ' + episode["message"],
         "buttons": [
             # "Повторить ещё раз", TODO: добавить повторение
             "Что ты умеешь?",
