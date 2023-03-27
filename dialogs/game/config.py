@@ -6,8 +6,12 @@ from gameCore.historyHandler import passEpisode
 
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
+    if episode["name"]:
+        tts = episode["name"] + '. ' + episode["message"]
+    else:
+        tts = episode["message"]
     config = {
-        "tts": episode["name"] + ': ' + episode["message"],
+        "tts": tts,
         "buttons": [
             # "Повторить ещё раз", TODO: добавить повторение
             "Что ты умеешь?",
