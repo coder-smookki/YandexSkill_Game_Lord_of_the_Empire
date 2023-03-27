@@ -27,29 +27,27 @@ def getConfig(event):
         userId = getUserId(event)
         if "game_" + userId in globalStorage:
             info = globalStorage["game_" + userId]
-
-            lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
-            canLastChoicedArr = lastEpisode['buttons']
-            command = getCommand(event)
-            if len(canLastChoicedArr) == 2:
-                if canLastChoicedArr[0] == command:
-                    print('true')
-                    info["choice"] = 'true'
-                elif canLastChoicedArr[1] == command:
-                    print('false')
-                    info["choice"] = 'false'
-                else:
-                    print('lastEP')
-                    return lastEpisode
-
-
             # result['user_state_update']['lastEpisode']
         else:
             cur = globalStorage["mariaDBcur"]
             info = selectGameInfo(cur, userId)
             if not info:
                 info = createStartInfo(history)
-                
+
+        lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
+        canLastChoicedArr = lastEpisode['buttons']
+        command = getCommand(event)
+        if canLastChoicedArr and type(canLastChoicedArr) == list and len(canLastChoicedArr) == 2:
+            if canLastChoicedArr[0] == command:
+                print('true')
+                info["choice"] = 'true'
+            elif canLastChoicedArr[1] == command:
+                print('false')
+                info["choice"] = 'false'
+            else:
+                print('lastEP')
+                return lastEpisode
+
         episode = passEpisode(info, history, statsEnds)
         
         print('info before', info)
