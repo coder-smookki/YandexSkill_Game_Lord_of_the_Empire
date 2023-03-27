@@ -23,14 +23,16 @@ def getRandomSfx(sfx):
 
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
+    
     if episode["name"]:
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
         print('VALUES',episode['stats'])
+        stats = episode['stats']
         cardId = get_id(
             person=episode["name"],
             replica=episode["message"],
-            values=episode['stats'],
-            changes=[-1, 0, 1, 0]
+            values=[stats['church'],stats['nation'],stats['army'],stats['coffers']],
+            changes=[0,0,0,0]
         )
     else:
         tts = getRandomSfx(sfx) + episode["message"]
