@@ -56,34 +56,38 @@ def createResponse(event, originalConfig):
     # скопировать конфиг, чтобы 100% избежать его изменения в другом файле (если там он создан глобально)
     config = copy.deepcopy(originalConfig)
 
-    # возращаемый респонс
-    returnResponse = {
-        "response": {
-            "text": config["message"]
-            if "message" in config
-            else "",  # если есть сообщение (текстовой респонс)
-            "tts": config["tts"],  # tts
-            "card": config["card"]
-            if "card" in config
-            else None,  # если есть карточка (респонс с картинкой)
-            "buttons": createButtons(config["buttons"]),  # кнопки
-            "end_session": config["end_session"]
-            if "end_session" in config
-            else False,  # если нужно закончить сессию
-        },
-        "session": event["session"],  # инфа для Алисы - сессия
-        "session_state": config["session_state"]
-        if "session_state" in config
-        else {},  # передаваемые стейты
-        "version": event["version"],  # инфа для Алисы - версия
-    }
-    #
-    if "user_state_update" in config:  # если нужно обновить глобальные стейты
-        # установить поле
-        returnResponse["user_state_update"] = config["user_state_update"]
+    try:
 
-        # вернуть получившийся респонс
-    return returnResponse
+        # возращаемый респонс
+        returnResponse = {
+            "response": {
+                "text": config["message"]
+                if "message" in config
+                else "",  # если есть сообщение (текстовой респонс)
+                "tts": config["tts"],  # tts
+                "card": config["card"]
+                if "card" in config
+                else None,  # если есть карточка (респонс с картинкой)
+                "buttons": createButtons(config["buttons"]),  # кнопки
+                "end_session": config["end_session"]
+                if "end_session" in config
+                else False,  # если нужно закончить сессию
+            },
+            "session": event["session"],  # инфа для Алисы - сессия
+            "session_state": config["session_state"]
+            if "session_state" in config
+            else {},  # передаваемые стейты
+            "version": event["version"],  # инфа для Алисы - версия
+        }
+        #
+        if "user_state_update" in config:  # если нужно обновить глобальные стейты
+            # установить поле
+            returnResponse["user_state_update"] = config["user_state_update"]
+
+            # вернуть получившийся респонс
+        return returnResponse
+    except:
+        print('Конфиг:', config)
 
 
 # метод, занимающийся преобразованием кнопок из строк в формат кнопки
