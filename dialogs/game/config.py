@@ -35,7 +35,7 @@ def getConfig(event):
 
     userId = getUserId(event)
     if "game_" + userId in globalStorage:
-        info = selectGameInfo(cur, userId)
+        info = globalStorage["game_" + userId]
     else:
         cur = globalStorage["mariaDBcur"]
         info = selectGameInfo(cur, userId)
