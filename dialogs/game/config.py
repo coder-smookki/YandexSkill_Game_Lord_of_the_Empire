@@ -86,7 +86,7 @@ def getConfig(event):
 
     # print('canLastChoicedArr:', canLastChoicedArr)
 
-    if not (canLastChoicedArr is None):
+    if canLastChoicedArr:
         if len(canLastChoicedArr) == 1:
             print('one button')
             print('canLastChoicedArr:',canLastChoicedArr[0])
