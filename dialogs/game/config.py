@@ -1,6 +1,7 @@
 from utils.globalStorage import *
 from utils.responseHelper import *
 from utils.dbHandler import *
+from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 
 def compileResultFromEpisode(episode):
@@ -67,9 +68,10 @@ def getConfig(event):
         if not info:
             info = createStartInfo(history)
 
-    lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
-    if lastEpisode:
+    if haveGlobalState(event, 'lastEpisode'):
+        lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
         canLastChoicedArr = lastEpisode['buttons']
+        
     command = getCommand(event)
 
     print('canLastChoicedArr:', canLastChoicedArr)
