@@ -37,7 +37,7 @@ def getConfig(event):
     if "game_" + userId in globalStorage:
         info = selectGameInfo(cur, userId)
     else:
-        cur = globalStorage("mariaDBcur")
+        cur = globalStorage["mariaDBcur"]
         info = selectGameInfo(cur, userId)
         if not info:
             info = createStartInfo(history)
