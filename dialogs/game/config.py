@@ -10,6 +10,7 @@ def compileResultFromEpisode(episode):
         tts = episode["name"] + '. ' + episode["message"]
     else:
         tts = episode["message"]
+
     config = {
         "tts": tts,
         "buttons": [
@@ -29,7 +30,8 @@ def compileResultFromEpisode(episode):
 
     if len(episode['buttons']) != 0:
         config['buttons'] = episode['buttons'] + config['buttons']
-
+    else:
+        config['buttons'] = ['В главное меню'] + config['buttons']
     session_state = {"branch": "game"}
     
     result = {
