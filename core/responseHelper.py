@@ -3,14 +3,13 @@ import copy
 
 # создать ответ Алисе в удобном для игры формате
 def createCard(
-        event: dict,  # реквест Алисы
-        message: str,  # сообщение
-        tts: str = None,  # tts
-        buttons: list[str] = ["Нет", "Да"],  # кнопки
-        # если нет "imageCode", то поля ниже не используются
-        imageCode: str = None,  # айди картинки
-        title: str = None,  # заголовок
-
+    event: dict,  # реквест Алисы
+    message: str,  # сообщение
+    tts: str = None,  # tts
+    buttons: list[str] = ["Нет", "Да"],  # кнопки
+    # если нет "imageCode", то поля ниже не используются
+    imageCode: str = None,  # айди картинки
+    title: str = None,  # заголовок
 ):
     if tts is None:
         tts = message
@@ -38,6 +37,19 @@ def createCard(
     return createResponse(event, config)
 
 
+def createExitResponse(event):
+    config = {
+        "response": {
+            "text": "До скорых встреч! Были рады вас видеть в нашем навыке!",
+            "tts": "До скорых встреч! Были рады вас видеть в нашем навыке!",
+            "buttons": [],
+            "end_session": True,
+        },
+        "version": event["version"],
+    }
+    return createResponse(event, config)
+
+
 # функция, которая превращает конфиг с информацией о будующем респонсе в сам респонс
 # сделано, чтобы не запариваться по поводу полей в респонсе (их реально много и они неудобные :c)
 def createResponse(event, originalConfig):
@@ -47,14 +59,22 @@ def createResponse(event, originalConfig):
     # возращаемый респонс
     returnResponse = {
         "response": {
-            "text": config["message"] if "message" in config else "",  # если есть сообщение (текстовой респонс)
+            "text": config["message"]
+            if "message" in config
+            else "",  # если есть сообщение (текстовой респонс)
             "tts": config["tts"],  # tts
-            "card": config["card"] if "card" in config else None,  # если есть карточка (респонс с картинкой)
+            "card": config["card"]
+            if "card" in config
+            else None,  # если есть карточка (респонс с картинкой)
             "buttons": createButtons(config["buttons"]),  # кнопки
-            "end_session": config["end_session"] if "end_session" in config else False,  # если нужно закончить сессию
+            "end_session": config["end_session"]
+            if "end_session" in config
+            else False,  # если нужно закончить сессию
         },
         "session": event["session"],  # инфа для Алисы - сессия
-        "session_state": config["session_state"] if "session_state" in config else {},  # передаваемые стейты
+        "session_state": config["session_state"]
+        if "session_state" in config
+        else {},  # передаваемые стейты
         "version": event["version"],  # инфа для Алисы - версия
     }
     #
@@ -113,7 +133,7 @@ def getGlobalState(event, state):
 
 # установить State в респонсе
 def setStatesInResponse(response, states: dict):
-    response['session_state'] = states
+    response["session_state"] = states
 
 
 # установить глобальный State в респонсе
@@ -123,7 +143,7 @@ def setGlobalStatesInResponse(response, globalStates: dict):
 
 # добавить State в респонс
 def addStateInResponse(response, stateName, stateValue):
-    response['session_state'][stateName] = stateValue
+    response["session_state"][stateName] = stateValue
 
 
 # добавить глобальный State в респонс

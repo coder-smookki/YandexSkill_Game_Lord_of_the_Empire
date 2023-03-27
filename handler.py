@@ -31,13 +31,40 @@ def createStartInfo(history):
 #     "buttons": ["trueBtn", "falseBtn"],
 #     "card": "айди картинки",
 #     "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-#     "changeStats": [[trueStats], [falseStats]], - в таком же порядке, что и в "stats". 
-#           Может иметь не 2 массива, а 4 цифры - изменения стат после хода при любом выборе. 
-#           Может быть None. 
+#     "changeStats": [[trueStats], [falseStats]], - в таком же порядке, что и в "stats".
+#           Может иметь не 2 массива, а 4 цифры - изменения стат после хода при любом выборе.
+#           Может быть None.
 # }
 
 
 def handler(event, history, statsEnds):
+    if isNewSession(event):
+        # выдать главное меню
+        # поставить стейт положения
+        pass
+
+    # если человек хочет выйти и находится в игре
+    if isInCommandOr(event, ["выход", "выйти", "наигрался", "выключи"]):
+        # если человек хочет выйти и находится в игре
+        if haveState(event, "isInGame") and getState(event, "isInGame") == True:
+            # главное меню
+            return createCard(event, "главное меню типа")
+        else:
+            # выход
+            return createExitResponse(event)
+        # если человек хочет выйти и находится в меню
+
+    # что умеешь
+    if (
+        isInCommandOr(event, ["умеешь", "можешь"])
+        and isInCommandOr(event, ["как", "что"])
+    ) or isInCommandOr(event, ["помощь", "хэлп", "хелп"]):
+        return createCard(event, "помощь типа")
+
+    
+
+    # switch case стейтов положения и выдача менюшек
+
     if not haveGlobalState(event, "save"):
         info = createStartInfo(history)
     else:
