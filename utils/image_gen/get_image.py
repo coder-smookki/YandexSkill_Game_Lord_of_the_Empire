@@ -1,5 +1,4 @@
 import textwrap
-from io import BytesIO
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -11,9 +10,10 @@ ok_color = (247, 242, 181)
 back_color = (192, 172, 98)
 green = (0, 255, 0)
 
-font = ImageFont.truetype("times", 40)  # Размер шрифта крутить тут
-images_path = Path(__file__).parent.absolute() / 'images'
+parent_path = Path(__file__).parent.absolute()
+images_path = parent_path / 'images'
 persons_path = images_path / 'persons'
+font = ImageFont.truetype(str(parent_path / 'times.ttf'), 40)  # Размер шрифта крутить тут
 green_arrow = Image.open(images_path / 'green_arrow.png', mode='r', formats=["PNG"])
 red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
 
@@ -35,7 +35,7 @@ def get_image(
         replica: str,
         values: list[int] | tuple[int, int, int, int],
         changes: list[int] | tuple[int, int, int, int],
-):
+) -> bytes:
     """
     Генератор картинок две тысячи инатор
 
@@ -113,4 +113,4 @@ def get_image(
         replica_y += font.getbbox(line)[-1]
 
     # Итог
-    return BytesIO(layout.tobytes())
+    return layout.tobytes()
