@@ -10,4 +10,4 @@ def getResponse(event, allDialogs=None):
 def isTriggered(event):
     return isInCommandOr(event, ['играть']) or isInLastContext(event, 'game') 
 
-mainMenu = {'getResponse': getResponse, 'isTriggered': isTriggered}
+game = {'getResponse': getResponse, 'isTriggered': isTriggered}
