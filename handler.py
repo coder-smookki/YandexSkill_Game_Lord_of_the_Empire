@@ -5,6 +5,7 @@ from utils.branchHandler import *
 from middlewares.allMiddlewares import allMiddlewares
 from dialogs.allDialogs import allDialogs
 
+
 def createStartInfo(history):
     return {
         "posEpisode": [0],
@@ -34,37 +35,44 @@ def createStartInfo(history):
 
 import os
 
+
 def handler(event):
-
-    if 'session' in event and 'skill_id' in event['session'] and event['session']['skill_id'] != os.environ['SKILL_ID']:
-        return 'привет =)'
-
-    
+    if (
+        "session" in event
+        and "skill_id" in event["session"]
+        and event["session"]["skill_id"] != os.environ["SKILL_ID"]
+    ):
+        return "привет =)"
+    # ['state']['session']
+    if not "state" in event:
+        event["state"] = {"session": {"branch": ["educationalPublications"]}}
+    elif not 'session' in event['state']:
+        event["state"]['session'] = {"branch": ["educationalPublications"]}
 
     if not isNewSession(event):
         for key in allMiddlewares:
-            if not allMiddlewares[key]['isTriggered'](event):
+            if not allMiddlewares[key]["isTriggered"](event):
                 continue
-            return allMiddlewares[key]['getResponse'](event, allDialogs)
+            return allMiddlewares[key]["getResponse"](event, allDialogs)
 
     # искать диалог, подходящий под запрос
     for key in allDialogs:
         # если диалог не затриггерился
-        if not allDialogs[key]['isTriggered'](event):
+        if not allDialogs[key]["isTriggered"](event):
             continue
 
         # если диалог затриггерился, получить его респонс
-        response = allDialogs[key]['getResponse'](event, allDialogs)
-        
+        response = allDialogs[key]["getResponse"](event, allDialogs)
+
         # обработать брэнчи
-        branchedResponse = updateBranchToResponse(event, response, 'mainMenu')
-        
+        branchedResponse = updateBranchToResponse(event, response, "mainMenu")
+
         # FOR DEBUG
-        if branchedResponse and 'session_state' in branchedResponse:
-            print('Брэнчи: ' + str(branchedResponse['session_state']['branch']))
+        if branchedResponse and "session_state" in branchedResponse:
+            print("Брэнчи: " + str(branchedResponse["session_state"]["branch"]))
         else:
             print("Брэнчей нет")
-        print('---------------------------')
+        print("---------------------------")
 
         return branchedResponse
 
