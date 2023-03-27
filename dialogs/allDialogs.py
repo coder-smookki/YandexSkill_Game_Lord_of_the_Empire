@@ -7,13 +7,13 @@ from dialogs.repeat.repeat import repeat
 from dialogs.game.game import game
 from dialogs.whoAreCreators.whoAreCreators import whoAreCreators
 from dialogs.howToUse.howToUse import howToUse
-from dialogs.howToContactDevelopers import howToContactDevelopers
+from dialogs.howToContactDevelopers.howToContactDevelopers import howToContactDeveloveps
 allDialogs = {
     "exitConfirm": exitConfirm,
     'game': game,
     "whoAreCreators": whoAreCreators,
     "howToUse": howToUse,
-    "howToContactDevelopers": howToContactDevelopers,
+    "howToContactDevelopers": howToContactDeveloveps,
     "repeat": repeat,
     "whatYouCan": whatYouCan,
     "help": help,
