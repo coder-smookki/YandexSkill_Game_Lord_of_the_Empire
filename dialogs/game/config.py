@@ -71,12 +71,13 @@ def getConfig(event):
     if haveGlobalState(event, 'lastEpisode'):
         lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
         canLastChoicedArr = lastEpisode['buttons']
-
+    else:
+        canLastChoicedArr = None
     command = getCommand(event)
 
     # print('canLastChoicedArr:', canLastChoicedArr)
 
-    if canLastChoicedArr and type(canLastChoicedArr) == list and len(canLastChoicedArr) >= 2:
+    if not (canLastChoicedArr is None) and type(canLastChoicedArr) == list and len(canLastChoicedArr) >= 2:
         if canLastChoicedArr[0] == command:
             print('true')
             info["choice"] = 'true'
