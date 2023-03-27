@@ -4,11 +4,10 @@ from dialogs.whatYouCan.whatYouCan import whatYouCan
 from dialogs.help.help import help
 from dialogs.backDialog.backDialog import backDialog
 from dialogs.repeat.repeat import repeat
-from dialogs.whoAreCreators.whoAreCreators import whoAreCreators
-
+from dialogs.game.game import game
 allDialogs = {
-    "whoAreCreators": whoAreCreators,
     "exitConfirm": exitConfirm,
+    'game': game,
     "repeat": repeat,
     "whatYouCan": whatYouCan,
     "help": help,

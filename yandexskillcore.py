@@ -2,7 +2,9 @@ from flask import Flask, request
 from termcolor import colored
 from gameCore.builder import builder
 from datetime import datetime
-from utils.globalStorage import setInGlobalStorage
+from utils.globalStorage import *
+from utils.dbHandler import connect
+import os
 
 # функция для удобного запуска фласка
 def startServer(
@@ -36,11 +38,25 @@ def startServer(
         "Синтезирование завершено с кайфом за: " + str(endTime - startTime),
     )
 
+    # записал историю
+    setInGlobalStorage('history', history, saveLinks=True)
+    # записать концовки
+    setInGlobalStorage('statsEnds', statsEnds, saveLinks=True)
+
     # создать приложение фласка
     app = Flask(__name__)
 
     # записать приложение в глобальное хранилище
     setInGlobalStorage('app', app, saveLinks=True)
+
+    # создать подключение к mariadb
+    dbUser = os.environ.get('DB_USER')
+    dbPassword = os.environ.get('DB_PASSWORD')
+    dbName = os.environ.get('DB_NAME')
+    cur = connect(dbUser, dbPassword, dbName)
+
+    # записать курсор
+    setInGlobalStorage('mariaDBcur', cur, saveLinks=True)
 
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False

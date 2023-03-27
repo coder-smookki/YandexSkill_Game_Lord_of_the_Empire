@@ -4,35 +4,6 @@ from utils.branchHandler import *
 
 from middlewares.allMiddlewares import allMiddlewares
 from dialogs.allDialogs import allDialogs
-
-
-def createStartInfo(history):
-    return {
-        "posEpisode": [0],
-        "maxPosEpisode": [len(history) - 1],
-        "pastPosEpisode": None,
-        "choice": "none",
-        "pastHasEvent": None,
-        "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-        "notAppliedStats": {
-            "true": [0, 0, 0, 0],
-            "false": [0, 0, 0, 0],
-            "always": [0, 0, 0, 0],
-        },
-    }
-
-
-# {
-#     "name": "имя",
-#     "message": "сообщение",
-#     "buttons": ["trueBtn", "falseBtn"],
-#     "card": "айди картинки",
-#     "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-#     "changeStats": [[trueStats], [falseStats]], - в таком же порядке, что и в "stats".
-#           Может иметь не 2 массива, а 4 цифры - изменения стат после хода при любом выборе.
-#           Может быть None.
-# }
-
 import os
 
 
