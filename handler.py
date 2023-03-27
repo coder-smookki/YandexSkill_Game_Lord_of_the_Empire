@@ -45,9 +45,9 @@ def handler(event):
         return "привет =)"
     # ['state']['session']
     if not "state" in event:
-        event["state"] = {"session": {'branch': ['mainMenu']}}
+        event["state"] = {"session": {}}
     elif not 'session' in event['state']:
-        event["state"]['session'] = {'branch': ['mainMenu']}
+        event["state"]['session'] = {}
 
     if not isNewSession(event):
         for key in allMiddlewares:
