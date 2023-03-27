@@ -47,14 +47,21 @@ def skillEmulate(historyText, statsEnds, linkEpisodes=None):
         # пройти и получить эпизод
         episode = passEpisode(info, history, statsEnds)
 
+        # print(info["posEpisode"])
+        # print(episode)
+
         if episode == "its all":
             break
 
         # показать статы
         print(episode["stats"])
 
+        # показать имя (если оно есть)
+        if 'name' in episode and not (episode['name'] is None):
+            print('' + episode["name"] + ':')
+
         # показать сообщение
-        print(episode["text"])
+        print(episode["message"])
 
         # получить ответ пользователя
         while True:

@@ -7,14 +7,14 @@ from datetime import datetime
 
 # функция для удобного запуска фласка
 def startServer(
-        historyText: str,
-        statsEnds: dict,
-        linkEpisodes: dict,
-        route: str = "/",
-        methods: list[str] = ["POST"],
-        host: str = "localhost",
-        port: int = 8443,
-        handler: callable = lambda data: print("handler works!"),
+    historyText: str,
+    statsEnds: dict,
+    linkEpisodes: dict,
+    route: str = "/",
+    methods: list[str] = ["POST"],
+    host: str = "localhost",
+    port: int = 8443,
+    handler: callable = lambda data: print("handler works!"),
 ):
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
@@ -24,8 +24,11 @@ def startServer(
     # билдинг концовок
     for key in statsEnds:
         for kkey in statsEnds[key]:
-            statsEnds[key][kkey] = builder(statsEnds[key][kkey], transformLinkEpisodes=False,
-                                           printText='концовки: ' + key + '-' + kkey)
+            statsEnds[key][kkey] = builder(
+                statsEnds[key][kkey],
+                transformLinkEpisodes=False,
+                printText="концовки: " + key + "-" + kkey,
+            )
 
     endTime = datetime.now()
     print(

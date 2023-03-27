@@ -11,7 +11,18 @@ def formateEpisodeInfo(episodeInfo):
         buttons.append(trueButton)
         if falseButton != "None":
             buttons.append(falseButton)
-    return {"text": episodeInfo[0][:-1], "buttons": buttons, "card": episodeInfo[4][1:]}
+
+    text = episodeInfo[0][:-1]
+    textArr = text.split(' $ ')
+
+    if len(textArr) != 2:
+        name = None
+        message = textArr[0]
+    else:
+        name = textArr[0]
+        message = textArr[1]
+
+    return {'name': name, "message": message, "buttons": buttons, "card": episodeInfo[4][1:]}
 
 
 # отформатировать статы
@@ -397,4 +408,5 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
+
     return result
