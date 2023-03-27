@@ -73,7 +73,7 @@ def getConfig(event):
 
         print('canLastChoicedArr:', canLastChoicedArr)
 
-        if canLastChoicedArr and type(canLastChoicedArr) == list and len(canLastChoicedArr) == 2:
+        if canLastChoicedArr and type(canLastChoicedArr) == list and len(canLastChoicedArr) >= 2:
             if canLastChoicedArr[0] == command:
                 print('true')
                 info["choice"] = 'true'
