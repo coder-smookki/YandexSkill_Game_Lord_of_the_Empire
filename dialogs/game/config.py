@@ -28,7 +28,7 @@ def getConfig(event):
         if "game_" + userId in globalStorage:
             info = globalStorage["game_" + userId]
 
-            lastEpisode = getGlobalState(event, 'lastEpisode')
+            lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
             canLastChoicedArr = lastEpisode['buttons']
             command = getCommand(event)
             if len(canLastChoicedArr) == 2:
@@ -82,7 +82,7 @@ def getConfig(event):
             "session_state": session_state,
         }
 
-        result['user_state_update']['lastEpisode'] = result
+        result['user_state_update'] = {'lastEpisode': json.dumps(result)}
         return result
 
     except:
