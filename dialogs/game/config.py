@@ -34,7 +34,7 @@ def compileResultFromEpisode(episode):
         "session_state": session_state,
     }
 
-    result['user_state_update'] = {'lastEpisode': json.dumps(result)}
+    result['user_state_update'] = {'lastEpisode': json.dumps(episode)}
     return result
 
 def createStartInfo(history):
