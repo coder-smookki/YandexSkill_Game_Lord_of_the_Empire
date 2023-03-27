@@ -41,9 +41,9 @@ def getConfig(event):
         info = selectGameInfo(cur, userId)
         if not info:
             info = createStartInfo(history)
-            
+
     episode = passEpisode(info, history, statsEnds)
-    setInGlobalStorage("game_" + userId, info)
+    setInGlobalStorage("game_" + userId, info, True)
     print('Эпизод:', episode)
 
     config = {
