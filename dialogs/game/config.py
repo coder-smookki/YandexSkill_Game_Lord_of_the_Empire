@@ -4,6 +4,7 @@ from utils.dbHandler import *
 from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 import random
+from utils.image_gen.get_id import get_id
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -24,8 +25,17 @@ def compileResultFromEpisode(episode):
     print('EPISODE', episode)
     if episode["name"]:
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
+        cardId = get_id(
+            person=episode["name"],
+            replica=episode["message"],
+            values=episode['stats'],
+            changes=[-1, 0, 1, 0]
+        )
     else:
         tts = getRandomSfx(sfx) + episode["message"]
+        cardId = "1540737/f7f920f27d7c294e189b"
+
+
 
     config = {
         "tts": tts,
@@ -38,7 +48,7 @@ def compileResultFromEpisode(episode):
         ],
         "card": {
             "type": "BigImage",
-            "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
+            "image_id": cardId,
             "title": episode["name"],
             "description": episode["message"],
         },
@@ -100,7 +110,7 @@ def getConfig(event):
         canLastChoicedArr = None
 
         
-        ''.join(filter(str.isalnum, s))
+        # ''.join(filter(str.isalnum, s))
     command = getOriginalUtterance(event)
 
     # print('canLastChoicedArr:', canLastChoicedArr)
