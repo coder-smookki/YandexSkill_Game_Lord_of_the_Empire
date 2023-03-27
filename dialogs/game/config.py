@@ -30,49 +30,51 @@ def createStartInfo(history):
 #           Может быть None.
 # }
 def getConfig(event):
-    history = globalStorage["history"]
-    statsEnds = globalStorage["statsEnds"]
+    try:
+        history = globalStorage["history"]
+        statsEnds = globalStorage["statsEnds"]
 
-    userId = getUserId(event)
-    if "game_" + userId in globalStorage:
-        info = globalStorage["game_" + userId]
-    else:
-        cur = globalStorage["mariaDBcur"]
-        info = selectGameInfo(cur, userId)
-        if not info:
-            info = createStartInfo(history)
+        userId = getUserId(event)
+        if "game_" + userId in globalStorage:
+            info = globalStorage["game_" + userId]
+        else:
+            cur = globalStorage["mariaDBcur"]
+            info = selectGameInfo(cur, userId)
+            if not info:
+                info = createStartInfo(history)
 
-    episode = passEpisode(info, history, statsEnds)
-    setInGlobalStorage("game_" + userId, info, True)
-    print('Эпизод:', episode)
+        episode = passEpisode(info, history, statsEnds)
+        setInGlobalStorage("game_" + userId, info, True)
 
-    config = {
-        "tts": episode["name"] + ' ' + episode["message"],
-        "buttons": [
-            # "Повторить ещё раз", TODO: добавить повторение
-            "Что ты умеешь?",
-            "Помощь",
-            "Назад",
-            "Выход",
-        ],
-        "card": {
-            "type": "BigImage",
-            "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
-            "title": episode["name"],
-            "description": episode["message"],
-        },
-    }
-
+        config = {
+            "tts": episode["name"] + ' ' + episode["message"],
+            "buttons": [
+                # "Повторить ещё раз", TODO: добавить повторение
+                "Что ты умеешь?",
+                "Помощь",
+                "Назад",
+                "Выход",
+            ],
+            "card": {
+                "type": "BigImage",
+                "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
+                "title": episode["name"],
+                "description": episode["message"],
+            },
+        }
 
 
-    if len(episode['buttons']) != 0:
-        config['buttons'] = episode['buttons'] + config['buttons']
 
-    session_state = {"branch": "game"}
+        if len(episode['buttons']) != 0:
+            config['buttons'] = episode['buttons'] + config['buttons']
 
-    return {
-        "tts": config["tts"],
-        "buttons": config["buttons"],
-        "card": config["card"],
-        "session_state": session_state,
-    }
+        session_state = {"branch": "game"}
+
+        return {
+            "tts": config["tts"],
+            "buttons": config["buttons"],
+            "card": config["card"],
+            "session_state": session_state,
+        }
+    except:
+        print('Эпизод:', episode)
