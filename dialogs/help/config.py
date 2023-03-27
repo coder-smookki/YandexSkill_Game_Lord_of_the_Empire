@@ -1,9 +1,6 @@
 def getConfig(event):
     config = {
-        "tts":
-            """ 
-            главное меню
-            """,
+        "tts": """помощь""",
         "buttons": [
             "Повторить ещё раз",
             "Что ты умеешь?",
@@ -15,14 +12,13 @@ def getConfig(event):
             "type": "BigImage",
             "image_id": "imageid",
             "title": "КАТАЛОГ",
-            "description":
-                """
+            "description": """
 Выберите нужную категорию, которая поможет вам.
                 """,
         },
-}
+    }
 
-    session_state = {"branch": "mainMenu"}
+    session_state = {"branch": "help"}
 
     return {
         "tts": config["tts"],

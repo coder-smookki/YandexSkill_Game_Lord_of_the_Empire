@@ -1,0 +1,44 @@
+config = {
+        "tts":
+            """
+            Вы уверены в том, что хотите выйти?
+            """,
+        "buttons": [
+            "Да",
+            "Нет",
+        ],
+        "card": {
+            "type": "BigImage",
+            "image_id": "imageid",
+            "title": "ВЫЙТИ ИЗ НАВЫКА?",
+            "description":
+                """
+                Вы уверены в том, что хотите выйти?
+                """,
+        },
+}
+
+session_state = {"branch": "exitConfirm"}
+
+
+def getConfig(event):
+    lang = getLanguage(event)
+    return {
+        "tts": config[lang]["tts"],
+        "buttons": config[lang]["buttons"],
+        "card": config[lang]["card"],
+        "session_state": session_state,
+    }
+
+
+def getConfirmResponse(event):
+        return {
+            "response": {
+                "text": "До скорых встреч! Были рады вас видеть в нашем навыке!",
+                "tts": "До скорых встреч! Были рады вас видеть в нашем навыке!",
+                "buttons": [],
+                "end_session": True,
+            },
+            "version": event["version"],
+            "dontUpdateBranches": True,
+        }

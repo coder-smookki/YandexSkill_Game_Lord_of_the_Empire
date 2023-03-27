@@ -8,6 +8,7 @@ def getResponse(event, allDialogs=None):
     return createResponse(event, config)
 
 def isTriggered(event):
-    return True
+    return "помощь" in getCommand(event)
 
-mainMenu = {'getResponse': getResponse, 'isTriggered': isTriggered}
+
+help = {'getResponse': getResponse, 'isTriggered': isTriggered}

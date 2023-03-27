@@ -34,8 +34,6 @@ def createStartInfo(history):
 
 
 def handler(event):
-    print(allDialogs)
-    
     if not isNewSession(event):
         for key in allMiddlewares:
             if not allMiddlewares[key]['isTriggered'](event):
