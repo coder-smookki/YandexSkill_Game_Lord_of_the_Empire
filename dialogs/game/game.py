@@ -8,6 +8,6 @@ def getResponse(event, allDialogs=None):
     return createResponse(event, config)
 
 def isTriggered(event):
-    return isInCommandOr(event, ['играть']) or isInLastContext(event, 'game') 
+    return (isInCommandOr(event, ['играть']) or isInLastContext(event, 'game')) and not isInCommandAnd(event, ['меню', 'главное'])
 
 game = {'getResponse': getResponse, 'isTriggered': isTriggered}
