@@ -3,13 +3,29 @@ from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
+import random
+
+sfx = [
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/5b9bcd97-2d4a-4810-8639-28518868a548.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/af8d12e0-04f4-447e-9f6a-5418424c2daa.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/3b79ef82-e551-4e8c-a913-e953ffbfd7cd.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/506fc86d-ee86-4b65-82e5-cc6c59012ce9.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/59937e1e-576e-4e8a-84b7-7fdec826edbf.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/6232e501-5a2e-4c97-b193-f3e293a3d879.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/1cace3da-e83c-4eb5-aa63-9bd718ca01b7.opus">',
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/3ee32d10-842e-4e93-86d6-da158cba6e3d.opus">'
+]
+
+def getRandomSfx(sfx):
+    return sfx[random.randint(0, len(sfx) - 1)]
 
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
     if episode["name"]:
-        tts = episode["name"] + '. ' + episode["message"]
+        tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
     else:
-        tts = episode["message"]
+        tts = getRandomSfx(sfx) + episode["message"]
 
     config = {
         "tts": tts,
@@ -82,6 +98,9 @@ def getConfig(event):
         canLastChoicedArr = lastEpisode['buttons']
     else:
         canLastChoicedArr = None
+
+        
+        ''.join(filter(str.isalnum, s))
     command = getOriginalUtterance(event)
 
     # print('canLastChoicedArr:', canLastChoicedArr)
