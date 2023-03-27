@@ -43,11 +43,9 @@ def handler(event):
         and event["session"]["skill_id"] != os.environ["SKILL_ID"]
     ):
         return "привет =)"
-    # ['state']['session']
-    if not "state" in event:
-        event["state"] = {"session": {}}
-    elif not 'session' in event['state']:
-        event["state"]['session'] = {}
+    
+    if isNewSession(event):
+        allDialogs['mainMenu']["getResponse"](event, allDialogs)
 
     if not isNewSession(event):
         for key in allMiddlewares:
