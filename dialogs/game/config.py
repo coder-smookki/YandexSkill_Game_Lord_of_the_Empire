@@ -33,10 +33,13 @@ def getConfig(event):
             command = getCommand(event)
             if len(canLastChoicedArr) == 2:
                 if canLastChoicedArr[0] == command:
+                    print('true')
                     info["choice"] = 'true'
                 elif canLastChoicedArr[1] == command:
+                    print('false')
                     info["choice"] = 'false'
                 else:
+                    print('lastEP')
                     return lastEpisode
 
 
@@ -48,8 +51,10 @@ def getConfig(event):
                 info = createStartInfo(history)
                 
         episode = passEpisode(info, history, statsEnds)
-
+        
+        print('info before', info)
         setInGlobalStorage("game_" + userId, info, True)
+        print('info after', info)
 
         config = {
             "tts": episode["name"] + ' ' + episode["message"],
