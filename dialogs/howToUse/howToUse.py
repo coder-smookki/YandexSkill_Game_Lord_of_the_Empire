@@ -8,6 +8,6 @@ def getResponse(event, allDialogs=None):
     return createResponse(event, config)
 
 def isTriggered(event):
-    return "как использовать" in getCommand(event)
+    return isInCommandOr(event, ["как пользоваться", "как применять", "как использовать"])
 
 howToUse = {'getResponse': getResponse, 'isTriggered': isTriggered}
