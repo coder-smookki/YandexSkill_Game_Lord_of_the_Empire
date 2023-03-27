@@ -33,15 +33,15 @@ def connect(user,password, databaseName):
     return cur
 
 def selectGameInfo(cur, userId):
-    gameInfo = cur.execute("SELECT gameInfo FROM saves WHERE userId=?", (userId))
+    gameInfo = cur.execute(f"SELECT gameInfo FROM saves WHERE userId={userId}")
     return gameInfo 
 
 def updateSave(cur, userId, save):
-    sql = """
+    sql = f"""
     INSERT INTO saves (userId, gameInfo)
-    VALUES (%s, %s)
-    ON DUPLICATE KEY UPDATE gameInfo = %s
+    VALUES ({userId}, {save})
+    ON DUPLICATE KEY UPDATE gameInfo = {save}
     """
-    cur.execute(sql, (userId, save, save))
+    cur.execute(sql)
 
 
