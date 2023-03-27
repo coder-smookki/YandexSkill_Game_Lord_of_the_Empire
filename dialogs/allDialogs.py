@@ -5,9 +5,15 @@ from dialogs.help.help import help
 from dialogs.backDialog.backDialog import backDialog
 from dialogs.repeat.repeat import repeat
 from dialogs.game.game import game
+from dialogs.whoAreCreators.whoAreCreators import whoAreCreators
+from dialogs.howToUse.howToUse import howToUse
+from dialogs.howToContactDevelopers import howToContactDevelopers
 allDialogs = {
     "exitConfirm": exitConfirm,
     'game': game,
+    "whoAreCreators": whoAreCreators,
+    "howToUse": howToUse,
+    "howToContactDevelopers": howToContactDevelopers,
     "repeat": repeat,
     "whatYouCan": whatYouCan,
     "help": help,
