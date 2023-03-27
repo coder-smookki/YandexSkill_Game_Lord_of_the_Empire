@@ -2,7 +2,7 @@ from gameCore.builder import builder
 from datetime import datetime
 from gameCore.historyHandler import passEpisode
 from termcolor import colored
- 
+
 
 # эмулятор навыка в консоли, чтобы удобно было тестировать
 def skillEmulate(historyText, statsEnds, linkEpisodes=None):
