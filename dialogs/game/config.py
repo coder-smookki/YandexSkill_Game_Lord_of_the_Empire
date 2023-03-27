@@ -73,7 +73,7 @@ def getConfig(event):
         canLastChoicedArr = lastEpisode['buttons']
     else:
         canLastChoicedArr = None
-    command = getCommand(event)
+    command = getOriginalUtterance(event)
 
     # print('canLastChoicedArr:', canLastChoicedArr)
 
@@ -85,12 +85,12 @@ def getConfig(event):
             info["choice"] = 'true'
         elif canLastChoicedArr[1] == command:
             print('false')
-            print('command:')
+            print('command:',command)
             print('canLastChoicedArr:',canLastChoicedArr[1])
             info["choice"] = 'false'
         else:
             print('none')
-            print('command:')
+            print('command:', command)
             print('canLastChoicedArr:',canLastChoicedArr)
             return compileResultFromEpisode(lastEpisode)
 
