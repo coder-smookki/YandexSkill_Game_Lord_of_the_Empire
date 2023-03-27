@@ -32,7 +32,7 @@ def isInCommandAnd(event, arr):
 
 # есть ли в бренчах контекст "context" 
 def isInContext(event, context):
-    if not 'branch' in event['state']['session']:
+    if 'state' in event and 'session' in event['state'] and not 'branch' in event['state']['session']:
         return False
 
     if isinstance(context, list):

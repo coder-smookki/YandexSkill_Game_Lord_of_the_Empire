@@ -22,11 +22,10 @@ session_state = {"branch": "exitConfirm"}
 
 
 def getConfig(event):
-    lang = getLanguage(event)
     return {
-        "tts": config[lang]["tts"],
-        "buttons": config[lang]["buttons"],
-        "card": config[lang]["card"],
+        "tts": config["tts"],
+        "buttons": config["buttons"],
+        "card": config["card"],
         "session_state": session_state,
     }
 
