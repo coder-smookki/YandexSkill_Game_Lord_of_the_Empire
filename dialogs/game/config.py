@@ -34,7 +34,7 @@ def compileResultFromEpisode(episode):
         "session_state": session_state,
     }
 
-    result['user_state_update'] = {'lastEpisode': json.dumps(episode)}
+    result['user_state_update'] = {'lastEpisode': None}
     return result
 
 def createStartInfo(history):
@@ -68,7 +68,8 @@ def getConfig(event):
             info = createStartInfo(history)
 
     lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
-    canLastChoicedArr = lastEpisode['buttons']
+    if lastEpisode:
+        canLastChoicedArr = lastEpisode['buttons']
     command = getCommand(event)
 
     print('canLastChoicedArr:', canLastChoicedArr)
