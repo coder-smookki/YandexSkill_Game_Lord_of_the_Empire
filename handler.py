@@ -45,9 +45,9 @@ def handler(event):
         return "привет =)"
     # ['state']['session']
     if not "state" in event:
-        event["state"] = {"session": {'branch': []}}
+        event["state"] = {"session": {'branch': ['mainMenu']}}
     elif not 'session' in event['state']:
-        event["state"]['session'] = {'branch': []}
+        event["state"]['session'] = {'branch': ['mainMenu']}
 
     if not isNewSession(event):
         for key in allMiddlewares:
@@ -73,7 +73,7 @@ def handler(event):
         else:
             print("Брэнчей нет")
         print("---------------------------")
-        
+
         return branchedResponse
 
     return response
