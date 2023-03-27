@@ -10,6 +10,7 @@ def compileResultFromEpisode(episode):
         tts = episode["name"] + '. ' + episode["message"]
     else:
         tts = episode["message"]
+
     config = {
         "tts": tts,
         "buttons": [
@@ -29,6 +30,10 @@ def compileResultFromEpisode(episode):
 
     if len(episode['buttons']) != 0:
         config['buttons'] = episode['buttons'] + config['buttons']
+        user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
+    else:
+        config['buttons'] = ['В главное меню'] + config['buttons']
+        user_state_update = {'lastEpisode': None}
 
     session_state = {"branch": "game"}
     
@@ -39,7 +44,7 @@ def compileResultFromEpisode(episode):
         "session_state": session_state,
     }
 
-    result['user_state_update'] = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
+    result['user_state_update'] = user_state_update
     return result
 
 def createStartInfo(history):
@@ -81,7 +86,7 @@ def getConfig(event):
 
     # print('canLastChoicedArr:', canLastChoicedArr)
 
-    if not (canLastChoicedArr is None):
+    if canLastChoicedArr:
         if len(canLastChoicedArr) == 1:
             print('one button')
             print('canLastChoicedArr:',canLastChoicedArr[0])
