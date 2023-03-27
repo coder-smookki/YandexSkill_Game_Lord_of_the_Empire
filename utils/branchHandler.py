@@ -7,6 +7,8 @@ def updateBranchToResponse(event, response, firstBranchName):
     if 'dontUpdateBranches' in response:
         return response
 
+    return event
+
     if not 'branch' in newEvent['state']['session']:
         newResponse['session_state']['branch'] = [firstBranchName]
         return newResponse

@@ -38,7 +38,9 @@ def handler(event):
 
     if 'session' in event and 'skill_id' in event['session'] and event['session']['skill_id'] != os.environ['SKILL_ID']:
         return 'привет =)'
-        
+
+    
+
     if not isNewSession(event):
         for key in allMiddlewares:
             if not allMiddlewares[key]['isTriggered'](event):
