@@ -45,7 +45,7 @@ def handler(event):
         return "привет =)"
     
     if isNewSession(event):
-        allDialogs['mainMenu']["getResponse"](event, allDialogs)
+        return allDialogs['mainMenu']["getResponse"](event, allDialogs)
 
     if not isNewSession(event):
         for key in allMiddlewares:
