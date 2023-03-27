@@ -19,16 +19,6 @@ def createStartInfo(history):
     }
 
 
-# {
-#     "name": "имя",
-#     "message": "сообщение",
-#     "buttons": ["trueBtn", "falseBtn"],
-#     "card": "айди картинки",
-#     "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-#     "changeStats": [[trueStats], [falseStats]], - в таком же порядке, что и в "stats".
-#           Может иметь не 2 массива, а 4 цифры - изменения стат после хода при любом выборе.
-#           Может быть None.
-# }
 def getConfig(event):
     try:
         history = globalStorage["history"]
@@ -37,13 +27,28 @@ def getConfig(event):
         userId = getUserId(event)
         if "game_" + userId in globalStorage:
             info = globalStorage["game_" + userId]
+
+            lastEpisode = getGlobalState(event, 'lastEpisode')
+            canLastChoicedArr = lastEpisode['buttons']
+            command = getCommand(event)
+            if len(canLastChoicedArr) == 2:
+                if canLastChoicedArr[0] == command:
+                    info["choice"] = 'true'
+                elif canLastChoicedArr[1] == command:
+                    info["choice"] = 'false'
+                else:
+                    return lastEpisode
+
+
+            # result['user_state_update']['lastEpisode']
         else:
             cur = globalStorage["mariaDBcur"]
             info = selectGameInfo(cur, userId)
             if not info:
                 info = createStartInfo(history)
-
+                
         episode = passEpisode(info, history, statsEnds)
+
         setInGlobalStorage("game_" + userId, info, True)
 
         config = {
@@ -69,12 +74,16 @@ def getConfig(event):
             config['buttons'] = episode['buttons'] + config['buttons']
 
         session_state = {"branch": "game"}
-
-        return {
+        
+        result = {
             "tts": config["tts"],
             "buttons": config["buttons"],
             "card": config["card"],
             "session_state": session_state,
         }
+
+        result['user_state_update']['lastEpisode'] = result
+        return result
+
     except:
         print('Эпизод:', episode)
