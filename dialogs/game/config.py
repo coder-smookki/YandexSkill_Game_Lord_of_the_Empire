@@ -35,7 +35,7 @@ def compileResultFromEpisode(episode):
         "session_state": session_state,
     }
 
-    result['user_state_update'] = {'lastEpisode': json.dumps(episode)}
+    result['user_state_update'] = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
     return result
 
 def createStartInfo(history):
@@ -77,10 +77,14 @@ def getConfig(event):
 
     # print('canLastChoicedArr:', canLastChoicedArr)
 
-    if not (canLastChoicedArr is None) and type(canLastChoicedArr) == list and len(canLastChoicedArr) >= 2:
-        if canLastChoicedArr[0] == command:
+    if not (canLastChoicedArr is None):
+        if len(canLastChoicedArr) == 1:
+            print('one button')
+            print('canLastChoicedArr:',canLastChoicedArr[0])
+            info["choice"] = 'true'
+        elif canLastChoicedArr[0] == command:
             print('true')
-            print('command:')
+            print('command:',command)
             print('canLastChoicedArr:',canLastChoicedArr[0])
             info["choice"] = 'true'
         elif canLastChoicedArr[1] == command:
