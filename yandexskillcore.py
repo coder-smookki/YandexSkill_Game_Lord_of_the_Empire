@@ -6,6 +6,7 @@ from utils.globalStorage import *
 from utils.dbHandler import *
 import os
 import threading
+import time
 
 # функция для удобного запуска фласка
 def startServer(
@@ -21,8 +22,9 @@ def startServer(
     # запуск цикла для сохранений игр в БД
     def saveGamesCycle():
         while True:
-            threading.Timer(600, saveGamesFromGlobalStorage).start() # 600 секунд = 10 минут
-
+            saveGamesFromGlobalStorage() 
+            # 600 секунд = 10 минут
+            time.sleep(5)
     thread = threading.Thread(target=saveGamesCycle)
     thread.start()
 
