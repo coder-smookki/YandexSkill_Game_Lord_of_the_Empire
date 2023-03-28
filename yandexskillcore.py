@@ -21,7 +21,7 @@ def startServer(
     # запуск цикла для сохранений игр в БД
     def saveGamesCycle():
         while True:
-            threading.Timer(3, saveGamesFromGlobalStorage).start() # 600 секунд = 10 минут
+            threading.Timer(600, saveGamesFromGlobalStorage).start() # 600 секунд = 10 минут
 
     thread = threading.Thread(target=saveGamesCycle)
     thread.start()
