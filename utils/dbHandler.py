@@ -52,7 +52,7 @@ def saveGamesFromGlobalStorage():
     for key in globalStorage:
         if key[:5] == 'game_':
             updateSave(cur, key[5:], globalStorage[key])
-            removeFromGlobalStorage(globalStorage[key])
+            removeFromGlobalStorage(key)
             count += 1
     
     return count
