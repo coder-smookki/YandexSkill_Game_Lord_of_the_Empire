@@ -18,6 +18,7 @@ sys.setrecursionlimit(5000)
 
 host = os.environ.get('HOST')
 emulator = os.environ.get('EMULATOR')
+
 if emulator == 'true':
     skillEmulate(Opening, StatsEnds, Cashed)
 else:
