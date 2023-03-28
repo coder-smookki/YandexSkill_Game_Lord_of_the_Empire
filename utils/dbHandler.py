@@ -37,12 +37,12 @@ def selectGameInfo(cur, userId):
     return gameInfo 
 
 def updateSave(cur, userId, save):
-    sql = f"""
+    sql = """
     INSERT INTO saves (userId, gameInfo)
-    VALUES ({userId}, {save})
-    ON DUPLICATE KEY UPDATE gameInfo = {save}
+    VALUES (%s, %s)
+    ON DUPLICATE KEY UPDATE gameInfo = %s
     """
-    cur.execute(sql)
+    cur.execute(sql, [userId, save, save])
 
 def saveGamesFromGlobalStorage():
     count = 0
