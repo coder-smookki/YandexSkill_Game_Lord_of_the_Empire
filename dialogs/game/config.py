@@ -44,9 +44,7 @@ def compileResultFromEpisode(episode):
         "tts": tts,
         "buttons": [
             # "Повторить ещё раз", TODO: добавить повторение
-            "Что ты умеешь?",
-            "Помощь",
-            "Назад",
+            "В главное меню",
             "Выход",
         ],
         "card": {
@@ -61,7 +59,7 @@ def compileResultFromEpisode(episode):
         config['buttons'] = episode['buttons'] + config['buttons']
         user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
     else:
-        config['buttons'] = ['В главное меню'] + config['buttons']
+        # config['buttons'] = ['В главное меню'] + config['buttons']
         user_state_update = {'lastEpisode': None}
 
     session_state = {"branch": "game"}
