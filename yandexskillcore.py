@@ -4,6 +4,7 @@ from gameCore.builder import builder
 from datetime import datetime
 from utils.globalStorage import *
 from utils.dbHandler import *
+from utils.asyncHalper import *
 import os
 import threading
 import time
@@ -25,8 +26,7 @@ def startServer(
             saveGamesFromGlobalStorage() 
             # 600 секунд = 10 минут
             time.sleep(5)
-    thread = threading.Thread(target=saveGamesCycle)
-    thread.start()
+    doFuncAsAsync(saveGamesCycle)
 
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
