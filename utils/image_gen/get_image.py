@@ -1,4 +1,5 @@
 import textwrap
+from io import BytesIO
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -113,4 +114,6 @@ def get_image(
         replica_y += font.getbbox(line)[-1]
 
     # Итог
-    return layout.tobytes()
+    img_byte_arr = BytesIO()
+    layout.save(img_byte_arr, format='PNG')
+    return img_byte_arr.getvalue()
