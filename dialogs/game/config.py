@@ -22,7 +22,7 @@ def getRandomSfx(sfx):
     return sfx[random.randint(0, len(sfx) - 1)]
 
 def compileResultFromEpisode(episode):
-    # print('EPISODE', episode)
+    print('EPISODE', episode)
     
     if episode["name"] and not ('Крестьянин' in episode["name"]):
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
