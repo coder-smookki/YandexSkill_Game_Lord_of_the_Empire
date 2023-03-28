@@ -42,6 +42,7 @@ def updateSave(cur, userId, save):
     VALUES (%s, %s)
     ON DUPLICATE KEY UPDATE gameInfo = %s
     """
+    save = json.dumps(save, ensure_ascii=False)
     cur.execute(sql, [userId, save, save])
 
 def saveGamesFromGlobalStorage():
