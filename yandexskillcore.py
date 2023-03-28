@@ -53,17 +53,6 @@ def startServer(
     # записать приложение в глобальное хранилище
     setInGlobalStorage('app', app, saveLinks=True)
 
-    # запуск цикла для сохранений игр в БД
-    def saveGamesCycle():
-        while True:
-            print('Сохранение игр...')
-            count = saveGamesFromGlobalStorage() 
-            print('Количество записанных игр:', count)
-            # 600 секунд = 10 минут
-            time.sleep(600)
-
-    doFuncAsAsync(saveGamesCycle)
-
     # создать подключение к mariadb
     dbUser = os.environ.get('DB_USER')
     dbPassword = os.environ.get('DB_PASSWORD')
@@ -76,6 +65,17 @@ def startServer(
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
     app.config["JSONIFY_MIMETYPE"] = "application/json;charset=utf-8"
+
+    # запуск цикла для сохранений игр в БД
+    def saveGamesCycle():
+        while True:
+            print('Сохранение игр...')
+            count = saveGamesFromGlobalStorage() 
+            print('Количество записанных игр:', count)
+            # 600 секунд = 10 минут
+            time.sleep(600)
+
+    doFuncAsAsync(saveGamesCycle)
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)
