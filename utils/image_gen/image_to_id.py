@@ -1,22 +1,20 @@
 import os
-from io import BytesIO
 
 import requests
 
 
-oauth_key = os.environ['OAUTH_IMAGE_KEY']
-skill_id = os.environ["SKILL_ID"]
-url = f'https://dialogs.yandex.net/api/v1/skills/{skill_id}/images/'
+def image_to_id(image: bytes) -> str | None:
+    oauth_key = os.environ.get('OAUTH_IMAGE_KEY')
+    skill_id = os.environ.get("SKILL_ID")
+    url = f'https://dialogs.yandex.net/api/v1/skills/{skill_id}/images/'
 
-
-def image_to_id(image: BytesIO) -> str | None:
     headers = {
         "Authorization": f'OAuth {oauth_key}',
     }
     yandex_response = requests.post(
         url,
         headers=headers,
-        files={'file': image.getvalue()}
+        files={'file': image}
     )
 
     if yandex_response.status_code == 429:  # Обработка момента, когда занята вся память навыка (около 2к картинок)
@@ -32,6 +30,10 @@ def image_to_id(image: BytesIO) -> str | None:
 
 
 def delete_id_from_yandex(image_id: str):
+    oauth_key = os.environ.get('OAUTH_IMAGE_KEY')
+    skill_id = os.environ.get("SKILL_ID")
+    url = f'https://dialogs.yandex.net/api/v1/skills/{skill_id}/images/'
+
     headers = {
         "Authorization": f'OAuth {oauth_key}',
     }

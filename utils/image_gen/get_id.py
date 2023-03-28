@@ -12,11 +12,12 @@ def get_id(
 ) -> str | None:
 
     image = get_image(
-        person=person,
-        replica=replica,
-        values=values,
-        changes=changes
+        person=person,  # имя
+        replica=replica,  # его речь
+        values=values,  # значение сейчас
+        changes=changes  # изменения по выбору
     )
+    # print(image)
     image_id = image_to_id(image)
 
     del_thread = Timer(10, delete_id_from_yandex, args=(image_id,))

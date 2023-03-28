@@ -3,8 +3,11 @@ from termcolor import colored
 from gameCore.builder import builder
 from datetime import datetime
 from utils.globalStorage import *
-from utils.dbHandler import connect
+from utils.dbHandler import *
+from utils.asyncHalper import *
 import os
+import threading
+import time
 
 # функция для удобного запуска фласка
 def startServer(
@@ -17,6 +20,7 @@ def startServer(
     port: int = 8443,
     handler: callable = lambda data: print("handler works!"),
 ):
+
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
     startTime = datetime.now()
@@ -61,6 +65,18 @@ def startServer(
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
     app.config["JSONIFY_MIMETYPE"] = "application/json;charset=utf-8"
+
+    # запуск цикла для сохранений игр в БД
+    def saveGamesCycle(globalStorage):
+        while True:
+            globalStorage = copy.deepcopy(globalStorage)
+            print('Сохранение игр...')
+            count = saveGamesFromGlobalStorage(globalStorage) 
+            print('Количество записанных игр:', count)
+            # 600 секунд = 10 минут
+            time.sleep(5)
+
+    doFuncAsAsync(saveGamesCycle, [globalStorage])
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)

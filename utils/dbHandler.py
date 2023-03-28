@@ -1,6 +1,6 @@
 import mariadb
 import json
-
+from utils.globalStorage import removeFromGlobalStorage
 
 def connect(user,password, databaseName):
     # Подключиться к MariaDB
@@ -37,11 +37,22 @@ def selectGameInfo(cur, userId):
     return gameInfo 
 
 def updateSave(cur, userId, save):
-    sql = f"""
+    sql = """
     INSERT INTO saves (userId, gameInfo)
-    VALUES ({userId}, {save})
-    ON DUPLICATE KEY UPDATE gameInfo = {save}
+    VALUES (%s, %s)
+    ON DUPLICATE KEY UPDATE gameInfo = %s
     """
-    cur.execute(sql)
+    save = json.dumps(save, ensure_ascii=False)
+    cur.execute(sql, [userId, save, save])
 
-
+def saveGamesFromGlobalStorage(globalStorage):
+    count = 0
+    cur = globalStorage['mariaDBcur']
+    for key in globalStorage:
+        if key[:5] == 'game_':
+            updateSave(cur, key[5:], globalStorage[key])
+            removeFromGlobalStorage(key)
+            count += 1
+    
+    return count
+    

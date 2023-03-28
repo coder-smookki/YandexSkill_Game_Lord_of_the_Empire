@@ -4,6 +4,7 @@ from utils.dbHandler import *
 from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 import random
+from utils.image_gen.get_id import get_id
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -22,23 +23,35 @@ def getRandomSfx(sfx):
 
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
-    if episode["name"]:
+    
+    if episode["name"] and not ('Крестьянин' in episode["name"]):
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
+        # print('VALUES',episode['stats'])
+        stats = episode['stats']
+        cardId = get_id(
+            person=episode["name"],
+            replica=episode["message"],
+            values=[stats['church'],stats['nation'],stats['army'],stats['coffers']],
+            changes=[0,0,0,0]
+        )
+        if cardId is None:
+            cardId = "1533899/d371aab5224c91137cfc"
     else:
         tts = getRandomSfx(sfx) + episode["message"]
+        cardId = "1533899/d371aab5224c91137cfc"
+
+
 
     config = {
         "tts": tts,
         "buttons": [
             # "Повторить ещё раз", TODO: добавить повторение
-            "Что ты умеешь?",
-            "Помощь",
-            "Назад",
+            "В главное меню",
             "Выход",
         ],
         "card": {
             "type": "BigImage",
-            "image_id": "1540737/f7f920f27d7c294e189b", # заменить потом на айди картинки
+            "image_id": cardId,
             "title": episode["name"],
             "description": episode["message"],
         },
@@ -48,7 +61,7 @@ def compileResultFromEpisode(episode):
         config['buttons'] = episode['buttons'] + config['buttons']
         user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
     else:
-        config['buttons'] = ['В главное меню'] + config['buttons']
+        # config['buttons'] = ['В главное меню'] + config['buttons']
         user_state_update = {'lastEpisode': None}
 
     session_state = {"branch": "game"}
@@ -100,37 +113,37 @@ def getConfig(event):
         canLastChoicedArr = None
 
         
-        ''.join(filter(str.isalnum, s))
+        # ''.join(filter(str.isalnum, s))
     command = getOriginalUtterance(event)
 
     # print('canLastChoicedArr:', canLastChoicedArr)
 
     if canLastChoicedArr:
         if len(canLastChoicedArr) == 1:
-            print('one button')
-            print('canLastChoicedArr:',canLastChoicedArr[0])
+            # print('one button')
+            # print('canLastChoicedArr:',canLastChoicedArr[0])
             info["choice"] = 'true'
         elif canLastChoicedArr[0] == command:
-            print('true')
-            print('command:',command)
-            print('canLastChoicedArr:',canLastChoicedArr[0])
+            # print('true')
+            # print('command:',command)
+            # print('canLastChoicedArr:',canLastChoicedArr[0])
             info["choice"] = 'true'
         elif canLastChoicedArr[1] == command:
-            print('false')
-            print('command:',command)
-            print('canLastChoicedArr:',canLastChoicedArr[1])
+            # print('false')
+            # print('command:',command)
+            # print('canLastChoicedArr:',canLastChoicedArr[1])
             info["choice"] = 'false'
         else:
-            print('none')
-            print('command:', command)
-            print('canLastChoicedArr:',canLastChoicedArr)
+            # print('none')
+            # print('command:', command)
+            # print('canLastChoicedArr:',canLastChoicedArr)
             return compileResultFromEpisode(lastEpisode)
 
     episode = passEpisode(info, history, statsEnds)
     
-    print('info before', info)
+    # print('info before', info)
     setInGlobalStorage("game_" + userId, info, True)
-    print('info after', info)
+    # print('info after', info)
 
     
     return compileResultFromEpisode(episode)

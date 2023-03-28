@@ -1,5 +1,5 @@
 from threading import Thread
-from core.utils.globalStorage import globalStorage
+from utils.globalStorage import globalStorage
 
 
 def doFuncAsAsync(func, args=[]):
