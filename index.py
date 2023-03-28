@@ -1,3 +1,5 @@
+from utils.globalStorage import globalStorage 
+
 from gameCore.episodes.Opening.Opening import *
 from gameCore.episodes.Cashed import *
 from gameCore.episodes.StatsEnds import StatsEnds
