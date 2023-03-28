@@ -23,9 +23,12 @@ def startServer(
     # запуск цикла для сохранений игр в БД
     def saveGamesCycle():
         while True:
-            saveGamesFromGlobalStorage() 
+            print('Сохранение игр...')
+            count = saveGamesFromGlobalStorage() 
+            print('Количество записанных игр:', count)
             # 600 секунд = 10 минут
             time.sleep(5)
+
     doFuncAsAsync(saveGamesCycle)
 
     # билдинг истории в словарное-представление

@@ -45,7 +45,6 @@ def updateSave(cur, userId, save):
     cur.execute(sql)
 
 def saveGamesFromGlobalStorage():
-    print('Сохранение игр.')
     count = 0
     
     cur = globalStorage['mariaDBcur']
@@ -54,5 +53,6 @@ def saveGamesFromGlobalStorage():
             updateSave(cur, key[5:], globalStorage[key])
             removeFromGlobalStorage(globalStorage[key])
             count += 1
-    print('Количество записанных игр:', count)
+    
+    return count
     
