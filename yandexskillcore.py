@@ -20,16 +20,6 @@ def startServer(
     port: int = 8443,
     handler: callable = lambda data: print("handler works!"),
 ):
-    # запуск цикла для сохранений игр в БД
-    def saveGamesCycle():
-        while True:
-            print('Сохранение игр...')
-            count = saveGamesFromGlobalStorage() 
-            print('Количество записанных игр:', count)
-            # 600 секунд = 10 минут
-            time.sleep(5)
-
-    doFuncAsAsync(saveGamesCycle)
 
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
@@ -62,6 +52,17 @@ def startServer(
 
     # записать приложение в глобальное хранилище
     setInGlobalStorage('app', app, saveLinks=True)
+
+    # запуск цикла для сохранений игр в БД
+    def saveGamesCycle():
+        while True:
+            print('Сохранение игр...')
+            count = saveGamesFromGlobalStorage() 
+            print('Количество записанных игр:', count)
+            # 600 секунд = 10 минут
+            time.sleep(600)
+
+    doFuncAsAsync(saveGamesCycle)
 
     # создать подключение к mariadb
     dbUser = os.environ.get('DB_USER')
