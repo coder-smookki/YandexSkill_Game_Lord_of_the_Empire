@@ -47,7 +47,7 @@ def updateSave(cur, userId, save):
 
 def saveGamesFromGlobalStorage():
     count = 0
-    
+    globalStorage = copy.deepcopy(globalStorage)
     cur = globalStorage['mariaDBcur']
     for key in globalStorage:
         if key[:5] == 'game_':
