@@ -24,7 +24,7 @@ def getRandomSfx(sfx):
 def compileResultFromEpisode(episode):
     # print('EPISODE', episode)
     
-    if episode["name"] and not ('Крестьянин Иакинф' in episode["name"]):
+    if episode["name"] and not ('Крестьянин' in episode["name"]):
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
         # print('VALUES',episode['stats'])
         stats = episode['stats']
@@ -34,6 +34,8 @@ def compileResultFromEpisode(episode):
             values=[stats['church'],stats['nation'],stats['army'],stats['coffers']],
             changes=[0,0,0,0]
         )
+        if cardId is None:
+            cardId = "1533899/d371aab5224c91137cfc"
     else:
         tts = getRandomSfx(sfx) + episode["message"]
         cardId = "1533899/d371aab5224c91137cfc"
