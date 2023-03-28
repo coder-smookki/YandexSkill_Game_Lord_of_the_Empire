@@ -70,10 +70,10 @@ def startServer(
     def saveGamesCycle():
         while True:
             print('Сохранение игр...')
-            count = saveGamesFromGlobalStorage() 
+            count = saveGamesFromGlobalStorage(globalStorage) 
             print('Количество записанных игр:', count)
             # 600 секунд = 10 минут
-            time.sleep(600)
+            time.sleep(5)
 
     doFuncAsAsync(saveGamesCycle)
 

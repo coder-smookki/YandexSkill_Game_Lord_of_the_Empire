@@ -45,7 +45,7 @@ def updateSave(cur, userId, save):
     save = json.dumps(save, ensure_ascii=False)
     cur.execute(sql, [userId, save, save])
 
-def saveGamesFromGlobalStorage():
+def saveGamesFromGlobalStorage(globalStorage):
     count = 0
     globalStorage = copy.deepcopy(globalStorage)
     cur = globalStorage['mariaDBcur']
