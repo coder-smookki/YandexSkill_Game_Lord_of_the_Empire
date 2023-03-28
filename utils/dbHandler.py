@@ -1,6 +1,6 @@
 import mariadb
 import json
-
+from utils.globalStorage import *
 
 def connect(user,password, databaseName):
     # Подключиться к MariaDB
@@ -44,4 +44,15 @@ def updateSave(cur, userId, save):
     """
     cur.execute(sql)
 
-
+def saveGamesFromGlobalStorage():
+    print('Сохранение игр.')
+    count = 0
+    
+    cur = globalStorage['mariaDBcur']
+    for key in globalStorage:
+        if key[:5] == 'game_':
+            updateSave(cur, key[5:], globalStorage[key])
+            removeFromGlobalStorage(globalStorage[key])
+            count += 1
+    print('Количество записанных игр:', count)
+    

@@ -3,8 +3,9 @@ from termcolor import colored
 from gameCore.builder import builder
 from datetime import datetime
 from utils.globalStorage import *
-from utils.dbHandler import connect
+from utils.dbHandler import *
 import os
+import threading
 
 # функция для удобного запуска фласка
 def startServer(
@@ -17,6 +18,14 @@ def startServer(
     port: int = 8443,
     handler: callable = lambda data: print("handler works!"),
 ):
+    # запуск цикла для сохранений игр в БД
+    def saveGamesCycle():
+        while True:
+            threading.Timer(3, saveGamesFromGlobalStorage).start() # 600 секунд = 10 минут
+
+    thread = threading.Thread(target=saveGamesCycle)
+    thread.start()
+
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
     startTime = datetime.now()
