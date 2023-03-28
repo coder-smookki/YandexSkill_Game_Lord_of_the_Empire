@@ -17,7 +17,7 @@ def get_id(
         values=values,  # значение сейчас
         changes=changes  # изменения по выбору
     )
-    print(image)
+    # print(image)
     image_id = image_to_id(image)
 
     del_thread = Timer(10, delete_id_from_yandex, args=(image_id,))

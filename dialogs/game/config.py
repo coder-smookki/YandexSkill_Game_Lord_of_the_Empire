@@ -22,11 +22,11 @@ def getRandomSfx(sfx):
     return sfx[random.randint(0, len(sfx) - 1)]
 
 def compileResultFromEpisode(episode):
-    print('EPISODE', episode)
+    # print('EPISODE', episode)
     
     if episode["name"] and not ('Крестьянин Иакинф' in episode["name"]):
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
-        print('VALUES',episode['stats'])
+        # print('VALUES',episode['stats'])
         stats = episode['stats']
         cardId = get_id(
             person=episode["name"],
@@ -118,30 +118,30 @@ def getConfig(event):
 
     if canLastChoicedArr:
         if len(canLastChoicedArr) == 1:
-            print('one button')
-            print('canLastChoicedArr:',canLastChoicedArr[0])
+            # print('one button')
+            # print('canLastChoicedArr:',canLastChoicedArr[0])
             info["choice"] = 'true'
         elif canLastChoicedArr[0] == command:
-            print('true')
-            print('command:',command)
-            print('canLastChoicedArr:',canLastChoicedArr[0])
+            # print('true')
+            # print('command:',command)
+            # print('canLastChoicedArr:',canLastChoicedArr[0])
             info["choice"] = 'true'
         elif canLastChoicedArr[1] == command:
-            print('false')
-            print('command:',command)
-            print('canLastChoicedArr:',canLastChoicedArr[1])
+            # print('false')
+            # print('command:',command)
+            # print('canLastChoicedArr:',canLastChoicedArr[1])
             info["choice"] = 'false'
         else:
-            print('none')
-            print('command:', command)
-            print('canLastChoicedArr:',canLastChoicedArr)
+            # print('none')
+            # print('command:', command)
+            # print('canLastChoicedArr:',canLastChoicedArr)
             return compileResultFromEpisode(lastEpisode)
 
     episode = passEpisode(info, history, statsEnds)
     
-    print('info before', info)
+    # print('info before', info)
     setInGlobalStorage("game_" + userId, info, True)
-    print('info after', info)
+    # print('info after', info)
 
     
     return compileResultFromEpisode(episode)
