@@ -69,6 +69,7 @@ def startServer(
     # запуск цикла для сохранений игр в БД
     def saveGamesCycle(globalStorage):
         while True:
+            globalStorage = copy.deepcopy(globalStorage)
             print('Сохранение игр...')
             count = saveGamesFromGlobalStorage(globalStorage) 
             print('Количество записанных игр:', count)
