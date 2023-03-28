@@ -67,7 +67,7 @@ def startServer(
     app.config["JSONIFY_MIMETYPE"] = "application/json;charset=utf-8"
 
     # запуск цикла для сохранений игр в БД
-    def saveGamesCycle():
+    def saveGamesCycle(globalStorage):
         while True:
             print('Сохранение игр...')
             count = saveGamesFromGlobalStorage(globalStorage) 
@@ -75,7 +75,7 @@ def startServer(
             # 600 секунд = 10 минут
             time.sleep(5)
 
-    doFuncAsAsync(saveGamesCycle)
+    doFuncAsAsync(saveGamesCycle, [globalStorage])
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)

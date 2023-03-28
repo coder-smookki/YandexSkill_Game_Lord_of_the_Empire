@@ -1,6 +1,6 @@
 import mariadb
 import json
-from utils.globalStorage import *
+from utils.globalStorage import removeFromGlobalStorage
 
 def connect(user,password, databaseName):
     # Подключиться к MariaDB
@@ -47,7 +47,6 @@ def updateSave(cur, userId, save):
 
 def saveGamesFromGlobalStorage(globalStorage):
     count = 0
-    globalStorage = copy.deepcopy(globalStorage)
     cur = globalStorage['mariaDBcur']
     for key in globalStorage:
         if key[:5] == 'game_':
