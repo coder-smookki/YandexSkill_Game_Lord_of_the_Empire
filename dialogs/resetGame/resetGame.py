@@ -41,4 +41,4 @@ def isTriggered(event):
         or "сброс" in getCommand(event)
     )
 
-backDialog = {"getResponse": getResponse, "isTriggered": isTriggered}
+resetGame = {"getResponse": getResponse, "isTriggered": isTriggered}
