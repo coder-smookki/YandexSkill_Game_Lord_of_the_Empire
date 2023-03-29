@@ -66,17 +66,17 @@ def startServer(
     app.config["JSON_AS_ASCII"] = False
     app.config["JSONIFY_MIMETYPE"] = "application/json;charset=utf-8"
 
-    # запуск цикла для сохранений игр в БД
-    def saveGamesCycle(globalStorage):
-        while True:
-            globalStorage = copy.deepcopy(globalStorage)
-            print('Сохранение игр...')
-            count = saveGamesFromGlobalStorage(globalStorage) 
-            print('Количество записанных игр:', count)
-            # 600 секунд = 10 минут
-            time.sleep(5)
+    # # запуск цикла для сохранений игр в БД
+    # def saveGamesCycle(globalStorage):
+    #     while True:
+    #         globalStorage = copy.deepcopy(globalStorage)
+    #         print('Сохранение игр...')
+    #         count = saveGamesFromGlobalStorage(globalStorage) 
+    #         print('Количество записанных игр:', count)
+    #         # 600 секунд = 10 минут
+    #         time.sleep(5)
 
-    doFuncAsAsync(saveGamesCycle, [globalStorage])
+    # doFuncAsAsync(saveGamesCycle, [globalStorage])
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)
