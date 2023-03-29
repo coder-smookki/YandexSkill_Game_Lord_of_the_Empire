@@ -65,7 +65,7 @@ def compileResultFromEpisode(episode):
         config['buttons'] = episode['buttons'] + config['buttons']
         
     user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
-    
+
     session_state = {"branch": "game"}
     
     result = {
@@ -146,7 +146,7 @@ def getConfig(event):
 
     episode = passEpisode(info, history, statsEnds)
 
-    if type(episode) == 'its all':
+    if episode == 'its all':
         print('its all EPIZODE')
         setGlobalStateInEvent(event, 'lastEpisode', None)
         removeFromGlobalStorage("game_" + userId)
