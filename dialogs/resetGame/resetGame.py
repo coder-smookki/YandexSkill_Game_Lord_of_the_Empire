@@ -16,7 +16,8 @@ def getResponse(event, allDialogs=None):
     ):
         return getDialogResponseFromEnd(event, 2, allDialogs)
     userId = getUserId(event)
-    removeFromGlobalStorage("game_" + userId)
+    if "game_" + userId in globalStorage:
+        removeFromGlobalStorage("game_" + userId)
     response = createResponse(event, getConfig(event))
     setGlobalStatesInResponse(response, {"lastEpisode": None})
     return response
