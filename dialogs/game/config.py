@@ -110,6 +110,8 @@ def getConfig(event):
         if not info:
             info = createStartInfo(history)
 
+    print('INFO',info)
+
     if haveGlobalState(event, 'lastEpisode'):
         lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
         canLastChoicedArr = lastEpisode['buttons']
@@ -154,5 +156,4 @@ def getConfig(event):
     setInGlobalStorage("game_" + userId, info, True)
     # print('info after', info)
 
-    
     return compileResultFromEpisode(episode)
