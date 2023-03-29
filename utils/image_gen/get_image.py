@@ -1,4 +1,4 @@
-import textwrap
+# import textwrap
 from io import BytesIO
 
 from pathlib import Path
@@ -6,8 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Всякий бред, который нужен по дефолтку
 MAX_VALUE = 100
-no_color = (38, 23, 5)  # 261705
-ok_color = (247, 242, 181)
+no_color = (138, 124, 81)
+ok_color = (249, 246, 195)
 back_color = (192, 172, 98)
 green = (0, 255, 0)
 
