@@ -17,6 +17,7 @@ persons_path = images_path / 'persons'
 font = ImageFont.truetype(str(parent_path / 'times.ttf'), 40)  # Размер шрифта крутить тут
 green_arrow = Image.open(images_path / 'green_arrow.png', mode='r', formats=["PNG"])
 red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
+default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])
 
 persons = {
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel.png', mode='r', formats=["PNG"]),
@@ -54,7 +55,7 @@ def get_image(
     layout = Image.new("RGBA", (layout_width, layout_height), back_color)
 
     # Открытие и наложение персонажа
-    person = persons[person]
+    person = persons.get(person, default_image)
     person_width, person_height = person.size
     person_x, person_y = (layout_width - person_width) // 2, 0
     layout.paste(person, (person_x, person_y))
