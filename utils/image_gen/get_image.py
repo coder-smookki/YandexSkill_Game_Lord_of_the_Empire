@@ -31,10 +31,33 @@ persons = {
     "Палач Никифор": Image.open(persons_path / "palach.png", mode='r', formats=["PNG"]),
     "Шут Радмир": Image.open(persons_path / "shit.png", mode='r', formats=["PNG"]),
     "Дочь царя": Image.open(persons_path / "princess.png", mode='r', formats=["PNG"]),
-    "Кондрат": Image.open(persons_path / "desnica.png",  mode='r', formats=["PNG"]),
+    "Кондрат": Image.open(persons_path / "desnica.png", mode='r', formats=["PNG"]),
     "Дракон": Image.open(persons_path / "dragon.png", mode='r', formats=["PNG"]),
     "Король": Image.open(persons_path / "king.png", mode='r', formats=["PNG"]),
     "Кошка": Image.open(persons_path / 'cat.png', mode='r', formats=["PNG"]),
+}
+
+persons600 = {
+    "Кошка с вселившимся демоном": Image.open(persons_path / 'cat_demon600.png', mode='r', formats=["PNG"]),
+    "Крестьянин Александр": Image.open(persons_path / "krestyanin_alexsandr600.png", mode='r', formats=["PNG"]),
+    "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel600.png', mode='r', formats=["PNG"]),
+    "Дух прошлого короля": Image.open(persons_path / "ghostking600.png", mode='r', formats=["PNG"]),
+    "Крестьянин Иакинф": Image.open(persons_path / "krestyanin_iakinf600.png", mode='r', formats=["PNG"]),
+    "Разведчик Кирилл": Image.open(persons_path / "razvedchik600.png", mode='r', formats=["PNG"]),
+    "Командир Родион": Image.open(persons_path / "rodion600.png", mode='r', formats=["PNG"]),
+    "Господин Авдей": Image.open(persons_path / "Avdey600.png", mode='r', formats=["PNG"]),
+    "Палач Никифор": Image.open(persons_path / "palach600.png", mode='r', formats=["PNG"]),
+    "Шут Радмир": Image.open(persons_path / "shit600.png", mode='r', formats=["PNG"]),
+    "Дочь царя": Image.open(persons_path / "princess600.png", mode='r', formats=["PNG"]),
+    "Кондрат": Image.open(persons_path / "desnica600.png", mode='r', formats=["PNG"]),
+    "Дракон": Image.open(persons_path / "dragon600.png", mode='r', formats=["PNG"]),
+    "Король": Image.open(persons_path / "king600.png", mode='r', formats=["PNG"]),
+    "Кошка": Image.open(persons_path / 'cat600.png', mode='r', formats=["PNG"]),
+}
+
+backgrounds = {
+    'light_background': Image.open(images_path / f'light_background.png', mode='r', formats=["PNG"]),
+    'light_background2': Image.open(images_path / f'light_background2.png', mode='r', formats=["PNG"]),
 }
 
 
@@ -58,7 +81,7 @@ def get_image(
     """
 
     # Открытие шаблона и создание изображения (макета), на которое сначала будут накладываться картинки
-    background = Image.open(images_path / f'{background}.png', mode='r', formats=["PNG"])
+    background = backgrounds[background]
     layout_width, layout_height = background.size
     layout = Image.new("RGBA", (layout_width, layout_height), back_color)
 
@@ -126,3 +149,83 @@ def get_image(
     img_byte_arr = BytesIO()
     layout.save(img_byte_arr, format='PNG')
     return img_byte_arr.getvalue()
+
+
+# Константы для второго генератора!!!
+small_border = 44
+big_border = 117.5
+block = 600
+fract_height = 220
+fract_width = 300
+step = 25
+big_step = 35
+
+
+def get_image_2(
+        *,
+        background: str = 'light_background2',
+        person: str,
+        replica: str,
+        values: list[int] | tuple[int, int, int, int],
+        changes: list[int] | tuple[int, int, int, int],
+) -> bytes:
+    """
+    Генератор картинок три тысячи инатор (второй шаблон)
+
+    :param background: Название файла с фоном
+    :param person: Название файла с персонажем
+    :param replica: Реплика персонажа
+    :param values: Текущие значения фракции, в порядке Церковь, Народ, Армия, Казна
+    :param changes: Плюс или минус куда, порядок тот же.
+    :return:
+    """
+
+    # Открытие шаблона и создание изображения (макета), на которое сначала будут накладываться картинки
+    background = backgrounds[background]
+    layout_width, layout_height = background.size
+    layout = Image.new("RGBA", (layout_width, layout_height), back_color)
+
+    # Открытие и наложение персонажа
+
+    person = persons600.get(person, default_image)
+    person_x, person_y = int(big_border * 2) + block, small_border
+    layout.paste(person, (person_x, person_y))
+
+    # Создание прямоугольников для фракций
+    rects = [Image.new(
+        "RGBA",
+        (fract_width, fract_height),
+        ok_color
+    )
+        for _ in range(4)
+    ]
+
+    # Рисование нужных цветов
+    for value, rect in zip(values, rects):
+        r_draw = ImageDraw.Draw(rect)
+        width, height = rect.size
+        r_draw.rectangle((0, 0, rect.width, int(height * (MAX_VALUE - value) / MAX_VALUE)), no_color)
+
+    # Расположение прямоугольников сзади фракций
+    r1, r2, r3, r4 = rects
+    layout.paste(r1, (int(big_border), small_border + step))
+    layout.paste(r2, (int(big_border) + fract_width, small_border + step))
+    layout.paste(r3, (int(big_border), small_border + step + fract_height + big_step))
+    layout.paste(r4, (int(big_border) + fract_width, small_border + step + fract_height + big_step))
+
+    # Наложение шаблона на макет, в этот момент картинка уже с персонажем и фракциями.
+    layout.paste(background, (0, 0), background)
+
+    # Итог
+    img_byte_arr = BytesIO()
+    layout.save(img_byte_arr, format='PNG')
+    layout.show()
+    return img_byte_arr.getvalue()
+
+
+get_image_2(
+    person='Дракон',
+    replica='123',
+    values=[44, 12, 90, 65],
+    changes=[0, 0, 0, 0]
+)
