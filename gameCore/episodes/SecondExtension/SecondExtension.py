@@ -124,7 +124,6 @@ SecondExtension = """
                                 false:
                                     "{ThirdExtension}"
                     false:
-                        "Вы разворачиваетесь и убегаете.. // Продолжить // None // 0 0 0 0 // None"
                         "{ThirdExtension}"
             false:
                 "[bundle]"
@@ -150,7 +149,6 @@ SecondExtension = """
                                 false:
                                     "{ThirdExtension}"
                     false:
-                        "Вы разворачиваетесь и убегаете.. // Продолжить // None // 0 0 0 0 // None"
                         "{ThirdExtension}"     
         false:
             "[bundle]"
@@ -176,7 +174,6 @@ SecondExtension = """
                             false:
                                 "{ThirdExtension}"
                     false:
-                        "Вы разворачиваетесь и убегаете.. // Продолжить // None // 0 0 0 0 // None"
                         "{ThirdExtension}"
                 false:
                     "{ThirdExtension}"
