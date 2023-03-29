@@ -118,6 +118,7 @@ def getConfig(event):
         canLastChoicedArr = None
 
     if not lastEpisode or len(canLastChoicedArr) == 0:
+        setGlobalStateInEvent(event, 'lastEpisode', None)
         removeFromGlobalStorage("game_" + userId)
         return getConfig(event)
 
