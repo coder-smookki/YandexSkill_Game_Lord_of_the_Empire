@@ -6,9 +6,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Всякий бред, который нужен по дефолтку
 MAX_VALUE = 100
-no_color = (98, 87, 56)
+no_color = (255, 220, 130)  # FFDC82
 ok_color = (247, 242, 181)
-back_color = (255, 220, 130)  # FFDC82
+back_color = (192, 172, 98)
 green = (0, 255, 0)
 
 parent_path = Path(__file__).parent.absolute()
