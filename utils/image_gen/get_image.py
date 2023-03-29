@@ -20,8 +20,11 @@ red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
 default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])  # заглушка
 
 persons = {
+    "Кошка с вселившимся демоном": Image.open(persons_path / 'cat_demon.png', mode='r', formats=["PNG"]),
+    "Крестьянин Александр": Image.open(persons_path / "krestyanin_alexsandr.png", mode='r', formats=["PNG"]),
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel.png', mode='r', formats=["PNG"]),
     "Дух прошлого короля": Image.open(persons_path / "ghostking.png", mode='r', formats=["PNG"]),
+    "Крестьянин Иакинф": Image.open(persons_path / "krestyanin_iakinf.png", mode='r', formats=["PNG"]),
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik.png", mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey.png", mode='r', formats=["PNG"]),
@@ -30,6 +33,7 @@ persons = {
     "Кондрат": Image.open(persons_path / "desnica.png",  mode='r', formats=["PNG"]),
     "Дракон": Image.open(persons_path / "dragon.png", mode='r', formats=["PNG"]),
     "Король": Image.open(persons_path / "king.png", mode='r', formats=["PNG"]),
+    "Кошка": Image.open(persons_path / 'cat.png', mode='r', formats=["PNG"]),
 }
 
 
