@@ -17,7 +17,7 @@ def startServer(
     route: str = "/",
     methods: list[str] = ["POST"],
     host: str = "localhost",
-    port: int = 8443,
+    port: int = 2083,
     handler: callable = lambda data: print("handler works!"),
 ):
 
