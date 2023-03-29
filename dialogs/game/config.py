@@ -24,7 +24,11 @@ def getRandomSfx(sfx):
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
 
-    if episode != "its all" and episode["name"] and not ('Крестьянин' in episode["name"]):
+    if episode == "its all":
+        print('getted its all episode')
+        return "its all"
+
+    if episode["name"] and not ('Крестьянин' in episode["name"]):
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
         # print('VALUES',episode['stats'])
         stats = episode['stats']
@@ -110,7 +114,10 @@ def getConfig(event):
     else:
         canLastChoicedArr = None
 
-        
+    if canLastChoicedArr and len(canLastChoicedArr) == 0:
+        removeFromGlobalStorage("game_" + userId)
+        return getConfig(event)
+
         # ''.join(filter(str.isalnum, s))
     command = getOriginalUtterance(event)
 
@@ -139,9 +146,6 @@ def getConfig(event):
 
     episode = passEpisode(info, history, statsEnds)
 
-    if type(episode) == str:
-        setInGlobalStorage("game_" + userId, None, True)
-        return getConfig(event)
     # print('info before', info)
     setInGlobalStorage("game_" + userId, info, True)
     # print('info after', info)
