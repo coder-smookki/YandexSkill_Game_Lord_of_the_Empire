@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Всякий бред, который нужен по дефолтку
 MAX_VALUE = 100
-no_color = (255, 220, 130)  # FFDC82
+no_color = (38, 23, 5)  # 261705
 ok_color = (247, 242, 181)
 back_color = (192, 172, 98)
 green = (0, 255, 0)
