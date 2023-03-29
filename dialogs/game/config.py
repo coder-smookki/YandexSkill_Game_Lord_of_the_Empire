@@ -114,7 +114,7 @@ def getConfig(event):
     else:
         canLastChoicedArr = None
 
-    if canLastChoicedArr and len(canLastChoicedArr) == 0:
+    if not canLastChoicedArr and len(canLastChoicedArr) == 0:
         removeFromGlobalStorage("game_" + userId)
         return getConfig(event)
 
