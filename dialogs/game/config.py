@@ -23,7 +23,7 @@ def getRandomSfx(sfx):
 
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
-    
+
     if episode != "its all" and episode["name"] and not ('Крестьянин' in episode["name"]):
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
         # print('VALUES',episode['stats'])
@@ -60,9 +60,6 @@ def compileResultFromEpisode(episode):
     if len(episode['buttons']) != 0:
         config['buttons'] = episode['buttons'] + config['buttons']
         user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
-    else:
-        # config['buttons'] = ['В главное меню'] + config['buttons']
-        user_state_update = {'lastEpisode': None}
 
     session_state = {"branch": "game"}
     
@@ -141,7 +138,10 @@ def getConfig(event):
             return compileResultFromEpisode(lastEpisode)
 
     episode = passEpisode(info, history, statsEnds)
-    
+
+    if type(episode) == str:
+        setInGlobalStorage("game_" + userId, None, True)
+        return getConfig(event)
     # print('info before', info)
     setInGlobalStorage("game_" + userId, info, True)
     # print('info after', info)
