@@ -23,8 +23,12 @@ def getRandomSfx(sfx):
 
 def compileResultFromEpisode(episode):
     print('EPISODE', episode)
-    
-    if episode["name"] and not ('Крестьянин' in episode["name"]):
+
+    if episode == "its all":
+        print('getted its all episode')
+        return "its all"
+
+    if episode["name"]:
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
         # print('VALUES',episode['stats'])
         stats = episode['stats']
@@ -59,10 +63,8 @@ def compileResultFromEpisode(episode):
 
     if len(episode['buttons']) != 0:
         config['buttons'] = episode['buttons'] + config['buttons']
-        user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
-    else:
-        # config['buttons'] = ['В главное меню'] + config['buttons']
-        user_state_update = {'lastEpisode': None}
+        
+    user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
 
     session_state = {"branch": "game"}
     
@@ -72,8 +74,8 @@ def compileResultFromEpisode(episode):
         "card": config["card"],
         "session_state": session_state,
     }
-
-    result['user_state_update'] = user_state_update
+    if user_state_update:
+        result['user_state_update'] = user_state_update
     return result
 
 def createStartInfo(history):
@@ -101,18 +103,21 @@ def getConfig(event):
         info = globalStorage["game_" + userId]
         # result['user_state_update']['lastEpisode']
     else:
-        cur = globalStorage["mariaDBcur"]
-        info = selectGameInfo(cur, userId)
+        # cur = globalStorage["mariaDBcur"]
+        # info = selectGameInfo(cur, userId)
+        info = False
         if not info:
             info = createStartInfo(history)
 
-    if haveGlobalState(event, 'lastEpisode'):
+    print('INFO',info)
+
+    if haveGlobalState(event, 'lastEpisode') and not (getGlobalState(event, 'lastEpisode') is None):
         lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
         canLastChoicedArr = lastEpisode['buttons']
     else:
+        lastEpisode = None
         canLastChoicedArr = None
 
-        
         # ''.join(filter(str.isalnum, s))
     command = getOriginalUtterance(event)
 
@@ -140,10 +145,15 @@ def getConfig(event):
             return compileResultFromEpisode(lastEpisode)
 
     episode = passEpisode(info, history, statsEnds)
-    
+
+    if episode == 'its all':
+        print('its all EPIZODE')
+        setGlobalStateInEvent(event, 'lastEpisode', None)
+        removeFromGlobalStorage("game_" + userId)
+        return getConfig(event)
+
     # print('info before', info)
     setInGlobalStorage("game_" + userId, info, True)
     # print('info after', info)
 
-    
     return compileResultFromEpisode(episode)

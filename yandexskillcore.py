@@ -3,7 +3,7 @@ from termcolor import colored
 from gameCore.builder import builder
 from datetime import datetime
 from utils.globalStorage import *
-from utils.dbHandler import *
+# from utils.dbHandler import *
 from utils.asyncHalper import *
 import os
 import threading
@@ -53,30 +53,30 @@ def startServer(
     # записать приложение в глобальное хранилище
     setInGlobalStorage('app', app, saveLinks=True)
 
-    # создать подключение к mariadb
-    dbUser = os.environ.get('DB_USER')
-    dbPassword = os.environ.get('DB_PASSWORD')
-    dbName = os.environ.get('DB_NAME')
-    cur = connect(dbUser, dbPassword, dbName)
+    # # создать подключение к mariadb
+    # dbUser = os.environ.get('DB_USER')
+    # dbPassword = os.environ.get('DB_PASSWORD')
+    # dbName = os.environ.get('DB_NAME')
+    # cur = connect(dbUser, dbPassword, dbName)
 
-    # записать курсор
-    setInGlobalStorage('mariaDBcur', cur, saveLinks=True)
+    # # записать курсор
+    # setInGlobalStorage('mariaDBcur', cur, saveLinks=True)
 
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
     app.config["JSONIFY_MIMETYPE"] = "application/json;charset=utf-8"
 
-    # запуск цикла для сохранений игр в БД
-    def saveGamesCycle(globalStorage):
-        while True:
-            globalStorage = copy.deepcopy(globalStorage)
-            print('Сохранение игр...')
-            count = saveGamesFromGlobalStorage(globalStorage) 
-            print('Количество записанных игр:', count)
-            # 600 секунд = 10 минут
-            time.sleep(5)
+    # # запуск цикла для сохранений игр в БД
+    # def saveGamesCycle(globalStorage):
+    #     while True:
+    #         globalStorage = copy.deepcopy(globalStorage)
+    #         print('Сохранение игр...')
+    #         count = saveGamesFromGlobalStorage(globalStorage) 
+    #         print('Количество записанных игр:', count)
+    #         # 600 секунд = 10 минут
+    #         time.sleep(5)
 
-    doFuncAsAsync(saveGamesCycle, [globalStorage])
+    # doFuncAsAsync(saveGamesCycle, [globalStorage])
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)

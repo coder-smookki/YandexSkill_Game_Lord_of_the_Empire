@@ -8,9 +8,12 @@ from dialogs.game.game import game
 from dialogs.whoAreCreators.whoAreCreators import whoAreCreators
 from dialogs.howToUse.howToUse import howToUse
 from dialogs.howToContactDevelopers.howToContactDevelopers import howToContactDeveloveps
+from dialogs.resetGame.resetGame import resetGame
+
 allDialogs = {
     "exitConfirm": exitConfirm,
     'game': game,
+    'resetGame': resetGame,
     "whoAreCreators": whoAreCreators,
     "howToUse": howToUse,
     "howToContactDevelopers": howToContactDeveloveps,
