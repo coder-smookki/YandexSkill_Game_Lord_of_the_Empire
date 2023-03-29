@@ -63,10 +63,9 @@ def compileResultFromEpisode(episode):
 
     if len(episode['buttons']) != 0:
         config['buttons'] = episode['buttons'] + config['buttons']
-        user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
-    else:
-        user_state_update = {'lastEpisode': None}
-
+        
+    user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
+    
     session_state = {"branch": "game"}
     
     result = {
