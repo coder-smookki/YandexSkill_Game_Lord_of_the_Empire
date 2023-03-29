@@ -28,6 +28,7 @@ persons = {
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik.png", mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey.png", mode='r', formats=["PNG"]),
+    "Палач Никифор": Image.open(persons_path / "palach.png", mode='r', formats=["PNG"]),
     "Шут Радмир": Image.open(persons_path / "shit.png", mode='r', formats=["PNG"]),
     "Дочь царя": Image.open(persons_path / "princess.png", mode='r', formats=["PNG"]),
     "Кондрат": Image.open(persons_path / "desnica.png",  mode='r', formats=["PNG"]),
