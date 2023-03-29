@@ -101,8 +101,9 @@ def getConfig(event):
         info = globalStorage["game_" + userId]
         # result['user_state_update']['lastEpisode']
     else:
-        cur = globalStorage["mariaDBcur"]
-        info = selectGameInfo(cur, userId)
+        # cur = globalStorage["mariaDBcur"]
+        # info = selectGameInfo(cur, userId)
+        info = False
         if not info:
             info = createStartInfo(history)
 
