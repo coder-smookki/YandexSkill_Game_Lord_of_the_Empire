@@ -28,7 +28,7 @@ def compileResultFromEpisode(episode):
         print('getted its all episode')
         return "its all"
 
-    if episode["name"] and not ('Крестьянин' in episode["name"]):
+    if episode["name"]:
         tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
         # print('VALUES',episode['stats'])
         stats = episode['stats']
