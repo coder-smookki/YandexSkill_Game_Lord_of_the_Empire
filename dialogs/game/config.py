@@ -114,9 +114,10 @@ def getConfig(event):
         lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
         canLastChoicedArr = lastEpisode['buttons']
     else:
+        lastEpisode = None
         canLastChoicedArr = None
 
-    if not canLastChoicedArr or len(canLastChoicedArr) == 0:
+    if not lastEpisode or len(canLastChoicedArr) == 0:
         removeFromGlobalStorage("game_" + userId)
         return getConfig(event)
 
