@@ -66,7 +66,7 @@ def compileResultFromEpisode(episode):
         user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
     else:
         user_state_update = None
-        
+
     session_state = {"branch": "game"}
     
     result = {
@@ -116,7 +116,7 @@ def getConfig(event):
     else:
         canLastChoicedArr = None
 
-    if not canLastChoicedArr and len(canLastChoicedArr) == 0:
+    if not canLastChoicedArr or len(canLastChoicedArr) == 0:
         removeFromGlobalStorage("game_" + userId)
         return getConfig(event)
 
