@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 MAX_VALUE = 100
 no_color = (98, 87, 56)
 ok_color = (247, 242, 181)
-back_color = (192, 172, 98)
+back_color = (255, 220, 130)  # FFDC82
 green = (0, 255, 0)
 
 parent_path = Path(__file__).parent.absolute()
@@ -17,7 +17,7 @@ persons_path = images_path / 'persons'
 font = ImageFont.truetype(str(parent_path / 'times.ttf'), 40)  # Размер шрифта крутить тут
 green_arrow = Image.open(images_path / 'green_arrow.png', mode='r', formats=["PNG"])
 red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
-default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])
+default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])  # заглушка
 
 persons = {
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel.png', mode='r', formats=["PNG"]),
@@ -25,7 +25,9 @@ persons = {
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik.png", mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey.png", mode='r', formats=["PNG"]),
+    "Дочь царя": Image.open(persons_path / "princess.png", mode='r', formats=["PNG"]),
     "Кондрат": Image.open(persons_path / "desnica.png",  mode='r', formats=["PNG"]),
+    "Дракон": Image.open(persons_path / "dragon.png", mode='r', formats=["PNG"]),
     "Король": Image.open(persons_path / "king.png", mode='r', formats=["PNG"]),
 }
 
@@ -108,11 +110,11 @@ def get_image(
         y = i // 2 * values_height // 2 + (step - arrow.height) // 2
         layout.paste(arrow, (x, y), arrow)
 
-    # Наложение текста на шаблон
-    replica_x, replica_y = layout_width * 0.7, layout_height * 0.05
-    for line in textwrap.wrap(replica, width=25):  # Ширину крутить тут, если текст вышел за границу, щас ~380 влезает
-        draw.text((replica_x, replica_y), line, font=font, fill="#000000")
-        replica_y += font.getbbox(line)[-1]
+    # Наложение текста на шаблон (?)
+    # replica_x, replica_y = layout_width * 0.7, layout_height * 0.05
+    # for line in textwrap.wrap(replica, width=25):  # Ширину крутить тут, если текст вышел за границу, щас ~380 влезает
+    #     draw.text((replica_x, replica_y), line, font=font, fill="#000000")
+    #     replica_y += font.getbbox(line)[-1]
 
     # Итог
     img_byte_arr = BytesIO()
