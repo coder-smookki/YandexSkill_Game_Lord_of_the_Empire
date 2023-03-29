@@ -119,12 +119,6 @@ def getConfig(event):
         lastEpisode = None
         canLastChoicedArr = None
 
-    if not lastEpisode or len(canLastChoicedArr) == 0:
-        print('NO LAST EPIZODE')
-        setGlobalStateInEvent(event, 'lastEpisode', None)
-        removeFromGlobalStorage("game_" + userId)
-        return getConfig(event)
-
         # ''.join(filter(str.isalnum, s))
     command = getOriginalUtterance(event)
 
@@ -152,6 +146,12 @@ def getConfig(event):
             return compileResultFromEpisode(lastEpisode)
 
     episode = passEpisode(info, history, statsEnds)
+
+    if type(episode) == 'its all':
+        print('its all EPIZODE')
+        setGlobalStateInEvent(event, 'lastEpisode', None)
+        removeFromGlobalStorage("game_" + userId)
+        return getConfig(event)
 
     # print('info before', info)
     setInGlobalStorage("game_" + userId, info, True)
