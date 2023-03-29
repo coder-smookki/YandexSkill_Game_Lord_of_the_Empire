@@ -73,8 +73,8 @@ def compileResultFromEpisode(episode):
         "card": config["card"],
         "session_state": session_state,
     }
-
-    result['user_state_update'] = user_state_update
+    if user_state_update:
+        result['user_state_update'] = user_state_update
     return result
 
 def createStartInfo(history):
