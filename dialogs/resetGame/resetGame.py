@@ -2,8 +2,8 @@ from utils.triggerHelper import *
 from utils.branchHandler import *
 from utils.responseHelper import *
 from .config import *
-from utils.globalStorage import *
-
+from utils.dbHandler import *
+from utils.globalStorage import globalStorage
 
 def getResponse(event, allDialogs=None):
     if isInContext(event, "resetGame") and (
@@ -16,8 +16,8 @@ def getResponse(event, allDialogs=None):
     ):
         return getDialogResponseFromEnd(event, 2, allDialogs)
     userId = getUserId(event)
-    if "game_" + userId in globalStorage:
-        removeFromGlobalStorage("game_" + userId)
+    conn = globalStorage['mariaDBconn']
+    removeSave(conn, userId)
     response = createResponse(event, getConfig(event))
     setGlobalStatesInResponse(response, {"lastEpisode": None})
     return response
