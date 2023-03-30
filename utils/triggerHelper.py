@@ -12,6 +12,8 @@ def haveGlobalState(event, state):
 def isNewSession(event):
     return event['session']['new'] is True
 
+def isAuthorized(event):
+    return 'session' in event and  'user' in event["session"] and  "user_id" in event["session"]["user"]
 
 # является ли хоть один элемент массива подстрокой пришедшей команды
 def isInCommandOr(event, arr):

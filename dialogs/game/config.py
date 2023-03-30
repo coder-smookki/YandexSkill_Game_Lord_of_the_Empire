@@ -93,7 +93,9 @@ def compileConfigFromEpisode(episode, haveInterface):
     else:
         # создать конфиг для устройств без интерфейса
         config = {
+            'message': 'zxc',
             "tts": tts,
+            'buttons': ['first button aboba','second button aboba']
         }
         
         # вынести текущие фракции в виде строки
@@ -110,7 +112,7 @@ def compileConfigFromEpisode(episode, haveInterface):
         # вынести из массива кнопки в виде строки
         buttonsStr = ""
         for button in episode["buttons"]:
-            buttonsStr += button
+            buttonsStr += button + ', '
 
         # добавить в tts кнопки и статы
         config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
@@ -139,29 +141,37 @@ def createStartInfo(history):
     }
 
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
+    # разделить по пробелам команду
     commandArr = command.split(' ')
-    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', firstLastChoiceCommand.lower()).split(' ')
-    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', secondLastChoiceCommand.lower()).split(' ')
 
-    print('Command',commandArr)
-    print('FirstChoice',firstLastChoiceCommandArr)
-    print('SecondChoice',secondLastChoiceCommandArr)
+    # убрать все, кроме букв и пробелов в строках, потом разделить по пробелам
+    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', firstLastChoiceCommand.lower()).split(' ')
+    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', secondLastChoiceCommand.lower()).split(' ')
 
-
+    # пройтись по всем словам команды
     for word in commandArr:
+        # есть слово в массиве с первым выбором
         isInFirst = word in firstLastChoiceCommandArr
+        
+        # есть слово в массиве со вторым выбором
         isInSecond = word in secondLastChoiceCommandArr
 
+        # если есть в первом, но нет во втором 
         if isInFirst and not isInSecond:
             return 'true'
+        # если есть во втором, но нет в первом
         if isInSecond and not isInFirst:
             return 'false'
 
+    # если не нашлось единоличного совпадения
     return None
 
 def getConfig(event, needCreateNewInfo=False):
-    # haveUserInterface = haveInterface(event)
-    haveUserInterface = False
+    haveUserInterface = haveInterface(event)
+    # haveUserInterface = False
+
+    # соединение с БД
+    conn = globalStorage["mariaDBconn"]
 
     # вся история
     history = globalStorage["history"]
@@ -178,9 +188,6 @@ def getConfig(event, needCreateNewInfo=False):
         insertSave(conn, userId, info)
 
     else:
-        # соединение с БД
-        conn = globalStorage["mariaDBconn"]
-
         # получить инфо по айди юзера
         info = selectGameInfo(conn, userId)
 

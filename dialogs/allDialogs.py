@@ -21,5 +21,5 @@ allDialogs = {
     "whatYouCan": whatYouCan,
     "help": help,
     "backDialog": backDialog,
-    "mainMenu": mainMenu,
+    "mainMenu": mainMenu
 }
