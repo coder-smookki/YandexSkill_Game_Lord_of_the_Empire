@@ -39,8 +39,8 @@ def selectGameInfo(conn, userId):
     # gameInfo = cur['gameInfo']
     for (gameInfo) in cur:
     # print(f"First Name: {first_name}, Last Name: {last_name}")
-        print('gameInfo db',type(gameInfo[0]))
-        return gameInfo[0]
+        print('gameInfo db',gameInfo[0])
+        return json.loads(gameInfo[0], ensure_ascii=False)
 
 def updateSave(conn, userId, save):
     cur = conn.cursor()
