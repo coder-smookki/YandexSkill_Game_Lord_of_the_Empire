@@ -235,9 +235,9 @@ def get_image_2(
     return img_byte_arr.getvalue()
 
 
-get_image_2(
-    person='Дракон',
-    replica='123',
-    values=[44, 12, 90, 65],
-    changes=[0, 0, 0, 0]
-)
+# get_image_2(
+#     person='Дракон',
+#     replica='123',
+#     values=[44, 12, 90, 65],
+#     changes=[0, 0, 0, 0]
+# )
