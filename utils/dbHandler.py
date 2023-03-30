@@ -36,10 +36,10 @@ def connect(user, password, databaseName):
 def selectGameInfo(conn, userId):
     cur = conn.cursor()
     cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
-    gameInfo = cur.gameInfo
-    print(f'selected save',gameInfo)
-    
-    return gameInfo
+    gameInfo = cur['gameInfo']
+    for (gameInfo) in cur:
+    # print(f"First Name: {first_name}, Last Name: {last_name}")
+        return gameInfo
 
 def updateSave(conn, userId, save):
     cur = conn.cursor()
