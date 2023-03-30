@@ -30,6 +30,9 @@ def isInCommandAnd(event, arr):
             return False
     return True
 
+def haveInterface(event):
+    return 'screen' in event['meta']['interfaces']
+
 # есть ли в бренчах контекст "context" 
 def isInContext(event, context):
     if not 'state' in event or not 'session' in event['state'] or not 'branch' in event['state']['session']:

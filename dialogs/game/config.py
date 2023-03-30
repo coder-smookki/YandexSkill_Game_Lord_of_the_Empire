@@ -154,6 +154,8 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 def getConfig(event, needCreateNewInfo=False):
+    haveUserInterface = haveInterface(event)
+
     # вся история
     history = globalStorage["history"]
 
@@ -214,7 +216,7 @@ def getConfig(event, needCreateNewInfo=False):
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                return compileConfigFromEpisode(lastEpisode)
+                return compileConfigFromEpisode(lastEpisode,haveUserInterface)
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
@@ -237,4 +239,4 @@ def getConfig(event, needCreateNewInfo=False):
     updateSave(conn, userId, info)
 
     # скомпилировать конфиг из эпизода и вернуть его
-    return compileConfigFromEpisode(episode)
+    return compileConfigFromEpisode(episode,haveUserInterface)
