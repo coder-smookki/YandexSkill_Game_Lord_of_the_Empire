@@ -1,4 +1,4 @@
-from middlewares.checkAuth import checkAuth
+from middlewares.checkAuth.checkAuth import checkAuth
 
 allMiddlewares = {
     'checkAuth': checkAuth
