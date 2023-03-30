@@ -45,6 +45,7 @@ def updateSave(cur, userId, save):
     save = json.dumps(save, ensure_ascii=False)
 
     result = cur.execute(sql, [userId, save, save])
+    print('userId db',userId)
     print('execute db:',result)
 
 def removeSave(cur, userId):
