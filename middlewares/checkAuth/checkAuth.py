@@ -10,4 +10,4 @@ def getResponse(event, allDialogs=None):
 def isTriggered(event):
     return not isAuthorized()
 
-youDontAuth = {'getResponse': getResponse, 'isTriggered': isTriggered}
+checkAuth = {'getResponse': getResponse, 'isTriggered': isTriggered}
