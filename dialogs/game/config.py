@@ -141,15 +141,14 @@ def createStartInfo(history):
     }
 
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
+    # разделить по пробелам команду
     commandArr = command.split(' ')
+
+    # убрать все, кроме букв и пробелов в строках, потом разделить по пробелам
     firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', firstLastChoiceCommand.lower()).split(' ')
     secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', secondLastChoiceCommand.lower()).split(' ')
 
-    print('Command',commandArr)
-    print('FirstChoice',firstLastChoiceCommandArr)
-    print('SecondChoice',secondLastChoiceCommandArr)
-
-
+    # пройтись по всем словам команды
     for word in commandArr:
         isInFirst = word in firstLastChoiceCommandArr
         isInSecond = word in secondLastChoiceCommandArr
