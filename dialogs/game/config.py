@@ -214,7 +214,8 @@ def getConfig(event, needCreateNewInfo=False):
         else:
             # получить выбор пользователя
             userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
-            
+            print('Выбор пользователя:',userChoice)
+
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
