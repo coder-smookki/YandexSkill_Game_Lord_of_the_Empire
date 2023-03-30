@@ -40,7 +40,7 @@ def selectGameInfo(cur, userId):
 
 def updateSave(cur, userId, save):
     save = json.dumps(save, ensure_ascii=False)
-    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE gameInfo = VALUES(%s)"
+    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE gameInfo = %s"
 
     # ON DUPLICATE KEY UPDATE gameInfo = %s
 
