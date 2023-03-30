@@ -149,7 +149,7 @@ def getConfig(event):
         return getConfig(event)
 
     # print('info before', info)
-    info['lastEpisode'] = json.dumps(episode)
+    info['lastEpisode'] = json.dumps(episode, ensure_ascii=False)
     print('doshel do cuda')
     updateSave(cur,userId,info)
     # print('info after', info)
