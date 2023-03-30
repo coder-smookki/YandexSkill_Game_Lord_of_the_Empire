@@ -15,11 +15,10 @@ def handler(event):
     ):
         return "привет =)"
     
-    if not isNewSession(event):
-        for key in allMiddlewares:
-            if not allMiddlewares[key]["isTriggered"](event):
-                continue
-            return allMiddlewares[key]["getResponse"](event, allDialogs)
+    for key in allMiddlewares:
+        if not allMiddlewares[key]["isTriggered"](event):
+            continue
+        return allMiddlewares[key]["getResponse"](event, allDialogs)
 
     # искать диалог, подходящий под запрос
     for key in allDialogs:
