@@ -162,13 +162,16 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
         # если есть во втором, но нет в первом
         if isInSecond and not isInFirst:
             return 'false'
-            
+
     # если не нашлось единоличного совпадения
     return None
 
 def getConfig(event, needCreateNewInfo=False):
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
+
+    # соединение с БД
+    conn = globalStorage["mariaDBconn"]
 
     # вся история
     history = globalStorage["history"]
@@ -185,9 +188,6 @@ def getConfig(event, needCreateNewInfo=False):
         insertSave(conn, userId, info)
 
     else:
-        # соединение с БД
-        conn = globalStorage["mariaDBconn"]
-
         # получить инфо по айди юзера
         info = selectGameInfo(conn, userId)
 
