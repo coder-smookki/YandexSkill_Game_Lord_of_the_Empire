@@ -142,8 +142,8 @@ def createStartInfo(history):
 
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
     commandArr = command.split(' ')
-    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', firstLastChoiceCommand.lower()).split(' ')
-    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', secondLastChoiceCommand.lower()).split(' ')
+    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', firstLastChoiceCommand.lower()).split(' ')
+    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', secondLastChoiceCommand.lower()).split(' ')
 
     print('Command',commandArr)
     print('FirstChoice',firstLastChoiceCommandArr)
