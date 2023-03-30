@@ -160,7 +160,8 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 def getConfig(event, needCreateNewInfo=False):
-    haveUserInterface = haveInterface(event)
+    # haveUserInterface = haveInterface(event)
+    haveUserInterface = False
 
     # вся история
     history = globalStorage["history"]
