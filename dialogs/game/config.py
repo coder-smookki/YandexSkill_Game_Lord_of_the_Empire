@@ -138,9 +138,10 @@ def createStartInfo(history):
     }
 
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
+    
     commandArr = command.split(' ')
-    firstLastChoiceCommandArr = firstLastChoiceCommand.split(' ')
-    secondLastChoiceCommandArr = secondLastChoiceCommand.split(' ')
+    firstLastChoiceCommandArr = firstLastChoiceCommand.lower().split(' ')
+    secondLastChoiceCommandArr = secondLastChoiceCommand.lower().split(' ')
 
     for word in commandArr:
         isInFirst = word in firstLastChoiceCommandArr
@@ -169,6 +170,7 @@ def getConfig(event, needCreateNewInfo=False):
 
         # вставить это сохранение в БД
         insertSave(conn, userId, info)
+
     else:
         # соединение с БД
         conn = globalStorage["mariaDBconn"]
