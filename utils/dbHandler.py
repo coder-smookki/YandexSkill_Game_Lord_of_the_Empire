@@ -39,6 +39,7 @@ def selectGameInfo(conn, userId):
     # gameInfo = cur['gameInfo']
     for (gameInfo) in cur:
     # print(f"First Name: {first_name}, Last Name: {last_name}")
+        print('gameInfo db',gameInfo[0])
         return gameInfo[0]
 
 def updateSave(conn, userId, save):
