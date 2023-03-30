@@ -2,7 +2,8 @@ import mariadb
 import json
 from utils.globalStorage import removeFromGlobalStorage
 
-def connect(user,password, databaseName):
+
+def connect(user, password, databaseName):
     # Подключиться к MariaDB
     try:
         conn = mariadb.connect(
@@ -10,8 +11,7 @@ def connect(user,password, databaseName):
             password=password,
             host="localhost",
             port=3306,
-            database=databaseName
-
+            database=databaseName,
         )
     except mariadb.Error as e:
         raise mariadb.Error(f"Ошибка при подключении к MariaDB: {e}")
@@ -32,20 +32,23 @@ def connect(user,password, databaseName):
     # Вернуть курсор
     return cur
 
+
 def selectGameInfo(cur, userId):
     gameInfo = cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
-    return gameInfo 
+    return gameInfo
+
 
 def updateSave(cur, userId, save):
-    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE gameInfo = VALUES(%s)"
-
-    #ON DUPLICATE KEY UPDATE gameInfo = %s
     save = json.dumps(save, ensure_ascii=False)
+    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE gameInfo = VALUES(value)"
 
-    result = cur.execute(sql, [userId,save,[save]])
-    print('userId db',userId)
-    print('save db',save)
-    print('execute db:',result)
+    # ON DUPLICATE KEY UPDATE gameInfo = %s
+
+    result = cur.execute(sql, [userId, save, [save]])
+    print("userId db", userId)
+    print("save db", save)
+    print("execute db:", result)
+
 
 def removeSave(cur, userId):
     sql = """
@@ -53,14 +56,14 @@ def removeSave(cur, userId):
     """
     cur.execute(sql, [userId])
 
+
 def saveGamesFromGlobalStorage(globalStorage):
     count = 0
-    cur = globalStorage['mariaDBcur']
+    cur = globalStorage["mariaDBcur"]
     for key in globalStorage:
-        if key[:5] == 'game_':
+        if key[:5] == "game_":
             updateSave(cur, key[5:], globalStorage[key])
             removeFromGlobalStorage(key)
             count += 1
-    
+
     return count
-    
