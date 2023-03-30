@@ -44,7 +44,7 @@ def updateSave(cur, userId, save):
     #ON DUPLICATE KEY UPDATE gameInfo = %s
     # save = json.dumps(save, ensure_ascii=False)
 
-    result = cur.execute(sql, [userId, save,save])
+    result = cur.execute(sql, [userId,save])
     print('userId db',userId)
     print('save db',save)
     print('execute db:',result)
