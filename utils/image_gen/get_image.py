@@ -25,8 +25,11 @@ persons = {
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel.png', mode='r', formats=["PNG"]),
     "Дух прошлого короля": Image.open(persons_path / "ghostking.png", mode='r', formats=["PNG"]),
     "Крестьянин Иакинф": Image.open(persons_path / "krestyanin_iakinf.png", mode='r', formats=["PNG"]),
+    "Учёный Аквитанский": Image.open(persons_path / 'ucheniy.png', mode='r', formats=["PNG"]),
     "Ионна Разумовская": Image.open(persons_path / 'elfie.png', mode='r', formats=["PNG"]),
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik.png", mode='r', formats=["PNG"]),
+    "Епископ Галактион": Image.open(persons_path / 'episkop.png', mode='r', formats=["PNG"]),
+    "Охотник Сильвестр": Image.open(persons_path / 'ohotnik.png', mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey.png", mode='r', formats=["PNG"]),
     "Лучник Ираклий": Image.open(persons_path / 'luchnik.png', mode='r', formats=["PNG"]),
@@ -46,8 +49,11 @@ persons600 = {
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel600.png', mode='r', formats=["PNG"]),
     "Дух прошлого короля": Image.open(persons_path / "ghostking600.png", mode='r', formats=["PNG"]),
     "Крестьянин Иакинф": Image.open(persons_path / "krestyanin_iakinf600.png", mode='r', formats=["PNG"]),
+    "Учёный Аквитанский": Image.open(persons_path / 'ucheniy600.png', mode='r', formats=["PNG"]),
     "Ионна Разумовская": Image.open(persons_path / 'elfie600.png', mode='r', formats=["PNG"]),
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik600.png", mode='r', formats=["PNG"]),
+    "Епископ Галактион": Image.open(persons_path / 'episkop600.png', mode='r', formats=["PNG"]),
+    "Охотник Сильвестр": Image.open(persons_path / 'ohotnik600.png', mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion600.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey600.png", mode='r', formats=["PNG"]),
     "Лучник Ираклий": Image.open(persons_path / 'luchnik600.png', mode='r', formats=["PNG"]),
@@ -229,9 +235,9 @@ def get_image_2(
     return img_byte_arr.getvalue()
 
 
-# get_image_2(
-#     person='Дракон',
-#     replica='123',
-#     values=[44, 12, 90, 65],
-#     changes=[0, 0, 0, 0]
-# )
+get_image_2(
+    person='Дракон',
+    replica='123',
+    values=[44, 12, 90, 65],
+    changes=[0, 0, 0, 0]
+)
