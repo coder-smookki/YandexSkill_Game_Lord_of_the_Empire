@@ -37,8 +37,9 @@ def selectGameInfo(conn, userId):
     cur = conn.cursor()
     cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
     gameInfo = None
-    
-    print('selected save',cur[0])
+    for (gameInfo) in cur:
+    # print(f"First Name: {first_name}, Last Name: {last_name}")
+        print(f'selected save',gameInfo)
     
     return gameInfo
 
