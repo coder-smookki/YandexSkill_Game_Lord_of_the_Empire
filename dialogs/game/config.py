@@ -150,7 +150,8 @@ def getConfig(event):
 
     # print('info before', info)
     info['lastEpisode'] = json.dumps(episode)
-    # updateSave(cur,userId,info)
+    print('doshel do cuda')
+    updateSave(cur,userId,info)
     # print('info after', info)
 
     return compileResultFromEpisode(episode)
