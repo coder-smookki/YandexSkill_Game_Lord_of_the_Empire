@@ -40,8 +40,8 @@ def updateSave(cur, userId, save):
     sql = """
     INSERT INTO saves (userId, gameInfo)
     VALUES (%s, %s)
-    ON DUPLICATE KEY UPDATE gameInfo = %s
     """
+    #ON DUPLICATE KEY UPDATE gameInfo = %s
     save = json.dumps(save, ensure_ascii=False)
 
     result = cur.execute(sql, [userId, save, save])
