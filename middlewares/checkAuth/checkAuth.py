@@ -8,6 +8,6 @@ def getResponse(event, allDialogs=None):
     return createResponse(event, config)
 
 def isTriggered(event):
-    return not isAuthorized()
+    return not isAuthorized(event)
 
 checkAuth = {'getResponse': getResponse, 'isTriggered': isTriggered}
