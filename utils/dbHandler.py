@@ -37,6 +37,7 @@ def selectGameInfo(conn, userId):
     cur = conn.cursor()
     gameInfo = cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
     print('selected save',gameInfo)
+    conn.commit()
     return gameInfo
 
 def updateSave(conn, userId, save):
@@ -46,6 +47,7 @@ def updateSave(conn, userId, save):
     # ON DUPLICATE KEY UPDATE gameInfo = %s
 
     result = cur.execute(sql, [save, userId])
+    conn.commit()
     print("userId db", userId)
     print("save db", save)
     print("execute db:", result)
@@ -59,6 +61,7 @@ def insertSave(conn, userId, save):
     # ON DUPLICATE KEY UPDATE gameInfo = %s
 
     result = cur.execute(sql, [userId, save])
+    conn.commit()
     print("userId db", userId)
     print("save db", save)
     print("execute db:", result)
@@ -70,3 +73,4 @@ def removeSave(conn, userId):
     DELETE FROM saves WHERE userId=%s;
     """
     cur.execute(sql, [userId])
+    conn.commit()
