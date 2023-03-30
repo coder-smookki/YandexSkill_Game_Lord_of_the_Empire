@@ -40,7 +40,7 @@ def selectGameInfo(conn, userId):
     for (gameInfo) in cur:
     # print(f"First Name: {first_name}, Last Name: {last_name}")
         print('gameInfo db',gameInfo[0])
-        return json.loads(gameInfo[0], ensure_ascii=False)
+        return json.loads(gameInfo[0])
 
 def updateSave(conn, userId, save):
     cur = conn.cursor()
