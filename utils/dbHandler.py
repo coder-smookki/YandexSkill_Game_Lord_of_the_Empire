@@ -46,6 +46,7 @@ def updateSave(cur, userId, save):
 
     result = cur.execute(sql, [userId, save, save])
     print('userId db',userId)
+    print('save db',save)
     print('execute db:',result)
 
 def removeSave(cur, userId):
