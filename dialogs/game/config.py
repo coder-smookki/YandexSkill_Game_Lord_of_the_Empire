@@ -95,6 +95,7 @@ def compileConfigFromEpisode(episode, haveInterface):
         config = {
             'message': '',
             "tts": tts,
+            'buttons': ['first button aboba','second button aboba']
         }
         
         # вынести текущие фракции в виде строки
