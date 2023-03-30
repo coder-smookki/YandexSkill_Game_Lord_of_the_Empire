@@ -45,6 +45,12 @@ def updateSave(cur, userId, save):
     save = json.dumps(save, ensure_ascii=False)
     cur.execute(sql, [userId, save, save])
 
+def removeSave(cur, userId):
+    sql = """
+    DELETE FROM saves WHERE userId=%s;
+    """
+    cur.execute(sql, [userId])
+
 def saveGamesFromGlobalStorage(globalStorage):
     count = 0
     cur = globalStorage['mariaDBcur']

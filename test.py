@@ -1,3 +1,6 @@
-a = 'game_012345'
+from utils.dbHandler import *
 
-print(a[5:])
+
+cur = connect('root', 'root', 'Lord_of_the_Empire')
+
+print(selectGameInfo(cur, '12345'))

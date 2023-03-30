@@ -99,20 +99,17 @@ def getConfig(event):
     statsEnds = globalStorage["statsEnds"]
 
     userId = getUserId(event)
-    if "game_" + userId in globalStorage:
-        info = globalStorage["game_" + userId]
-        # result['user_state_update']['lastEpisode']
-    else:
-        # cur = globalStorage["mariaDBcur"]
-        # info = selectGameInfo(cur, userId)
-        info = False
-        if not info:
-            info = createStartInfo(history)
+    cur = globalStorage["mariaDBcur"]
+    gameInfo = selectGameInfo()
+    info = selectGameInfo(cur, userId)
+    print('db info:',info)
+    if not info:
+        info = createStartInfo(history)
 
     print('INFO',info)
 
-    if haveGlobalState(event, 'lastEpisode') and not (getGlobalState(event, 'lastEpisode') is None):
-        lastEpisode = json.loads(getGlobalState(event, 'lastEpisode'))
+    if 'lastEpisode' in info and not info['lastEpisode'] is None:
+        lastEpisode = info['lastEpisode']
         canLastChoicedArr = lastEpisode['buttons']
     else:
         lastEpisode = None
@@ -148,12 +145,12 @@ def getConfig(event):
 
     if episode == 'its all':
         print('its all EPIZODE')
-        setGlobalStateInEvent(event, 'lastEpisode', None)
-        removeFromGlobalStorage("game_" + userId)
+        removeSave(cur,userId)
         return getConfig(event)
 
     # print('info before', info)
-    setInGlobalStorage("game_" + userId, info, True)
+    info['lastEpisode'] = json.parse(episode)
+    updateSave(cur,userId,info)
     # print('info after', info)
 
     return compileResultFromEpisode(episode)
