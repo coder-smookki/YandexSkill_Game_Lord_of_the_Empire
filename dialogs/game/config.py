@@ -110,7 +110,7 @@ def getConfig(event):
     print('INFO',info)
 
     if 'lastEpisode' in info and not info['lastEpisode'] is None:
-        lastEpisode = info['lastEpisode']
+        lastEpisode = json.loads(info['lastEpisode'])
         canLastChoicedArr = lastEpisode['buttons']
     else:
         lastEpisode = None
