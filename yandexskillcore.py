@@ -83,7 +83,6 @@ def startServer(
     def content():
         data = request.get_json()
         response = handler(data)
-        print('RESPONSE:',response)
         return response
 
     # метод запуска сервера

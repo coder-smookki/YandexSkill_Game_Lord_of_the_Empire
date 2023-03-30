@@ -100,7 +100,7 @@ def getConfig(event):
 
     userId = getUserId(event)
     cur = globalStorage["mariaDBcur"]
-    gameInfo = selectGameInfo()
+    gameInfo = selectGameInfo(cur, userId)
     info = selectGameInfo(cur, userId)
     print('db info:',info)
     if not info:
