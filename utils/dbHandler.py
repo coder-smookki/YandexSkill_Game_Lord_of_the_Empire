@@ -29,16 +29,18 @@ def connect(user, password, databaseName):
     # создать таблицу с сохранениями, если ее не существует
     cur.execute(createTable)
 
-    # Вернуть курсор
-    return cur
+    # Вернуть соединение
+    return conn
 
 
-def selectGameInfo(cur, userId):
+def selectGameInfo(conn, userId):
+    cur = conn.cursor()
     gameInfo = cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
     print('selected save',gameInfo)
     return gameInfo
 
-def updateSave(cur, userId, save):
+def updateSave(conn, userId, save):
+    cur = conn.cursor()
     save = json.dumps(save, ensure_ascii=False)
     sql = "UPDATE saves SET gameInfo = %s WHERE userId = %s"
     # ON DUPLICATE KEY UPDATE gameInfo = %s
@@ -49,7 +51,8 @@ def updateSave(cur, userId, save):
     print("execute db:", result)
 
 
-def insertSave(cur, userId, save):
+def insertSave(conn, userId, save):
+    cur = conn.cursor()
     save = json.dumps(save, ensure_ascii=False)
     sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s)"
 
@@ -61,20 +64,9 @@ def insertSave(cur, userId, save):
     print("execute db:", result)
 
 
-def removeSave(cur, userId):
+def removeSave(conn, userId):
+    cur = conn.cursor()
     sql = """
     DELETE FROM saves WHERE userId=%s;
     """
     cur.execute(sql, [userId])
-
-
-def saveGamesFromGlobalStorage(globalStorage):
-    count = 0
-    cur = globalStorage["mariaDBcur"]
-    for key in globalStorage:
-        if key[:5] == "game_":
-            updateSave(cur, key[5:], globalStorage[key])
-            removeFromGlobalStorage(key)
-            count += 1
-
-    return count

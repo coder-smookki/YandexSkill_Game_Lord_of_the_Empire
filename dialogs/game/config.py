@@ -99,13 +99,13 @@ def getConfig(event):
     statsEnds = globalStorage["statsEnds"]
 
     userId = getUserId(event)
-    cur = globalStorage["mariaDBcur"]
+    conn = globalStorage["mariaDBconn"]
     # gameInfo = selectGameInfo(cur, userId)
-    info = selectGameInfo(cur, userId)
+    info = selectGameInfo(conn, userId)
     print('db info:',info)
     if not info:
         info = createStartInfo(history)
-        insertSave(cur, userId, info)
+        insertSave(conn, userId, info)
 
     print('INFO',info)
 
@@ -152,7 +152,7 @@ def getConfig(event):
     # print('info before', info)
     info['lastEpisode'] = json.dumps(episode, ensure_ascii=False)
     print('doshel do cuda')
-    updateSave(cur,userId,info)
+    updateSave(conn,userId,info)
     # print('info after', info)
 
     return compileResultFromEpisode(episode)

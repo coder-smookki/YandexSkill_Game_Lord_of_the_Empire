@@ -60,7 +60,7 @@ def startServer(
     cur = connect(dbUser, dbPassword, dbName)
 
     # записать курсор
-    setInGlobalStorage('mariaDBcur', cur, saveLinks=True)
+    setInGlobalStorage('mariaDBconn', cur, saveLinks=True)
 
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
