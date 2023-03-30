@@ -93,6 +93,7 @@ def compileConfigFromEpisode(episode, haveInterface):
     else:
         # создать конфиг для устройств без интерфейса
         config = {
+            'message': '',
             "tts": tts,
         }
         
@@ -110,7 +111,7 @@ def compileConfigFromEpisode(episode, haveInterface):
         # вынести из массива кнопки в виде строки
         buttonsStr = ""
         for button in episode["buttons"]:
-            buttonsStr += button
+            buttonsStr += button + ', '
 
         # добавить в tts кнопки и статы
         config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
