@@ -5,6 +5,7 @@ from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 import random
 from utils.image_gen.get_id import get_id
+import re
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -138,10 +139,9 @@ def createStartInfo(history):
     }
 
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
-    
     commandArr = command.split(' ')
-    firstLastChoiceCommandArr = firstLastChoiceCommand.lower().split(' ')
-    secondLastChoiceCommandArr = secondLastChoiceCommand.lower().split(' ')
+    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', firstLastChoiceCommand.lower()).split(' ')
+    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', secondLastChoiceCommand.lower()).split(' ')
 
     print('Command',commandArr)
     print('FirstChoice',firstLastChoiceCommandArr)
