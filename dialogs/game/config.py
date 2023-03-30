@@ -93,7 +93,7 @@ def compileConfigFromEpisode(episode, haveInterface):
     else:
         # создать конфиг для устройств без интерфейса
         config = {
-            'message': '',
+            'message': 'zxc',
             "tts": tts,
             'buttons': ['first button aboba','second button aboba']
         }
