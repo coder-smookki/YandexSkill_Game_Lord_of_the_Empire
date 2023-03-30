@@ -149,7 +149,7 @@ def getConfig(event):
         return getConfig(event)
 
     # print('info before', info)
-    info['lastEpisode'] = json.parse(episode)
+    info['lastEpisode'] = json.dumps(episode)
     updateSave(cur,userId,info)
     # print('info after', info)
 
