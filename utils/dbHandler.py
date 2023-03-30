@@ -35,6 +35,7 @@ def connect(user, password, databaseName):
 
 def selectGameInfo(cur, userId):
     gameInfo = cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
+    print('selected save',gameInfo)
     return gameInfo
 
 def updateSave(cur, userId, save):
