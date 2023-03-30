@@ -37,12 +37,12 @@ def selectGameInfo(cur, userId):
     return gameInfo 
 
 def updateSave(cur, userId, save):
-    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE gameInfo = %s"
+    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE gameInfo = VALUES(%s)"
 
     #ON DUPLICATE KEY UPDATE gameInfo = %s
     save = json.dumps(save, ensure_ascii=False)
 
-    result = cur.execute(sql, [userId,save,save])
+    result = cur.execute(sql, [userId,save,[save]])
     print('userId db',userId)
     print('save db',save)
     print('execute db:',result)
