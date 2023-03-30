@@ -5,6 +5,7 @@ from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 import random
 from utils.image_gen.get_id import get_id
+import re
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -15,69 +16,113 @@ sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/59937e1e-576e-4e8a-84b7-7fdec826edbf.opus">',
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/6232e501-5a2e-4c97-b193-f3e293a3d879.opus">',
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/1cace3da-e83c-4eb5-aa63-9bd718ca01b7.opus">',
-    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/3ee32d10-842e-4e93-86d6-da158cba6e3d.opus">'
+    '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/3ee32d10-842e-4e93-86d6-da158cba6e3d.opus">',
 ]
+
 
 def getRandomSfx(sfx):
     return sfx[random.randint(0, len(sfx) - 1)]
 
-def compileResultFromEpisode(episode):
-    print('EPISODE', episode)
 
-    if episode == "its all":
-        print('getted its all episode')
-        return "its all"
+def compileConfigFromEpisode(episode, haveInterface):
+    # получить статы
+    stats = episode["stats"]
 
+    # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
-        tts = getRandomSfx(sfx) + episode["name"] + '. ' + episode["message"]
-        # print('VALUES',episode['stats'])
-        stats = episode['stats']
-        cardId = get_id(
-            person=episode["name"],
-            replica=episode["message"],
-            values=[stats['church'],stats['nation'],stats['army'],stats['coffers']],
-            changes=[0,0,0,0]
-        )
-        if cardId is None:
-            cardId = "1533899/d371aab5224c91137cfc"
+        # добавить sfx, имя и сообщение в tts
+        tts = getRandomSfx(sfx) + episode["name"] + ". " + episode["message"]
+
+        if haveInterface:
+            # получить айди картинки
+            cardId = get_id(
+                person=episode["name"],
+                replica=episode["message"],
+                values=[
+                    stats["church"],
+                    stats["nation"],
+                    stats["army"],
+                    stats["coffers"],
+                ],
+                changes=[0, 0, 0, 0],
+            )
+
+            # если карточка не вернулась, использовать арбуз
+            if cardId is None:
+                cardId = "1533899/d371aab5224c91137cfc"
+        else:
+            if haveInterface:
+                cardId = None  # TODO: сделать получение карточки из эпизода
     else:
+        # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
         tts = getRandomSfx(sfx) + episode["message"]
-        cardId = "1533899/d371aab5224c91137cfc"
 
+        if haveInterface:
+            # использовать арбуз
+            cardId = "1533899/d371aab5224c91137cfc"
 
+    if haveInterface:
+        # создать конфиг для интерфейсных устройств
+        config = {
+            "tts": tts,
+            "buttons": [
+                # "Повторить ещё раз", TODO: добавить повторение
+                "В главное меню",
+                "Выход",
+            ],
+            "card": {
+                "type": "BigImage",
+                "image_id": cardId,
+                "title": episode["name"],
+                "description": episode["message"],
+            },
+        }
 
-    config = {
-        "tts": tts,
-        "buttons": [
-            # "Повторить ещё раз", TODO: добавить повторение
-            "В главное меню",
-            "Выход",
-        ],
-        "card": {
-            "type": "BigImage",
-            "image_id": cardId,
-            "title": episode["name"],
-            "description": episode["message"],
-        },
-    }
+        # если есть кнопки, то добавить кнопки и добавить кнопки в tts
+        if len(episode["buttons"]) != 0:
+            config["buttons"] = episode["buttons"] + config["buttons"]
 
-    if len(episode['buttons']) != 0:
-        config['buttons'] = episode['buttons'] + config['buttons']
+            # вынести из массива кнопки в виде строки
+            buttonsStr = ""
+            for button in episode["buttons"]:
+                buttonsStr += button + ","
+
+            # добавить в tts кнопки
+            config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
+
+    else:
+        # создать конфиг для устройств без интерфейса
+        config = {
+            "tts": tts,
+        }
         
-    user_state_update = {'lastEpisode': json.dumps(episode, ensure_ascii=False)}
+        # вынести текущие фракции в виде строки
+        statsStr = f"""Текущие фракции:
+            церковь: {stats["church"]}
+            народ: {stats["nation"]}
+            армия: {stats["army"]}
+            казна: {stats["coffers"]}
+        """
+        
+        # добавить фракции в tts
+        config['tts'] += statsStr
 
-    session_state = {"branch": "game"}
-    
-    result = {
-        "tts": config["tts"],
-        "buttons": config["buttons"],
-        "card": config["card"],
-        "session_state": session_state,
-    }
-    if user_state_update:
-        result['user_state_update'] = user_state_update
-    return result
+        # вынести из массива кнопки в виде строки
+        buttonsStr = ""
+        for button in episode["buttons"]:
+            buttonsStr += button
 
+        # добавить в tts кнопки и статы
+        config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
+
+    # добавить бренч в конфиг
+    config["session_state"] = {"branch": "game"}
+
+    # вернуть конфиг
+    return config
+
+
+# создать стартовое сохранение
 def createStartInfo(history):
     return {
         "posEpisode": [0],
@@ -93,66 +138,114 @@ def createStartInfo(history):
         },
     }
 
+def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
+    commandArr = command.split(' ')
+    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', firstLastChoiceCommand.lower()).split(' ')
+    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я]', '', secondLastChoiceCommand.lower()).split(' ')
 
-def getConfig(event):
+    print('Command',commandArr)
+    print('FirstChoice',firstLastChoiceCommandArr)
+    print('SecondChoice',secondLastChoiceCommandArr)
+
+
+    for word in commandArr:
+        isInFirst = word in firstLastChoiceCommandArr
+        isInSecond = word in secondLastChoiceCommandArr
+
+        if isInFirst and not isInSecond:
+            return 'true'
+        if isInSecond and not isInFirst:
+            return 'false'
+
+    return None
+
+def getConfig(event, needCreateNewInfo=False):
+    # haveUserInterface = haveInterface(event)
+    haveUserInterface = False
+
+    # вся история
     history = globalStorage["history"]
-    statsEnds = globalStorage["statsEnds"]
 
+    # айди юзера
     userId = getUserId(event)
-    conn = globalStorage["mariaDBconn"]
-    # gameInfo = selectGameInfo(cur, userId)
-    info = selectGameInfo(conn, userId)
-    print('db info:',info)
-    if not info:
+
+    # если нужно создать новую игру
+    if needCreateNewInfo:
+        # создать стартовое сохранение (создать новую игру)
         info = createStartInfo(history)
+
+        # вставить это сохранение в БД
         insertSave(conn, userId, info)
 
-    print('INFO',info)
-
-    if 'lastEpisode' in info and not info['lastEpisode'] is None:
-        lastEpisode = json.loads(info['lastEpisode'])
-        canLastChoicedArr = lastEpisode['buttons']
     else:
+        # соединение с БД
+        conn = globalStorage["mariaDBconn"]
+
+        # получить инфо по айди юзера
+        info = selectGameInfo(conn, userId)
+
+        # получить концовки
+        statsEnds = globalStorage["statsEnds"]
+
+        # если сохранение в БД не нашлось
+        if not info:
+            # создать стартовое сохранение (создать новую игру)
+            info = createStartInfo(history)
+
+            # вставить это сохранение в БД
+            insertSave(conn, userId, info)
+
+    # если в текущем сохранении есть прошлый эпизод
+    if "lastEpisode" in info and not info["lastEpisode"] is None:
+        # прошлый эпизод
+        lastEpisode = json.loads(info["lastEpisode"])
+
+        # выборы предыдущего эпизода
+        canLastChoicedArr = lastEpisode["buttons"]
+
+    else:
+        # иначе просто обозначить переменные
         lastEpisode = None
         canLastChoicedArr = None
 
-        # ''.join(filter(str.isalnum, s))
-    command = getOriginalUtterance(event)
+    # получить команду
+    command = getCommand(event)
 
-    # print('canLastChoicedArr:', canLastChoicedArr)
-
+    # если в прошлом эпизоде были выборы
     if canLastChoicedArr:
+        # если только один (обычно 2)
         if len(canLastChoicedArr) == 1:
-            # print('one button')
-            # print('canLastChoicedArr:',canLastChoicedArr[0])
-            info["choice"] = 'true'
-        elif canLastChoicedArr[0] == command:
-            # print('true')
-            # print('command:',command)
-            # print('canLastChoicedArr:',canLastChoicedArr[0])
-            info["choice"] = 'true'
-        elif canLastChoicedArr[1] == command:
-            # print('false')
-            # print('command:',command)
-            # print('canLastChoicedArr:',canLastChoicedArr[1])
-            info["choice"] = 'false'
-        else:
-            # print('none')
-            # print('command:', command)
-            # print('canLastChoicedArr:',canLastChoicedArr)
-            return compileResultFromEpisode(lastEpisode)
+            info["choice"] = "true"
 
+        else:
+            # получить выбор пользователя
+            userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
+            print('Выбор пользователя:',userChoice)
+            
+            # если определить выбор не удалось
+            if userChoice is None:
+                # вернуть прошлый эпизод
+                return compileConfigFromEpisode(lastEpisode,haveUserInterface)
+            else:
+                # иначе установить выбор в сохранении
+                info["choice"] = userChoice
+            
+    # пройти к следующему эпизоду
     episode = passEpisode(info, history, statsEnds)
 
-    if episode == 'its all':
-        print('its all EPIZODE')
-        # removeSave(cur,userId)
-        return getConfig(event)
+    # если история закончилась
+    if episode == "its all":
+        # удалить последнее сохранение
+        removeSave(conn, userId)
 
-    # print('info before', info)
-    info['lastEpisode'] = json.dumps(episode, ensure_ascii=False)
-    print('doshel do cuda')
-    updateSave(conn,userId,info)
-    # print('info after', info)
+        # пройтись еще раз по функции с нулевым сохранением (начать игру заново)
+        return getConfig(event, True)
 
-    return compileResultFromEpisode(episode)
+    # закинуть текущий эпизод в качестве последнего для следующего вызова
+    info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
+
+    # обновить сохранение в БД
+    updateSave(conn, userId, info)
+
+    # скомпилировать конфиг из эпизода и вернуть его
+    return compileConfigFromEpisode(episode,haveUserInterface)
