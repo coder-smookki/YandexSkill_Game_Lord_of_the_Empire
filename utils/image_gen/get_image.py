@@ -25,15 +25,18 @@ persons = {
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel.png', mode='r', formats=["PNG"]),
     "Дух прошлого короля": Image.open(persons_path / "ghostking.png", mode='r', formats=["PNG"]),
     "Крестьянин Иакинф": Image.open(persons_path / "krestyanin_iakinf.png", mode='r', formats=["PNG"]),
+    "Ионна Разумовская": Image.open(persons_path / 'elfie.png', mode='r', formats=["PNG"]),
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik.png", mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey.png", mode='r', formats=["PNG"]),
+    "Лучник Ираклий": Image.open(persons_path / 'luchnik.png', mode='r', formats=["PNG"]),
     "Палач Никифор": Image.open(persons_path / "palach.png", mode='r', formats=["PNG"]),
     "Шут Радмир": Image.open(persons_path / "shit.png", mode='r', formats=["PNG"]),
     "Дочь царя": Image.open(persons_path / "princess.png", mode='r', formats=["PNG"]),
     "Кондрат": Image.open(persons_path / "desnica.png", mode='r', formats=["PNG"]),
     "Дракон": Image.open(persons_path / "dragon.png", mode='r', formats=["PNG"]),
     "Король": Image.open(persons_path / "king.png", mode='r', formats=["PNG"]),
+    "Демон": Image.open(persons_path / 'demon.png', mode='r', formats=["PNG"]),
     "Кошка": Image.open(persons_path / 'cat.png', mode='r', formats=["PNG"]),
 }
 
@@ -43,15 +46,18 @@ persons600 = {
     "Маг-целитель Хрисанф": Image.open(persons_path / 'mag-celitel600.png', mode='r', formats=["PNG"]),
     "Дух прошлого короля": Image.open(persons_path / "ghostking600.png", mode='r', formats=["PNG"]),
     "Крестьянин Иакинф": Image.open(persons_path / "krestyanin_iakinf600.png", mode='r', formats=["PNG"]),
+    "Ионна Разумовская": Image.open(persons_path / 'elfie600.png', mode='r', formats=["PNG"]),
     "Разведчик Кирилл": Image.open(persons_path / "razvedchik600.png", mode='r', formats=["PNG"]),
     "Командир Родион": Image.open(persons_path / "rodion600.png", mode='r', formats=["PNG"]),
     "Господин Авдей": Image.open(persons_path / "Avdey600.png", mode='r', formats=["PNG"]),
+    "Лучник Ираклий": Image.open(persons_path / 'luchnik600.png', mode='r', formats=["PNG"]),
     "Палач Никифор": Image.open(persons_path / "palach600.png", mode='r', formats=["PNG"]),
     "Шут Радмир": Image.open(persons_path / "shit600.png", mode='r', formats=["PNG"]),
     "Дочь царя": Image.open(persons_path / "princess600.png", mode='r', formats=["PNG"]),
     "Кондрат": Image.open(persons_path / "desnica600.png", mode='r', formats=["PNG"]),
     "Дракон": Image.open(persons_path / "dragon600.png", mode='r', formats=["PNG"]),
     "Король": Image.open(persons_path / "king600.png", mode='r', formats=["PNG"]),
+    "Демон": Image.open(persons_path / 'demon600.png', mode='r', formats=["PNG"]),
     "Кошка": Image.open(persons_path / 'cat600.png', mode='r', formats=["PNG"]),
 }
 
@@ -141,7 +147,7 @@ def get_image(
 
     # Наложение текста на шаблон (?)
     # replica_x, replica_y = layout_width * 0.7, layout_height * 0.05
-    # for line in textwrap.wrap(replica, width=25):  # Ширину крутить тут, если текст вышел за границу, щас ~380 влезает
+    # for line in textwrap.wrap(replica, width=23):  # Ширину крутить тут, если текст вышел за границу, щас ~380 влезает
     #     draw.text((replica_x, replica_y), line, font=font, fill="#000000")
     #     replica_y += font.getbbox(line)[-1]
 
@@ -223,9 +229,9 @@ def get_image_2(
     return img_byte_arr.getvalue()
 
 
-get_image_2(
-    person='Дракон',
-    replica='123',
-    values=[44, 12, 90, 65],
-    changes=[0, 0, 0, 0]
-)
+# get_image_2(
+#     person='Дракон',
+#     replica='123',
+#     values=[44, 12, 90, 65],
+#     changes=[0, 0, 0, 0]
+# )
