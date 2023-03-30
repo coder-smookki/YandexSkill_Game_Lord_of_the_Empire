@@ -100,7 +100,7 @@ def getConfig(event):
 
     userId = getUserId(event)
     cur = globalStorage["mariaDBcur"]
-    gameInfo = selectGameInfo(cur, userId)
+    # gameInfo = selectGameInfo(cur, userId)
     info = selectGameInfo(cur, userId)
     print('db info:',info)
     if not info:
@@ -146,7 +146,7 @@ def getConfig(event):
 
     if episode == 'its all':
         print('its all EPIZODE')
-        removeSave(cur,userId)
+        # removeSave(cur,userId)
         return getConfig(event)
 
     # print('info before', info)
