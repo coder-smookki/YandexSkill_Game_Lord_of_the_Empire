@@ -42,7 +42,7 @@ def updateSave(cur, userId, save):
     sql = "UPDATE saves SET gameInfo = %s WHERE userId = %s"
     # ON DUPLICATE KEY UPDATE gameInfo = %s
 
-    result = cur.execute(sql, [userId, save])
+    result = cur.execute(sql, [save, userId])
     print("userId db", userId)
     print("save db", save)
     print("execute db:", result)
