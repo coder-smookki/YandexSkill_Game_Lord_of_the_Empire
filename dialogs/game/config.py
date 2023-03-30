@@ -150,14 +150,20 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
     # пройтись по всем словам команды
     for word in commandArr:
+        # есть слово в массиве с первым выбором
         isInFirst = word in firstLastChoiceCommandArr
+        
+        # есть слово в массиве со вторым выбором
         isInSecond = word in secondLastChoiceCommandArr
 
+        # если есть в первом, но нет во втором 
         if isInFirst and not isInSecond:
             return 'true'
+        # если есть во втором, но нет в первом
         if isInSecond and not isInFirst:
             return 'false'
-
+            
+    # если не нашлось единоличного совпадения
     return None
 
 def getConfig(event, needCreateNewInfo=False):
