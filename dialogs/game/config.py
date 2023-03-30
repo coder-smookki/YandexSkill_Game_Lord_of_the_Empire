@@ -105,6 +105,7 @@ def getConfig(event):
     print('db info:',info)
     if not info:
         info = createStartInfo(history)
+        insertSave(cur, userId, info)
 
     print('INFO',info)
 
