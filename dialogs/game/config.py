@@ -85,10 +85,10 @@ def compileConfigFromEpisode(episode, haveInterface):
             # вынести из массива кнопки в виде строки
             buttonsStr = ""
             for button in episode["buttons"]:
-                buttonsStr += button + ","
+                buttonsStr += button + ". "
 
             # добавить в tts кнопки
-            config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
+            config["tts"] = config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
 
     else:
         # создать конфиг для устройств без интерфейса
@@ -99,11 +99,11 @@ def compileConfigFromEpisode(episode, haveInterface):
         }
         
         # вынести текущие фракции в виде строки
-        statsStr = f"""Текущие фракции:
-            церковь: {stats["church"]}
-            народ: {stats["nation"]}
-            армия: {stats["army"]}
-            казна: {stats["coffers"]}
+        statsStr = f"""Репутация текущий фракций:
+            Церковь: {stats["church"]} единиц.
+            народ: {stats["nation"]} единиц.
+            армия: {stats["army"]} единиц.
+            казна: {stats["coffers"]} единиц.
         """
         
         # добавить фракции в tts

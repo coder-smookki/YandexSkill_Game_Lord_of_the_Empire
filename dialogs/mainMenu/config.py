@@ -15,7 +15,7 @@ def getConfig(event):
         ],
         "card": {
             "type": "BigImage",
-            "image_id": "1533899/3d5238fe1ebfc6d7a360",
+            "image_id": "1533899/14928d8d8e4b52105b97",
             "title": "ГЛАВНОЕ МЕНЮ",
             "description":
                 """
