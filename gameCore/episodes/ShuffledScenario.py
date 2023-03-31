@@ -1,5 +1,5 @@
 ShuffledScenario = """
-    [shuffle]
+    "[shuffle]"
     shuffle:
         "{FirstExtension}"
         "{SecondExtension}"
