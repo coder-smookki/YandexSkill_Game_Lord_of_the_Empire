@@ -16,7 +16,6 @@ def replaceLinkEpisodes(history, linkEpisodes):
         for i in range(len(history)):
             history[i] = replaceLinkEpisodes(history[i], linkEpisodes)
     elif not (history is None):
-        print('errasd',history)
         if '{' in history['response']:
             linkCode = history['response'][1:-1]
             history = linkEpisodes[linkCode][0]
