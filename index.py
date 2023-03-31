@@ -1,6 +1,7 @@
 from utils.globalStorage import globalStorage 
 
 from gameCore.episodes.Opening.Opening import *
+from gameCore.episodes.ShuffledScenario import ShuffledScenario
 from gameCore.episodes.Cashed import *
 from gameCore.episodes.StatsEnds import StatsEnds
 
@@ -26,7 +27,7 @@ if emulator == 'true':
 else:
     if host:
         print(colored("+", "green"), 'HOST найден:', host)
-        startServer(Opening, StatsEnds, Cashed, host=host, handler=handler)
+        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, host=host, handler=handler)
     else:
         print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
-        startServer(Opening, StatsEnds, Cashed, handler=handler)
+        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, handler=handler)

@@ -6,11 +6,10 @@ from utils.globalStorage import *
 from utils.dbHandler import *
 from utils.asyncHalper import *
 import os
-import threading
-import time
 
 # функция для удобного запуска фласка
 def startServer(
+    startHistoryText: str,
     historyText: str,
     statsEnds: dict,
     linkEpisodes: dict,
@@ -24,7 +23,7 @@ def startServer(
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
     startTime = datetime.now()
-    startHistory = builder(historyText, linkEpisodes, "стартовой истории")
+    startHistory = builder(startHistoryText, linkEpisodes, "стартовой истории")
     history = builder(historyText, linkEpisodes, "истории")
 
     # билдинг концовок
