@@ -24,6 +24,13 @@ def connect(user, password, databaseName):
         userId VARCHAR(255) PRIMARY KEY,
         gameInfo TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS stats (
+        userId VARCHAR(255) PRIMARY KEY,
+        deaths INT,
+        openEnds SMALLINT,
+        meetedCharacters SMALLINT
+    );
     """
 
     # создать таблицу с сохранениями, если ее не существует

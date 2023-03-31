@@ -24,6 +24,7 @@ def startServer(
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
     startTime = datetime.now()
+    startHistory = builder(historyText, linkEpisodes, "стартовой истории")
     history = builder(historyText, linkEpisodes, "истории")
 
     # билдинг концовок
@@ -42,7 +43,9 @@ def startServer(
         "Синтезирование завершено с кайфом за: " + str(endTime - startTime),
     )
 
-    # записал историю
+    # записать стартовую историю
+    setInGlobalStorage('startHistory', startHistory, saveLinks=True)
+    # записать историю
     setInGlobalStorage('history', history, saveLinks=True)
     # записать концовки
     setInGlobalStorage('statsEnds', statsEnds, saveLinks=True)
@@ -65,18 +68,6 @@ def startServer(
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
     app.config["JSONIFY_MIMETYPE"] = "application/json;charset=utf-8"
-
-    # # запуск цикла для сохранений игр в БД
-    # def saveGamesCycle(globalStorage):
-    #     while True:
-    #         globalStorage = copy.deepcopy(globalStorage)
-    #         print('Сохранение игр...')
-    #         count = saveGamesFromGlobalStorage(globalStorage) 
-    #         print('Количество записанных игр:', count)
-    #         # 600 секунд = 10 минут
-    #         time.sleep(5)
-
-    # doFuncAsAsync(saveGamesCycle, [globalStorage])
 
     # получить дату из полученного реквеста, прогнать ее через "handler" и вернуть запрос
     @app.route(route, methods=methods)
