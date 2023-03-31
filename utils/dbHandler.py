@@ -16,15 +16,13 @@ def connect(user, password, databaseName):
     except mariadb.Error as e:
         raise mariadb.Error(f"Ошибка при подключении к MariaDB: {e}")
 
-    # Получить курсор
-    cur = conn.cursor()
-
-    createTable = """
+    createSaves = """
     CREATE TABLE IF NOT EXISTS saves (
         userId VARCHAR(255) PRIMARY KEY,
         gameInfo TEXT
     );
-
+    """
+    createStats = """
     CREATE TABLE IF NOT EXISTS stats (
         userId VARCHAR(255) PRIMARY KEY,
         deaths INT,
@@ -33,10 +31,16 @@ def connect(user, password, databaseName):
     );
     """
 
+    # Получить курсор
+    cur = conn.cursor()
+    
     # создать таблицу с сохранениями, если ее не существует
-    cur.execute(createTable)
+    cur.execute(createSaves)
+    cur.execute(createStats)
 
+    # закоммитить изменения
     conn.commit()
+    
     # Вернуть соединение
     return conn
 
