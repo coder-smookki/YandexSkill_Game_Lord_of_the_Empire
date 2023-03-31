@@ -23,6 +23,7 @@ session_state = {"branch": "exitConfirm"}
 
 def getConfig(event):
     return {
+        'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
         "card": config["card"],

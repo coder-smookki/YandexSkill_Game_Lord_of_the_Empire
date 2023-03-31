@@ -20,6 +20,7 @@ def getConfig(event):
     session_state = {"branch": "howToContactDevelopers"}
 
     return {
+        'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
         "card": config["card"],

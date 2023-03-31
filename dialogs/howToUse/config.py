@@ -22,6 +22,7 @@ def getConfig(event):
     session_state = {"branch": "howToUse"}
 
     return {
+        'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
         "card": config["card"],
