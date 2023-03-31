@@ -24,7 +24,7 @@ def startServer(
     print(colored("+", "green"), "Старт синтезирования")
     startTime = datetime.now()
     startHistory = builder(startHistoryText, linkEpisodes, "стартовой истории")
-    history = builder(historyText, linkEpisodes, "истории")
+    history = builder(historyText, linkEpisodes, "истории", False)
 
     # билдинг концовок
     for key in statsEnds:
