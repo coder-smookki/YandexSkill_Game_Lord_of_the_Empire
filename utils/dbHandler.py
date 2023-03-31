@@ -36,6 +36,7 @@ def connect(user, password, databaseName):
     # создать таблицу с сохранениями, если ее не существует
     cur.execute(createTable)
 
+    conn.commit()
     # Вернуть соединение
     return conn
 
