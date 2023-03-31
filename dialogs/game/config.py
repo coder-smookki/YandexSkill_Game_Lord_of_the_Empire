@@ -170,6 +170,9 @@ def getConfig(event, needCreateNewInfo=False):
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
+    # концовки
+    statsEnds = globalStorage["statsEnds"]
+
     # соединение с БД
     conn = globalStorage["mariaDBconn"]
 
@@ -190,9 +193,6 @@ def getConfig(event, needCreateNewInfo=False):
     else:
         # получить инфо по айди юзера
         info = selectGameInfo(conn, userId)
-
-        # получить концовки
-        statsEnds = globalStorage["statsEnds"]
 
         # если сохранение в БД не нашлось
         if not info:
