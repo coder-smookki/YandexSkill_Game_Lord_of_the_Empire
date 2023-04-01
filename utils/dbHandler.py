@@ -97,6 +97,7 @@ def getStat(conn, userId, statName="all"):
     if statName == "all":
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
         for (result) in cur:
+            print('getStatResult',result)
             returnResult = {}
             returnResult["deaths"] = result[0]
             returnResult["openEnds"] = json.loads(result[1])
