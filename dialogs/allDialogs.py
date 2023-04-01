@@ -12,13 +12,13 @@ from dialogs.resetGame.resetGame import resetGame
 from dialogs.stats.stats import stats
 allDialogs = {
     "exitConfirm": exitConfirm,
-    "repeat": repeat,
     'game': game,
     'resetGame': resetGame,
     'stats': stats,
     "whoAreCreators": whoAreCreators,
     "howToUse": howToUse,
     "howToContactDevelopers": howToContactDeveloveps,
+    "repeat": repeat,
     "whatYouCan": whatYouCan,
     "help": help,
     "backDialog": backDialog,
