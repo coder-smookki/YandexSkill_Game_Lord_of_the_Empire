@@ -18,9 +18,9 @@ allDialogs = {
     "whoAreCreators": whoAreCreators,
     "howToUse": howToUse,
     "howToContactDevelopers": howToContactDeveloveps,
-    "repeat": repeat,
     "whatYouCan": whatYouCan,
     "help": help,
     "backDialog": backDialog,
+    "repeat": repeat,
     "mainMenu": mainMenu
 }
