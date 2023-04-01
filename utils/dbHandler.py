@@ -60,6 +60,8 @@ def selectName(conn, userId):
     cur = conn.cursor()
     cur.execute("SELECT name FROM saves WHERE userId=%s", [userId])
     for name in cur:
+        if isinstance(name, tuple):
+            return name[0]
         return name
 
 
