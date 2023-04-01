@@ -1,4 +1,4 @@
-from utils.intents import ResetIntents,YesIntents
+from utils.intents import ResetIntents, YesIntents, NoIntents
 from utils.triggerHelper import *
 from utils.branchHandler import *
 from utils.responseHelper import *
@@ -18,8 +18,10 @@ def getResponse(event, allDialogs=None):
 
     return createResponse(event, getConfig(event))
 
+
 def isTriggered(event):
-    return isInCommandOr(event, ResetIntents) or isInLastContext(event, 'resetGame')
+    return (isInCommandOr(event, ResetIntents) or isInLastContext(event, 'resetGame')) \
+        and not isInCommandOr(event, NoIntents)
 
 
 resetGame = {"getResponse": getResponse, "isTriggered": isTriggered}
