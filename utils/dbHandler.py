@@ -97,6 +97,8 @@ def getStat(conn, userId, statName='all'):
             returnResult['deaths'] = result[1]
             returnResult['openEnds'] = result[2]
             returnResult['meetedCharacters'] = result[3]
+            print(result)
+            print(returnResult)
             return returnResult
     else:
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
