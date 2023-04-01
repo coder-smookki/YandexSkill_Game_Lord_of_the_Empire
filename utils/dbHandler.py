@@ -105,6 +105,7 @@ def getStat(conn, userId, statName="all"):
 
             return returnResult
     else:
+        print('some x stat')
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
         # gameInfo = cur['gameInfo']
         for (result) in cur:
