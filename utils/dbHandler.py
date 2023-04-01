@@ -51,7 +51,7 @@ def selectGameInfo(conn, userId):
     # gameInfo = cur['gameInfo']
     for gameInfo in cur:
         # print(f"First Name: {first_name}, Last Name: {last_name}")
-        print("gameInfo db", gameInfo[0])
+        # print("gameInfo db", gameInfo[0])
         return json.loads(gameInfo[0])
 
 
@@ -63,9 +63,9 @@ def updateSave(conn, userId, save):
 
     result = cur.execute(sql, [save, userId])
     conn.commit()
-    print("userId db", userId)
-    print("save db", save)
-    print("execute db:", result)
+    # print("userId db", userId)
+    # print("save db", save)
+    # print("execute db:", result)
 
 
 def insertSave(conn, userId, save):
@@ -77,9 +77,9 @@ def insertSave(conn, userId, save):
 
     result = cur.execute(sql, [userId, save])
     conn.commit()
-    print("userId db", userId)
-    print("save db", save)
-    print("execute db:", result)
+    # print("userId db", userId)
+    # print("save db", save)
+    # print("execute db:", result)
 
 
 def removeSave(conn, userId):
@@ -92,7 +92,7 @@ def removeSave(conn, userId):
 
 
 def getStat(conn, userId, statName="all"):
-    print("getStat: " + statName)
+    # print("getStat: " + statName)
     cur = conn.cursor()
     if statName == "all":
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
@@ -102,12 +102,12 @@ def getStat(conn, userId, statName="all"):
             returnResult["deaths"] = result[1]
             returnResult["openEnds"] = json.loads(result[2])
             returnResult["meetedCharacters"] = json.loads(result[3])
-            print('getStatResult',returnResult)
+            # print('getStatResult',returnResult)
             return returnResult
 
         raise ValueError('Пустой селект 0_o')
     else:
-        print('some x stat')
+        # print('some x stat')
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
         # gameInfo = cur['gameInfo']
         for (result) in cur:
@@ -117,7 +117,7 @@ def getStat(conn, userId, statName="all"):
 
 
 def insertNewStat(conn, userId):
-    print("insert new stat")
+    # print("insert new stat")
     cur = conn.cursor()
     sql = "INSERT INTO stats (userId,deaths,openEnds, meetedCharacters) VALUES (%s, %s,%s,%s)"
 
@@ -131,9 +131,9 @@ def insertNewStat(conn, userId):
 
 
 def removeRepeatsFromList(l):
-    print('removeRepeats',l)
+    # print('removeRepeats',l)
     result = [*set(l)]
-    print('removeRepeatsResult',result)
+    # print('removeRepeatsResult',result)
     return result
 
 
@@ -150,7 +150,7 @@ def setStat(conn, userId, deaths=0, openEnds=[], meetedCharacters=[]):
 def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     getted = getStat(conn, userId)
     
-    print('getted',getted)
+    # print('getted',getted)
 
     nowDeaths = getted["deaths"] + deaths
     nowOpenEnds = getted["openEnds"]
@@ -166,7 +166,7 @@ def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
         nowMeetedCharacters.append(meetedCharacters)
         nowMeetedCharacters = removeRepeatsFromList(nowMeetedCharacters)
     
-    print(nowDeaths, nowOpenEnds, nowMeetedCharacters)
+    # print(nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
