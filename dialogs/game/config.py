@@ -133,6 +133,10 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
+        # если это первая игра
+        if not haveGlobalState(event,'playedBefore') or getGlobalState(event,'playedBefore') == False:
+            config['session_state'] = {"playedBefore": True}
+
     # вернуть конфиг
     return config
 
@@ -189,6 +193,9 @@ def getConfig(event, needCreateNewInfo=False):
 
     # соединение с БД
     conn = globalStorage["mariaDBconn"]
+
+    # вся стартовая история
+    firstGameHistory = globalStorage["startHistory"]
 
     # вся история
     history = globalStorage["history"]
@@ -251,9 +258,15 @@ def getConfig(event, needCreateNewInfo=False):
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
 
-    # пройти к следующему эпизоду
-    episode = passEpisode(info, history, statsEnds)
 
+
+    # пройти к следующему эпизоду, если это первая игра
+    if not haveGlobalState(event,'playedBefore') or getGlobalState(event,'playedBefore') == False:
+        episode = passEpisode(info, firstGameHistory, statsEnds)
+    else:
+    # пройти к следующему эпизоду, если юзер уже играл
+        episode = passEpisode(info, history, statsEnds) 
+        
     # если история закончилась
     if episode == "its all":
         # удалить последнее сохранение
