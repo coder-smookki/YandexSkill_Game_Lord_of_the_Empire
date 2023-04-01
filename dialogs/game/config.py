@@ -138,8 +138,7 @@ def compileConfigFromEpisode(event,episode, haveInterface):
             print('first game')
             if not 'user_state_update' in config:
                 config['user_state_update'] = {}
-            config['user_state_update']["playedBefore"] = True 
-            config['user_state_update']["abobaAboba"] = 'hehehe' 
+            config['user_state_update']["playedBefore"] = True
 
     # вернуть конфиг
     return config
