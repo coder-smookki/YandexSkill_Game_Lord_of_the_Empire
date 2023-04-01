@@ -1,6 +1,8 @@
 def getConfig(event):
     config = {
-        "tts": """Вы всегда можете написать на нашу почту, super, scripts, debugers, @ yandex.ru""",
+        "tts": """Вы всегда можете написать на нашу почту. super. scripts. debugers. @ yandex. точка. ru.
+        Варианты ответов которые доступны вам сейчас:
+        Играть. Повторить ещё раз. Что ты умеешь?. Назад. Выход.""",
         "buttons": [
             "Повторить ещё раз",
             "Что ты умеешь?",
@@ -12,7 +14,7 @@ def getConfig(event):
             "image_id": "1533899/d371aab5224c91137cfc",
             "title": "КАК СВЯЗАТЬСЯ С НАМИ?",
             "description": """
-            Почта команды: superscriptsdebugers@yandex.ru
+            Почта команды: SuperScriptsDebugers@yandex.ru
             """,
         },
     }
