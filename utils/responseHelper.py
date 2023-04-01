@@ -59,7 +59,6 @@ def createExitResponse(event):
 def createResponse(event, originalConfig):
     # скопировать конфиг, чтобы 100% избежать его изменения в другом файле (если там он создан глобально)
     config = copy.deepcopy(originalConfig)
-
     try:
         # возращаемый респонс
         returnResponse = {

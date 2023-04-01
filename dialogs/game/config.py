@@ -52,9 +52,6 @@ def compileConfigFromEpisode(event, episode, haveInterface):
             # если карточка не вернулась, использовать арбуз
             if cardId is None:
                 cardId = "1533899/d371aab5224c91137cfc"
-        else:
-            if haveInterface:
-                cardId = None  # TODO: сделать получение карточки из эпизода
     else:
         # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
         tts = getRandomSfx(sfx) + episode["message"]
@@ -136,6 +133,13 @@ def compileConfigFromEpisode(event, episode, haveInterface):
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
+        # если это первая игра
+        if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
+            print('first game')
+            if not 'user_state_update' in config:
+                config['user_state_update'] = {}
+            config['user_state_update']["playedBefore"] = True
+
     # вернуть конфиг
     return config
 
@@ -194,6 +198,9 @@ def getConfig(event, needCreateNewInfo=False):
 
     # соединение с БД
     conn = globalStorage["mariaDBconn"]
+
+    # вся стартовая история
+    firstGameHistory = globalStorage["startHistory"]
 
     # вся история
     history = globalStorage["history"]
@@ -256,9 +263,15 @@ def getConfig(event, needCreateNewInfo=False):
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
 
-    # пройти к следующему эпизоду
-    episode = passEpisode(info, history, statsEnds)
 
+
+    # пройти к следующему эпизоду, если это первая игра
+    if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
+        episode = passEpisode(info, firstGameHistory, statsEnds)
+    # пройти к следующему эпизоду, если юзер уже играл
+    else:
+        episode = passEpisode(info, history, statsEnds) 
+        
     # если история закончилась
     if episode == "its all":
         # удалить последнее сохранение

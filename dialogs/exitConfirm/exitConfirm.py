@@ -1,4 +1,4 @@
-from utils.intents import ExitIntens
+from utils.intents import ExitIntens, YesIntents
 from .config import *
 from utils.triggerHelper import *
 from utils.responseHelper import *
@@ -15,7 +15,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInContext(event, "exitConfirm") and isInCommandOr(event, ExitIntens)
+    return (isInContext(event, "exitConfirm") and isInCommandOr(event, YesIntents)) or isInCommandOr(event, ExitIntens)
 
 
 exitConfirm = {"getResponse": getResponse, "isTriggered": isTriggered}

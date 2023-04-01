@@ -1,4 +1,4 @@
-from utils.intents import ResetIntents, YesIntents
+from utils.intents import ResetIntents,YesIntents
 from utils.triggerHelper import *
 from utils.branchHandler import *
 from utils.responseHelper import *
@@ -12,13 +12,14 @@ def getResponse(event, allDialogs=None):
         userId = getUserId(event)
         conn = globalStorage['mariaDBconn']
         removeSave(conn, userId)
-        return getDialogResponseFromEnd(event, 2, allDialogs)
+        response = getDialogResponseFromEnd(event, 2, allDialogs)
+        addGlobalStateInResponse(response,'playedBefore', False)
+        return response
 
     return createResponse(event, getConfig(event))
 
-
 def isTriggered(event):
-    return isInCommandOr(event, ResetIntents)
+    return isInCommandOr(event, ResetIntents) or isInLastContext(event, 'resetGame')
 
 
 resetGame = {"getResponse": getResponse, "isTriggered": isTriggered}
