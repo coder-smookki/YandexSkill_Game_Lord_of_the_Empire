@@ -12,4 +12,4 @@ def isTriggered(event):
     return "стат" in getCommand(event)
 
 
-whatYouCan = {"getResponse": getResponse, "isTriggered": isTriggered}
+stats = {"getResponse": getResponse, "isTriggered": isTriggered}
