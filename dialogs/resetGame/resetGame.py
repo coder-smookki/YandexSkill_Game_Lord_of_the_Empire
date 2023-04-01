@@ -19,7 +19,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInCommandOr(event, ResetIntents)
+    return isInCommandOr(event, ResetIntents) and not isInLastContext(event, 'resetGame')
 
 
 resetGame = {"getResponse": getResponse, "isTriggered": isTriggered}
