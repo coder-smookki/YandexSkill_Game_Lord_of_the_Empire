@@ -22,6 +22,7 @@ def connect(user, password, databaseName):
     createSavesTable = """
     CREATE TABLE IF NOT EXISTS saves (
         userId VARCHAR(255) PRIMARY KEY,
+        name TEXT,
         gameInfo TEXT
     );
     """
@@ -55,6 +56,13 @@ def selectGameInfo(conn, userId):
         return json.loads(gameInfo[0])
 
 
+def selectName(conn, userId):
+    cur = conn.cursor()
+    cur.execute("SELECT name FROM saves WHERE userId=%s", [userId])
+    for name in cur:
+        return name
+
+
 def updateSave(conn, userId, save):
     cur = conn.cursor()
     save = json.dumps(save, ensure_ascii=False)
@@ -68,14 +76,14 @@ def updateSave(conn, userId, save):
     # print("execute db:", result)
 
 
-def insertSave(conn, userId, save):
+def insertSave(conn, userId, name, save):
     cur = conn.cursor()
     save = json.dumps(save, ensure_ascii=False)
-    sql = "INSERT INTO saves (userId, gameInfo) VALUES (%s, %s)"
+    sql = "INSERT INTO saves (userId, name, gameInfo) VALUES (%s, %s, %s)"
 
     # ON DUPLICATE KEY UPDATE gameInfo = %s
 
-    result = cur.execute(sql, [userId, save])
+    result = cur.execute(sql, [userId, name, save])
     conn.commit()
     # print("userId db", userId)
     # print("save db", save)

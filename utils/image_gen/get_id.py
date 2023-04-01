@@ -9,12 +9,14 @@ def get_id(
         replica: str,
         values: list[int] | tuple[int, int, int, int],
         changes: list[int] | tuple[int, int, int, int],
+        name: str
 ) -> str | None:
     image = get_image_2(
         person=person,  # имя
         replica=replica,  # его речь
         values=values,  # значение сейчас
-        changes=changes  # изменения по выбору
+        changes=changes,  # изменения по выбору
+        name=name,  # имя правителя
     )
     # print(image)
     image_id = image_to_id(image)

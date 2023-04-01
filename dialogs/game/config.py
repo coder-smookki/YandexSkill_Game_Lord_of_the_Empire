@@ -1,11 +1,13 @@
+import random
+import re
+
 from utils.globalStorage import *
 from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
-import random
 from utils.image_gen.get_id import get_id
-import re
+
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -19,6 +21,14 @@ sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/3ee32d10-842e-4e93-86d6-da158cba6e3d.opus">',
 ]
 
+names = ["Александр", "Борис", "Василий", "Григорий", "Дмитрий", "Евгений", "Ждан", "Захар", "Игорь", "Константин",
+         "Леонид", "Михаил", "Никита", "Олег", "Павел", "Роман", "Сергей", "Тимофей", "Ульян", "Федор", "Харитон",
+         "Цезарь", "Чеслав", "Шамиль", "Эдуард", "Юлиан", "Яков", "Анатолий", "Богдан", "Владимир", "Геннадий", "Демид",
+         "Елисей", "Жорес", "Зиновий", "Ипполит", "Кирилл", "Лев", "Матвей", "Нестор", "Осип", "Петр", "Ростислав",
+         "Станислав", "Тарас", "Устин", "Филипп", "Христофор", "Чеслав", "Юрий", "Альфонсо", "Бернард", "Вильгельм",
+         "Генрих", "Давид", "Эдмунд", "Фердинанд", "Гарольд", "Исаак", "Яков", "Карл", "Леопольд", "Матвей", "Николай",
+         "Оскар", "Петр", "Ричард", "Сэмюэл", "Теодор", "Уильям"]
+
 
 def getRandomSfx(sfx):
     return sfx[random.randint(0, len(sfx) - 1)]
@@ -29,6 +39,9 @@ def compileConfigFromEpisode(event, episode, haveInterface):
     stats = episode["stats"]
 
     print('stats:', stats)
+
+    # Local variable 'cardId' might be referenced before assignment
+    cardId = None
 
     # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
@@ -47,6 +60,7 @@ def compileConfigFromEpisode(event, episode, haveInterface):
                     stats["coffers"],
                 ],
                 changes=[0, 0, 0, 0],
+                name=selectName(globalStorage["mariaDBconn"], getUserId(event))
             )
 
             # если карточка не вернулась, использовать арбуз
@@ -134,7 +148,7 @@ def compileConfigFromEpisode(event, episode, haveInterface):
         increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
         # если это первая игра
-        if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
+        if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
             print('first game')
             if not 'user_state_update' in config:
                 config['user_state_update'] = {}
@@ -214,7 +228,7 @@ def getConfig(event, needCreateNewInfo=False):
         info = createStartInfo(history)
 
         # вставить это сохранение в БД
-        insertSave(conn, userId, info)
+        insertSave(conn, userId, random.choice(names), info)
 
     else:
         # получить инфо по айди юзера
@@ -226,7 +240,7 @@ def getConfig(event, needCreateNewInfo=False):
             info = createStartInfo(history)
 
             # вставить это сохранение в БД
-            insertSave(conn, userId, info)
+            insertSave(conn, userId, random.choice(names), info)
 
     # если в текущем сохранении есть прошлый эпизод
     if "lastEpisode" in info and not info["lastEpisode"] is None:
@@ -263,16 +277,14 @@ def getConfig(event, needCreateNewInfo=False):
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
 
-
-
     # пройти к следующему эпизоду, если это первая игра
-    if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
+    if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
         episode = passEpisode(info, firstGameHistory, statsEnds)
     # пройти к следующему эпизоду, если юзер уже играл
     else:
-        episode = passEpisode(info, history, statsEnds) 
-        
-    # если история закончилась
+        episode = passEpisode(info, history, statsEnds)
+
+        # если история закончилась
     if episode == "its all":
         # удалить последнее сохранение
         removeSave(conn, userId)

@@ -241,7 +241,7 @@ def get_image_2(
     # Итог
     img_byte_arr = BytesIO()
     layout.save(img_byte_arr, format='PNG')
-    layout.show()
+    # layout.show()
     return img_byte_arr.getvalue()
 
 
