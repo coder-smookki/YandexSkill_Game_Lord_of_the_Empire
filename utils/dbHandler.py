@@ -160,11 +160,11 @@ def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
 
     if not openEnds is None:
         nowOpenEnds.append(openEnds)
-        removeRepeatsFromList(nowOpenEnds)
+        nowOpenEnds = removeRepeatsFromList(nowOpenEnds)
     
     if not meetedCharacters is None:
         nowMeetedCharacters.append(meetedCharacters)
-        removeRepeatsFromList(nowMeetedCharacters)
+        nowOpenEnds = removeRepeatsFromList(nowMeetedCharacters)
     
     print(nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
