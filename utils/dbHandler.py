@@ -97,14 +97,16 @@ def getStat(conn, userId, statName="all"):
     if statName == "all":
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
         for (result) in cur:
-            returnResult = {}
-            returnResult["deaths"] = result[1]
-            returnResult["openEnds"] = json.loads(result[2])
-            returnResult["meetedCharacters"] = json.loads(result[3])
+            returnResult = {
+                "deaths": result[1],
+                "openEnds": json.loads(result[2]),
+                "meetedCharacters": json.loads(result[3])
+            }
             # print('getStatResult',returnResult)
             return returnResult
 
-        raise ValueError('Пустой селект 0_o')
+        return None  # вместо пустого селекта
+        # raise ValueError('Пустой селект 0_o')
     else:
         # print('some x stat')
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])

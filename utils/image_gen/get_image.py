@@ -9,12 +9,12 @@ MAX_VALUE = 100
 no_color = (138, 124, 81)
 ok_color = (249, 246, 195)
 back_color = (192, 172, 98)
-green = (0, 255, 0)
+font_color = (249, 243, 190)
 
 parent_path = Path(__file__).parent.absolute()
 images_path = parent_path / 'images'
 persons_path = images_path / 'persons'
-font = ImageFont.truetype(str(parent_path / 'times.ttf'), 40)  # Размер шрифта крутить тут
+font = ImageFont.truetype(str(parent_path / 'myraid.otf'), 63)  # Размер шрифта крутить тут
 green_arrow = Image.open(images_path / 'green_arrow.png', mode='r', formats=["PNG"])
 red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
 default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])  # заглушка
@@ -182,6 +182,7 @@ def get_image_2(
         replica: str,
         values: list[int] | tuple[int, int, int, int],
         changes: list[int] | tuple[int, int, int, int],
+        name: str = ''
 ) -> bytes:
     """
     Генератор картинок три тысячи инатор (второй шаблон)
@@ -191,6 +192,7 @@ def get_image_2(
     :param replica: Реплика персонажа
     :param values: Текущие значения фракции, в порядке Церковь, Народ, Армия, Казна
     :param changes: Плюс или минус куда, порядок тот же.
+    :param name: Имя правителя.
     :return:
     """
 
@@ -230,15 +232,23 @@ def get_image_2(
     # Наложение шаблона на макет, в этот момент картинка уже с персонажем и фракциями.
     layout.paste(background, (0, 0), background)
 
+    # Наложение имени
+    draw = ImageDraw.Draw(layout)
+    bbox = font.getbbox(name)
+    text_x = big_border + (block - bbox[2]) // 2
+    draw.text((text_x, layout.height - big_border + 5), name, font=font, fill=font_color)  # игрек нарандомил
+
     # Итог
     img_byte_arr = BytesIO()
     layout.save(img_byte_arr, format='PNG')
     layout.show()
     return img_byte_arr.getvalue()
 
+
 # get_image_2(
-#     person='Дракон',
+#     person='Шут Радмир',
 #     replica='123',
-#     values=[44, 12, 90, 65],
-#     changes=[0, 0, 0, 0]
+#     values=[100, 100, 100, 100],
+#     changes=[0, 0, 0, 0],
+#     name='Трим'
 # )
