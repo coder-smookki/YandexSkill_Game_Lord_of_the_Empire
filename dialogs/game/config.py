@@ -28,6 +28,8 @@ def compileConfigFromEpisode(event,episode, haveInterface):
     # получить статы
     stats = episode["stats"]
 
+    print('stats:',stats)
+
     # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
         # добавить sfx, имя и сообщение в tts
@@ -66,8 +68,8 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         config = {
             "tts": tts,
             "buttons": [
-                # "Повторить ещё раз", TODO: добавить повторение
                 "В главное меню",
+                "Повторить ещё раз",
                 "Выход",
             ],
             "card": {
@@ -120,7 +122,7 @@ def compileConfigFromEpisode(event,episode, haveInterface):
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
 
-    # если нет кнопок для выбора (игрок умер), то добавить одну смерть
+    # если нет кнопок для выбора (игрок умер)
     if episode["buttons"] is None or len(episode["buttons"]) == 0:
         # соединение с БД
         conn = globalStorage["mariaDBconn"]
@@ -128,6 +130,9 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         # айди юзера
         userId = getUserId(event)
     
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
