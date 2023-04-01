@@ -1,5 +1,7 @@
 import copy
 
+def ownHaveGlobalState(event, state):
+    return 'state' in event and 'user' in event['state'] and state in event['state']['user']
 
 # создать ответ Алисе в удобном для игры формате
 def createCard(
@@ -57,7 +59,6 @@ def createResponse(event, originalConfig):
     config = copy.deepcopy(originalConfig)
 
     try:
-
         # возращаемый респонс
         returnResponse = {
             "response": {
@@ -84,7 +85,10 @@ def createResponse(event, originalConfig):
             # установить поле
             returnResponse["user_state_update"] = config["user_state_update"]
 
-            # вернуть получившийся респонс
+        if not ownHaveGlobalState(event, 'wasBefore'):
+            addGlobalStateInResponse(returnResponse,'wasBefore', True)
+
+        # вернуть получившийся респонс
         return returnResponse
     except:
         print('Конфиг:', config)

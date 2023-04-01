@@ -15,6 +15,8 @@ def handler(event):
     ):
         return "привет =)"
     
+    print('Was before: ',haveGlobalState(event, 'wasBefore'))
+
     for key in allMiddlewares:
         if not allMiddlewares[key]["isTriggered"](event):
             continue
