@@ -144,7 +144,7 @@ def setStat(conn, userId, deaths=0, openEnds=[], meetedCharacters=[]):
     SET deaths = %s, openEnds = %s, meetedCharacters = %s
     WHERE userId = %s;
     """
-    cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
+    cur.execute(sql, [deaths, json.dumps(openEnds, ensure_ascii=True), json.dumps(meetedCharacters, ensure_ascii=True), userId])
     conn.commit()
 
 def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
