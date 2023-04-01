@@ -28,6 +28,8 @@ def compileConfigFromEpisode(event,episode, haveInterface):
     # получить статы
     stats = episode["stats"]
 
+    print('stats:',stats)
+
     # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
         # добавить sfx, имя и сообщение в tts
