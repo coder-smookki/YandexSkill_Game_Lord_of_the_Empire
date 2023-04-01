@@ -89,6 +89,7 @@ def removeSave(conn, userId):
     conn.commit()
 
 def getStat(conn, userId, statName='all'):
+    print('getStat: ' + statName)
     cur = conn.cursor()
     if statName == 'all':
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
