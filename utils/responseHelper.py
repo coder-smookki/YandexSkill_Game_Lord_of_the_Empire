@@ -87,8 +87,10 @@ def createResponse(event, originalConfig):
             returnResponse["user_state_update"] = config["user_state_update"]
 
         # если юзера раньше не было, то добавить глобальный стейт о том, что теперь он есть
-        if not ownHaveGlobalState(event, 'wasBefore'):
-            addGlobalStateInResponse(returnResponse, 'wasBefore', True)
+        # if not ownHaveGlobalState(event, 'wasBefore'):
+            # addGlobalStateInResponse(returnResponse, 'wasBefore', True)
+
+        addGlobalStateInResponse(returnResponse, 'wasBefore', False)
 
         # вернуть получившийся респонс
         return returnResponse
