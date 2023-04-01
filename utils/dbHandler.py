@@ -146,7 +146,7 @@ def setStat(conn, userId, deaths=0, openEnds=[], meetedCharacters=[]):
 def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     getted = getStat(conn, userId)
     
-    print('getted',type(nowOpenEnds))
+    print('getted',getted)
 
     nowDeaths = getted["deaths"] + deaths
     nowOpenEnds = getted["openEnds"]
