@@ -14,7 +14,7 @@ def getResponse(event, allDialogs=None):
         removeSave(conn, userId)
         response = getDialogResponseFromEnd(event, 2, allDialogs)
         addGlobalStateInResponse(response,'playedBefore', False)
-
+        return response
     return createResponse(event, getConfig(event))
     
 
