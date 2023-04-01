@@ -1,3 +1,13 @@
+from random import choice
+
+ttss = ['Вы уверены в том, что хотите выйти?', 'Вы точно хотите выйти?', 'Вы подтверждаете свой выход?',
+        'Вы намерены выйти?']
+see_you_agains = ['До скорых встреч! Были рады вас видеть в нашем навыке!',
+                  'До свидания! Были рады вас видеть в нашем навыке!',
+                  'До новых встреч! Были рады вас видеть в нашем навыке!',
+                  'До встречи позже! Были рады вас видеть в нашем навыке!']
+
+
 config = {
         "tts":
             """
@@ -22,23 +32,27 @@ session_state = {"branch": "exitConfirm"}
 
 
 def getConfig(event):
+    tts = choice(ttss)
+    card = config["card"].copy()
+    card["description"] = tts
     return {
-        'message': config["tts"],
-        "tts": config["tts"],
+        'message': tts,
+        "tts": tts,
         "buttons": config["buttons"],
-        "card": config["card"],
+        "card": card,
         "session_state": session_state,
     }
 
 
 def getConfirmResponse(event):
-        return {
-            "response": {
-                "text": "До скорых встреч! Были рады вас видеть в нашем навыке!",
-                "tts": "До скорых встреч! Были рады вас видеть в нашем навыке!",
-                "buttons": [],
-                "end_session": True,
-            },
-            "version": event["version"],
-            "dontUpdateBranches": True,
-        }
+    see_you_again = choice(see_you_agains)
+    return {
+        "response": {
+            "text": see_you_again,
+            "tts": see_you_again,
+            "buttons": [],
+            "end_session": True,
+        },
+        "version": event["version"],
+        "dontUpdateBranches": True,
+    }

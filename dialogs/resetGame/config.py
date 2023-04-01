@@ -1,3 +1,11 @@
+from random import choice
+
+ttss = ['Вы уверены в том, что хотите сбросить сохранение?',
+        'Вы уверены, что хотите сбросить последнее приключение?',
+        'Вы точно хотите отменить сохранение?',
+        'Вы убедились, что хотите удалить сохранённую информацию?']
+
+
 config = {
         "tts":
             """
@@ -22,10 +30,13 @@ session_state = {"branch": "resetGame"}
 
 
 def getConfig(event):
+    tts = choice(ttss)
+    card = config["card"].copy()
+    card["description"] = tts
     return {
-        'message': config["tts"],
-        "tts": config["tts"],
+        'message': tts,
+        "tts": tts,
         "buttons": config["buttons"],
-        "card": config["card"],
+        "card": card,
         "session_state": session_state,
     }

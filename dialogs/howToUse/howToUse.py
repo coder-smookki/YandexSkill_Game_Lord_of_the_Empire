@@ -12,4 +12,5 @@ def getResponse(event, allDialogs=None):
 def isTriggered(event):
     return isInCommandOr(event, HowToUseIntents)
 
+
 howToUse = {'getResponse': getResponse, 'isTriggered': isTriggered}
