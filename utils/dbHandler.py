@@ -93,11 +93,16 @@ def getStat(conn, userId, statName='all'):
     if statName == 'all':
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
         for (result) in cur:
-            return result
-    cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
-    # gameInfo = cur['gameInfo']
-    for (result) in cur:
-        return result[0]
+            returnResult = {}
+            returnResult['deaths'] = result[1]
+            returnResult['openEnds'] = result[2]
+            returnResult['meetedCharacters'] = result[3]
+            return returnResult
+    else:
+        cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
+        # gameInfo = cur['gameInfo']
+        for (result) in cur:
+            return result[0]
 
 def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     cur = conn.cursor()
