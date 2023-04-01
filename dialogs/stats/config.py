@@ -37,9 +37,9 @@ def getConfig(event):
             "session_state": session_state,
         } 
 
-    config['tts'] += '\nСмерти: ' + stats['deaths']
-    config['tts'] += '\nОткрыто концовок: ' + stats['openEnds'] + ' из X'
-    config['tts'] += '\nВстречено героев: ' + stats['meetedCharacters'] + ' из 21'
+    config['tts'] += '\nСмерти: ' + str(stats['deaths'])
+    config['tts'] += '\nОткрыто концовок: ' + str(stats['openEnds']) + ' из X'
+    config['tts'] += '\nВстречено героев: ' + str(stats['meetedCharacters']) + ' из 21'
     # deaths, openEnds, meetedCharacters
 
     return {
