@@ -10,7 +10,7 @@ def getConfig(event):
         ],
         "card": {
             "type": "BigImage",
-            "image_id": "1533899/d371aab5224c91137cfc",
+            "image_id": "1521359/3349afd66fa90845fd03",
             "title": "СОЗДАТЕЛИ НАВЫКА",
             "description": """
             Ильин Кирилл - Тимлид (руководит процессом разработки), 
