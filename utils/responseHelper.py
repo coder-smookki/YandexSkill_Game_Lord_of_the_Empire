@@ -90,6 +90,8 @@ def createResponse(event, originalConfig):
         if not ownHaveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
             addGlobalStateInResponse(returnResponse, 'wasBefore', True)
 
+        addGlobalStateInResponse(returnResponse, 'wasBefore', False)
+
         # вернуть получившийся респонс
         return returnResponse
     except:
