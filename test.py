@@ -6,6 +6,6 @@ conn = connect('root','root', 'Lord_of_the_Empire')
 
 print(type(getStat(conn,'ggggggggg')))
 
-increaseStat(conn, 'ggggggggg', 100, 'aboba', 'abobik')
+reduceStat(conn, 'ggggggggg', 100, 'aboba', 'abobik')
 
 print(getStat(conn,'ggggggggg'))
