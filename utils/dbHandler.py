@@ -106,12 +106,11 @@ def getStat(conn, userId, statName='all'):
 
 def insertNewStat(conn, userId):
     cur = conn.cursor()
-    save = json.dumps(save, ensure_ascii=False)
     sql = "INSERT INTO stats (userId,deaths,openEnds, meetedCharacters) VALUES (%s, %s,%s,%s)"
 
     deaths = 0
-    openEnds = json.dumps('[]', ensure_ascii=False)
-    meetedCharacters = json.dumps('[]', ensure_ascii=False)
+    openEnds = json.dumps([], ensure_ascii=False)
+    meetedCharacters = json.dumps([], ensure_ascii=False)
     
     cur.execute(sql, [userId, deaths, openEnds, meetedCharacters])
     
