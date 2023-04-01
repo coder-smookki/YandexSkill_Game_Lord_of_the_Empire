@@ -49,10 +49,11 @@ def selectGameInfo(conn, userId):
     cur = conn.cursor()
     cur.execute("SELECT gameInfo FROM saves WHERE userId=%s", [userId])
     # gameInfo = cur['gameInfo']
-    for (gameInfo) in cur:
-    # print(f"First Name: {first_name}, Last Name: {last_name}")
-        print('gameInfo db',gameInfo[0])
+    for gameInfo in cur:
+        # print(f"First Name: {first_name}, Last Name: {last_name}")
+        print("gameInfo db", gameInfo[0])
         return json.loads(gameInfo[0])
+
 
 def updateSave(conn, userId, save):
     cur = conn.cursor()
@@ -80,6 +81,7 @@ def insertSave(conn, userId, save):
     print("save db", save)
     print("execute db:", result)
 
+
 def removeSave(conn, userId):
     cur = conn.cursor()
     sql = """
@@ -88,63 +90,48 @@ def removeSave(conn, userId):
     cur.execute(sql, [userId])
     conn.commit()
 
-def getStat(conn, userId, statName='all'):
-    print('getStat: ' + statName)
+
+def getStat(conn, userId, statName="all"):
+    print("getStat: " + statName)
     cur = conn.cursor()
-    if statName == 'all':
+    if statName == "all":
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
-        for (result) in cur:
+        for result in cur:
             returnResult = {}
-            returnResult['deaths'] = result[1]
-            returnResult['openEnds'] = json.loads(result[2])
-            returnResult['meetedCharacters'] = json.loads(result[3])
+            returnResult["deaths"] = result[1]
+            returnResult["openEnds"] = json.loads(result[2])
+            returnResult["meetedCharacters"] = json.loads(result[3])
             print(result)
             print(returnResult)
             return returnResult
     else:
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
         # gameInfo = cur['gameInfo']
-        for (result) in cur:
-            if statName != 'deaths':
+        for result in cur:
+            if statName != "deaths":
                 return json.loads(result[0])
             return result[0]
 
+
 def insertNewStat(conn, userId):
-    print('insert new stat')
+    print("insert new stat")
     cur = conn.cursor()
     sql = "INSERT INTO stats (userId,deaths,openEnds, meetedCharacters) VALUES (%s, %s,%s,%s)"
 
     deaths = 0
     openEnds = json.dumps([], ensure_ascii=False)
     meetedCharacters = json.dumps([], ensure_ascii=False)
-    
+
     cur.execute(sql, [userId, deaths, openEnds, meetedCharacters])
-    
+
     conn.commit()
 
 
-def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
-    cur = conn.cursor()
+def removeRepeatsFromList(l):
+    return [*set(l)]
 
-    sql = """
-    UPDATE stats
-    SET deaths = deaths + %s, openEnds = openEnds + %s, meetedCharacters = meetedCharacters + %s
-    WHERE userId = %s;
-    """
-    cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
-    conn.commit()
 
-def reduceStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
-    cur = conn.cursor()
-    sql = """
-    UPDATE stats
-    SET deaths = deaths - %s, openEnds = openEnds - %s, meetedCharacters = meetedCharacters - %s
-    WHERE userId = %s;
-    """
-    cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
-    conn.commit()
-
-def setStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
+def setStat(conn, userId, deaths=0, openEnds=[], meetedCharacters=[]):
     cur = conn.cursor()
     sql = """ 
     UPDATE stats
@@ -153,6 +140,38 @@ def setStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     """
     cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
     conn.commit()
+
+def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
+    getted = getStat(conn, userId)
+    
+    nowDeaths = getted["deaths"] + deaths
+    nowOpenEnds = json.loads(getted["openEnds"])
+    nowMeetedCharacters = json.loads(getted["meetedCharacters"])
+
+    if not openEnds is None:
+        nowOpenEnds = removeRepeatsFromList(nowOpenEnds.append(openEnds))
+    
+    if not meetedCharacters is None:
+        nowMeetedCharacters = removeRepeatsFromList(nowMeetedCharacters.append(meetedCharacters)),
+    
+    setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
+
+def reduceStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
+    getted = getStat(conn, userId)
+    
+    nowDeaths = getted["deaths"] - deaths
+    nowOpenEnds = json.loads(getted["openEnds"])
+    nowMeetedCharacters = json.loads(getted["meetedCharacters"]).remove(meetedCharacters)
+
+    if not openEnds is None:
+        nowOpenEnds = nowOpenEnds.remove(openEnds)
+    
+    if not meetedCharacters is None:
+        nowMeetedCharacters = nowMeetedCharacters.remove(openEnds)
+    
+    setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
+
+
 
 # deaths int(11)
 # openEnds smallint(6)
