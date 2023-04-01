@@ -272,12 +272,12 @@ def getConfig(event, needCreateNewInfo=False):
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
 
+    # print('STATES', haveGlobalState(event, 'playedBefore'), getGlobalState(event, 'playedBefore'))
+    # try:
+    #     print(event['state']['user'])
+    # except KeyError as e:
+    #     print('KEYERROR', e)
     # пройти к следующему эпизоду, если это первая игра
-    print('STATES', haveGlobalState(event, 'playedBefore'), getGlobalState(event, 'playedBefore'))
-    try:
-        print(event['state']['user'])
-    except KeyError as e:
-        print('KEYERROR', e)
     if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
         episode = passEpisode(info, firstGameHistory, statsEnds)
     # пройти к следующему эпизоду, если юзер уже играл
