@@ -1,3 +1,4 @@
+from utils.intents import StatsIntents
 from .config import getConfig
 from utils.responseHelper import *
 from utils.triggerHelper import *
@@ -9,7 +10,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return "стат" in getCommand(event)
+    return isInCommandOr(event, StatsIntents)
 
 
 stats = {"getResponse": getResponse, "isTriggered": isTriggered}
