@@ -145,8 +145,8 @@ def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     getted = getStat(conn, userId)
     
     nowDeaths = getted["deaths"] + deaths
-    nowOpenEnds = json.loads(getted["openEnds"])
-    nowMeetedCharacters = json.loads(getted["meetedCharacters"])
+    nowOpenEnds = getted["openEnds"]
+    nowMeetedCharacters = getted["meetedCharacters"]
 
     if not openEnds is None:
         nowOpenEnds = removeRepeatsFromList(nowOpenEnds.append(openEnds))
@@ -160,8 +160,8 @@ def reduceStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     getted = getStat(conn, userId)
     
     nowDeaths = getted["deaths"] - deaths
-    nowOpenEnds = json.loads(getted["openEnds"])
-    nowMeetedCharacters = json.loads(getted["meetedCharacters"]).remove(meetedCharacters)
+    nowOpenEnds = getted["openEnds"]
+    nowMeetedCharacters = getted["meetedCharacters"]
 
     if not openEnds is None:
         nowOpenEnds = nowOpenEnds.remove(openEnds)
