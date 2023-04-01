@@ -121,8 +121,6 @@ def compileConfigFromEpisode(event,episode, haveInterface):
 
     # если нет кнопок для выбора (игрок умер)
     if episode["buttons"] is None or len(episode["buttons"]) == 0:
-        print('end game player :(')
-
         # соединение с БД
         conn = globalStorage["mariaDBconn"]
 
@@ -136,8 +134,9 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
         # если это первая игра
-        if not haveGlobalState(event,'playedBefore') or getGlobalState(event,'playedBefore') == False:
-            config['session_state']["playedBefore"] = True
+        if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
+            config['session_state']["playedBefore"] = True 
+            print(config)
 
     # вернуть конфиг
     return config
@@ -263,10 +262,10 @@ def getConfig(event, needCreateNewInfo=False):
 
 
     # пройти к следующему эпизоду, если это первая игра
-    if not haveGlobalState(event,'playedBefore') or getGlobalState(event,'playedBefore') == False:
+    if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
         episode = passEpisode(info, firstGameHistory, statsEnds)
-    else:
     # пройти к следующему эпизоду, если юзер уже играл
+    else:
         episode = passEpisode(info, history, statsEnds) 
         
     # если история закончилась
