@@ -29,7 +29,7 @@ def getConfig(event):
     print('stats',stats)
 
     if stats is None:
-        {
+        return {
             'message': 'У вас нет статистики',
             "tts": 'У вас нет статистики',
             "buttons": config["buttons"],
