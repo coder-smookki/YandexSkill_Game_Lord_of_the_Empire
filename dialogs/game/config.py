@@ -29,10 +29,6 @@ names = list({"Александр", "Борис", "Василий", "Григо�
               "Матвей", "Николай", "Оскар", "Петр", "Ричард", "Сэмюэл", "Теодор", "Уильям"})
 
 
-def getRandomSfx(sfx):
-    return sfx[random.randint(0, len(sfx) - 1)]
-
-
 def compileConfigFromEpisode(event, episode, haveInterface):
     # получить статы
     stats = episode["stats"]
@@ -45,7 +41,7 @@ def compileConfigFromEpisode(event, episode, haveInterface):
     # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
         # добавить sfx, имя и сообщение в tts
-        tts = getRandomSfx(sfx) + episode["name"] + ". " + episode["message"]
+        tts = random.choice(sfx) + episode["name"] + ". " + episode["message"]
 
         if haveInterface:
             # получить айди картинки
@@ -67,7 +63,7 @@ def compileConfigFromEpisode(event, episode, haveInterface):
                 cardId = "1533899/d371aab5224c91137cfc"
     else:
         # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
-        tts = getRandomSfx(sfx) + episode["message"]
+        tts = random.choice(sfx) + episode["message"]
 
         if haveInterface:
             # использовать арбуз
