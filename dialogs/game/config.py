@@ -24,7 +24,7 @@ def getRandomSfx(sfx):
     return sfx[random.randint(0, len(sfx) - 1)]
 
 
-def compileConfigFromEpisode(episode, haveInterface):
+def compileConfigFromEpisode(event,episode, haveInterface):
     # получить статы
     stats = episode["stats"]
 
@@ -120,6 +120,17 @@ def compileConfigFromEpisode(episode, haveInterface):
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
 
+    # если нет кнопок для выбора (игрок умер), то добавить одну смерть
+    if episode["buttons"] is None or len(episode["buttons"]) == 0:
+        # соединение с БД
+        conn = globalStorage["mariaDBconn"]
+
+        # айди юзера
+        userId = getUserId(event)
+    
+        # добавить 1 смерть в статистику и новую концовку (если она новая)
+        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
+
     # вернуть конфиг
     return config
 
@@ -159,6 +170,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
         # если есть в первом, но нет во втором 
         if isInFirst and not isInSecond:
             return 'true'
+
         # если есть во втором, но нет в первом
         if isInSecond and not isInFirst:
             return 'false'
@@ -232,11 +244,11 @@ def getConfig(event, needCreateNewInfo=False):
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                return compileConfigFromEpisode(lastEpisode,haveUserInterface)
+                return compileConfigFromEpisode(event,lastEpisode,haveUserInterface)
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
-            
+
     # пройти к следующему эпизоду
     episode = passEpisode(info, history, statsEnds)
 
@@ -248,6 +260,9 @@ def getConfig(event, needCreateNewInfo=False):
         # пройтись еще раз по функции с нулевым сохранением (начать игру заново)
         return getConfig(event, True)
 
+    if 'name' in episode and not episode['name'] is None:
+        increaseStat(conn,userId,meetedCharacters=episode['name'])
+
     # закинуть текущий эпизод в качестве последнего для следующего вызова
     info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
 
@@ -255,4 +270,4 @@ def getConfig(event, needCreateNewInfo=False):
     updateSave(conn, userId, info)
 
     # скомпилировать конфиг из эпизода и вернуть его
-    return compileConfigFromEpisode(episode,haveUserInterface)
+    return compileConfigFromEpisode(event,episode,haveUserInterface)
