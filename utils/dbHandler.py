@@ -108,7 +108,7 @@ def getStat(conn, userId, statName="all"):
     else:
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
         # gameInfo = cur['gameInfo']
-        for result in cur:
+        for (result) in cur:
             if statName != "deaths":
                 return json.loads(result[0])
             return result[0]
