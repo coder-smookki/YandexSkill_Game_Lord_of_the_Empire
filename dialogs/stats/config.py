@@ -26,6 +26,15 @@ def getConfig(event):
     conn = globalStorage['mariaDBconn']
     stats = getStat(conn, getUserId(event))
 
+    if stats is None:
+        {
+            'message': 'У вас нет статистики',
+            "tts": 'У вас нет статистики',
+            "buttons": config["buttons"],
+            "card": config["card"],
+            "session_state": session_state,
+        } 
+
     config['tts'] += '\nСмерти: ' + stats['deaths']
     config['tts'] += '\nОткрыто концовок: ' + stats['openEnds'] + ' из X'
     config['tts'] += '\nВстречено героев: ' + stats['meetedCharacters'] + ' из 21'
