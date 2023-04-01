@@ -68,8 +68,8 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         config = {
             "tts": tts,
             "buttons": [
-                # "Повторить ещё раз", TODO: добавить повторение
                 "В главное меню",
+                "Повторить ещё раз",
                 "Выход",
             ],
             "card": {
