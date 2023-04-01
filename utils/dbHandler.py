@@ -91,7 +91,7 @@ def removeSave(conn, userId):
 
 def getStat(conn, userId, statName):
     cur = conn.cursor()
-    cur.execute("SELECT " + statName + " FROM saves WHERE userId=%s", [userId])
+    cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
     # gameInfo = cur['gameInfo']
     for (result) in cur:
     # print(f"First Name: {first_name}, Last Name: {last_name}")
@@ -101,7 +101,7 @@ def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     cur = conn.cursor()
 
     sql = """
-    UPDATE my_table
+    UPDATE stats
     SET deaths = deaths + %s, openEnds = openEnds + %s, meetedCharacters = meetedCharacters + %s
     WHERE userId = %s;
     """
@@ -111,7 +111,7 @@ def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
 def reduceStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     cur = conn.cursor()
     sql = """
-    UPDATE my_table
+    UPDATE stats
     SET deaths = deaths - %s, openEnds = openEnds - %s, meetedCharacters = meetedCharacters - %s
     WHERE userId = %s;
     """
@@ -121,7 +121,7 @@ def reduceStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
 def setStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     cur = conn.cursor()
     sql = """ 
-    UPDATE my_table
+    UPDATE stats
     SET deaths = %s, openEnds = %s, meetedCharacters = %s
     WHERE userId = %s;
     """
