@@ -96,8 +96,8 @@ def getStat(conn, userId, statName='all'):
         for (result) in cur:
             returnResult = {}
             returnResult['deaths'] = result[1]
-            returnResult['openEnds'] = json.parse(result[2])
-            returnResult['meetedCharacters'] = json.parse(result[3])
+            returnResult['openEnds'] = json.loads(result[2])
+            returnResult['meetedCharacters'] = json.loads(result[3])
             print(result)
             print(returnResult)
             return returnResult
@@ -106,7 +106,7 @@ def getStat(conn, userId, statName='all'):
         # gameInfo = cur['gameInfo']
         for (result) in cur:
             if statName != 'deaths':
-                return json.parse(result[0])
+                return json.loads(result[0])
             return result[0]
 
 def insertNewStat(conn, userId):
