@@ -101,8 +101,11 @@ def getStat(conn, userId, statName="all"):
                 # print(result)
                 returnResult = {}
                 returnResult["deaths"] = result[0]
-                returnResult["openEnds"] = json.loads(json.loads(result[1]))
-                returnResult["meetedCharacters"] = json.loads(json.loads(result[2]))
+                returnResult["openEnds"] = json.loads(result[1])
+                returnResult["meetedCharacters"] = json.loads(result[2])
+
+                print('aboba',result)
+                print('aboba',returnResult)
                 return returnResult
             except:
                 print('===========')
