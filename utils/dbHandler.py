@@ -130,7 +130,8 @@ def insertNewStat(conn, userId):
 
 def removeRepeatsFromList(l):
     print('removeRepeats',l)
-    return [*set(l)]
+    result = [*set(l)]
+    print('removeRepeatsResult',result)
 
 
 def setStat(conn, userId, deaths=0, openEnds=[], meetedCharacters=[]):
