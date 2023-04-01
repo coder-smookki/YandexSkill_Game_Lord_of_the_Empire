@@ -17,7 +17,7 @@ def handler(event):
         return "привет =)"
     
     # если человек раньше не заходил, то создать для него отдельную строку со статистикой 
-    if haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
+    if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
         print('isWasBefore:',haveGlobalState(event, 'wasBefore'))
         if haveGlobalState(event, 'wasBefore'):
             print('wasBefore=',getGlobalState(event, 'wasBefore'))
