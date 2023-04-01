@@ -177,11 +177,11 @@ def reduceStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     nowOpenEnds = getted["openEnds"]
     nowMeetedCharacters = getted["meetedCharacters"]
 
-    if not openEnds is None:
+    if not openEnds is None and openEnds in nowOpenEnds:
         nowOpenEnds.remove(openEnds)
     
-    if not meetedCharacters is None:
-        nowMeetedCharacters.remove(openEnds)
+    if not meetedCharacters is None and meetedCharacters in nowMeetedCharacters:
+        nowMeetedCharacters.remove(meetedCharacters)
     
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
