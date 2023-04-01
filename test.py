@@ -2,7 +2,7 @@ from utils.dbHandler import *
 
 conn = connect('root','root', 'Lord_of_the_Empire')
 
-# insertNewStat(conn, 'asd')
+insertNewStat(conn, 'ggg')
 
 print(getStat(conn,'ggg'))
 
