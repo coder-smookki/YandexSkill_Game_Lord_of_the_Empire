@@ -17,7 +17,7 @@ def handler(event):
         return "привет =)"
     
     # если человек раньше не заходил, то создать для него отдельную строку со статистикой 
-    if not haveGlobalState(event, 'wasBefore'):
+    if haveGlobalState(event, 'wasBefore'):
         insertNewStat(globalStorage['mariaDBconn'], getUserId(event))
 
     # пройтись через мидлвейры
