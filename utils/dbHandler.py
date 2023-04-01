@@ -16,31 +16,31 @@ def connect(user, password, databaseName):
     except mariadb.Error as e:
         raise mariadb.Error(f"Ошибка при подключении к MariaDB: {e}")
 
-    createSaves = """
+    # Получить курсор
+    cur = conn.cursor()
+
+    createSavesTable = """
     CREATE TABLE IF NOT EXISTS saves (
         userId VARCHAR(255) PRIMARY KEY,
         gameInfo TEXT
     );
     """
-    createStats = """
+
+    createStatsTable = """
     CREATE TABLE IF NOT EXISTS stats (
         userId VARCHAR(255) PRIMARY KEY,
-        deaths INT,
-        openEnds SMALLINT,
-        meetedCharacters SMALLINT
+        deaths INT
+        openEnds TEXT
+        meetedCharacters TEXT
     );
     """
 
-    # Получить курсор
-    cur = conn.cursor()
-    
     # создать таблицу с сохранениями, если ее не существует
-    cur.execute(createSaves)
-    cur.execute(createStats)
+    cur.execute(createSavesTable)
 
-    # закоммитить изменения
-    conn.commit()
-    
+    # создать таблицу со статистикой, если ее не существует
+    cur.execute(createStatsTable)
+
     # Вернуть соединение
     return conn
 
@@ -88,3 +88,46 @@ def removeSave(conn, userId):
     """
     cur.execute(sql, [userId])
     conn.commit()
+
+def getStat(conn, userId, statName):
+    cur = conn.cursor()
+    cur.execute("SELECT " + statName + " FROM saves WHERE userId=%s", [userId])
+    # gameInfo = cur['gameInfo']
+    for (result) in cur:
+    # print(f"First Name: {first_name}, Last Name: {last_name}")
+        print('getStat: ' + statName + ' ' + result)
+
+def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
+    cur = conn.cursor()
+
+    sql = """
+    UPDATE my_table
+    SET deaths = deaths + %s, openEnds = openEnds + %s, meetedCharacters = meetedCharacters + %s
+    WHERE userId = %s;
+    """
+    cur.execute(sql, [deaths, openEnds, meetedCharacters])
+    conn.commit()
+
+def reduceStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
+    cur = conn.cursor()
+    sql = """
+    UPDATE my_table
+    SET deaths = deaths - %s, openEnds = openEnds - %s, meetedCharacters = meetedCharacters - %s
+    WHERE userId = %s;
+    """
+    cur.execute(sql, [deaths, openEnds, meetedCharacters])
+    conn.commit()
+
+def setStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
+    cur = conn.cursor()
+    sql = """ 
+    UPDATE my_table
+    SET deaths = %s, openEnds = %s, meetedCharacters = %s
+    WHERE userId = %s;
+    """
+    cur.execute(sql, [deaths, openEnds, meetedCharacters])
+    conn.commit()
+
+# deaths int(11)
+# openEnds smallint(6)
+# meetedCharacters smallint(6)

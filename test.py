@@ -1,6 +1,5 @@
 from utils.dbHandler import *
 
+conn = connect('root','root', 'Lord_of_the_Empire')
 
-cur = connect('root', 'root', 'Lord_of_the_Empire')
-
-print(selectGameInfo(cur, '12345'))
+getStat(conn, 'someUserId', 'deaths') 
