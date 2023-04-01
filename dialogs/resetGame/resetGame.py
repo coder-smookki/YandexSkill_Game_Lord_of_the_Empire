@@ -15,9 +15,8 @@ def getResponse(event, allDialogs=None):
         response = getDialogResponseFromEnd(event, 2, allDialogs)
         addGlobalStateInResponse(response,'playedBefore', False)
         return response
-    return createResponse(event, getConfig(event))
-    
 
+    return createResponse(event, getConfig(event))
 
 def isTriggered(event):
     return isInCommandOr(event, ResetIntents) or isInLastContext(event, 'resetGame')

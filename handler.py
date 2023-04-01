@@ -19,9 +19,10 @@ def handler(event):
     # если человек раньше не заходил, то создать для него отдельную строку со статистикой 
     if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
         print('isWasBefore:',haveGlobalState(event, 'wasBefore'))
-        if haveGlobalState(event, 'wasBefore'):
-            print('wasBefore=',getGlobalState(event, 'wasBefore'))
         insertNewStat(globalStorage['mariaDBconn'], getUserId(event))
+
+    # глобальные стейты
+    print(event["state"]["user"])
 
     # пройтись через мидлвейры
     for key in allMiddlewares:

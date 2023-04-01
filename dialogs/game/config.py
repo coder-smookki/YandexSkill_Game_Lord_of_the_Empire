@@ -126,7 +126,7 @@ def compileConfigFromEpisode(event,episode, haveInterface):
 
         # айди юзера
         userId = getUserId(event)
-    
+
         # удалить последнее сохранение
         removeSave(conn, userId)
 
