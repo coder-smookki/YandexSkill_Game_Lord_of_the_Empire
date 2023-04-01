@@ -121,6 +121,8 @@ def compileConfigFromEpisode(event,episode, haveInterface):
 
     # если нет кнопок для выбора (игрок умер)
     if episode["buttons"] is None or len(episode["buttons"]) == 0:
+        print('end game player :(')
+
         # соединение с БД
         conn = globalStorage["mariaDBconn"]
 
