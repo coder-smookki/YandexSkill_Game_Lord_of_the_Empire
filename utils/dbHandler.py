@@ -96,7 +96,7 @@ def getStat(conn, userId, statName="all"):
     cur = conn.cursor()
     if statName == "all":
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
-        for (result) in cur:
+        for result in cur:
             print('getStatResult',result)
             returnResult = {}
             returnResult["deaths"] = result[0]
