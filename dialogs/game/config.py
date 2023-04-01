@@ -52,9 +52,6 @@ def compileConfigFromEpisode(event,episode, haveInterface):
             # если карточка не вернулась, использовать арбуз
             if cardId is None:
                 cardId = "1533899/d371aab5224c91137cfc"
-        else:
-            if haveInterface:
-                cardId = None  # TODO: сделать получение карточки из эпизода
     else:
         # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
         tts = getRandomSfx(sfx) + episode["message"]
