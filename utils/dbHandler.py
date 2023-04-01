@@ -95,23 +95,14 @@ def getStat(conn, userId, statName="all"):
     print("getStat: " + statName)
     cur = conn.cursor()
     if statName == "all":
-        cur.execute("SELECT deaths,openEnds,meetedCharacters FROM stats WHERE userId=%s", [userId])
+        cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
         for (result) in cur:
-            try:
-                # print(result)
-                returnResult = {}
-                returnResult["deaths"] = result[0]
-                returnResult["openEnds"] = json.loads(result[1])
-                returnResult["meetedCharacters"] = json.loads(result[2])
+            returnResult = {}
+            returnResult["deaths"] = result[0]
+            returnResult["openEnds"] = json.loads(result[1])
+            returnResult["meetedCharacters"] = json.loads(result[2])
 
-                print('aboba',result)
-                print('aboba',returnResult)
-                return returnResult
-            except:
-                print('===========')
-                print(result[0],type(result[0]))
-                print(json.loads(result[1]),type(result[1]))
-                print(json.loads(result[2]),type(result[2]))
+            return returnResult
     else:
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
         # gameInfo = cur['gameInfo']
