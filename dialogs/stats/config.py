@@ -26,6 +26,8 @@ def getConfig(event):
     conn = globalStorage['mariaDBconn']
     stats = getStat(conn, getUserId(event))
 
+    print('stats',stats)
+
     if stats is None:
         {
             'message': 'У вас нет статистики',
