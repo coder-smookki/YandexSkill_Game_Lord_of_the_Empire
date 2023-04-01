@@ -233,10 +233,13 @@ def get_image_2(
     layout.paste(background, (0, 0), background)
 
     # Наложение имени
-    draw = ImageDraw.Draw(layout)
-    bbox = font.getbbox(name)
-    text_x = big_border + (block - bbox[2]) // 2
-    draw.text((text_x, layout.height - big_border + 5), name, font=font, fill=font_color)  # игрек нарандомил
+    try:
+        draw = ImageDraw.Draw(layout)
+        bbox = font.getbbox(name)
+        text_x = big_border + (block - bbox[2]) // 2
+        draw.text((text_x, layout.height - big_border + 5), name, font=font, fill=font_color)  # игрек нарандомил
+    except Exception as e:
+        print(e, name, len(name))
 
     # Итог
     img_byte_arr = BytesIO()
