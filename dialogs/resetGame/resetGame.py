@@ -12,7 +12,8 @@ def getResponse(event, allDialogs=None):
         userId = getUserId(event)
         conn = globalStorage['mariaDBconn']
         removeSave(conn, userId)
-        return getDialogResponseFromEnd(event, 2, allDialogs)
+        response = getDialogResponseFromEnd(event, 2, allDialogs)
+        setGlobalStatesInResponse('playedBefore', False)
 
     return createResponse(event, getConfig(event))
     
