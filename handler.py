@@ -1,9 +1,10 @@
 from utils.triggerHelper import *
 from utils.responseHelper import *
 from utils.branchHandler import *
-
+from utils.dbHandler import insertNewStat
 from middlewares.allMiddlewares import allMiddlewares
 from dialogs.allDialogs import allDialogs
+from utils.globalStorage import globalStorage
 import os
 
 
@@ -15,8 +16,11 @@ def handler(event):
     ):
         return "привет =)"
     
-    print('Was before: ',haveGlobalState(event, 'wasBefore'))
+    # если человек раньше не заходил, то создать для него отдельную строку со статистикой 
+    if not haveGlobalState(event, 'wasBefore'):
+        insertNewStat(globalStorage['mariaDBconn'], getUserId(event))
 
+    # пройтись через мидлвейры
     for key in allMiddlewares:
         if not allMiddlewares[key]["isTriggered"](event):
             continue

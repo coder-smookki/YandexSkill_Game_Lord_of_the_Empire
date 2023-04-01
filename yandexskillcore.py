@@ -59,10 +59,10 @@ def startServer(
     dbUser = os.environ.get('DB_USER')
     dbPassword = os.environ.get('DB_PASSWORD')
     dbName = os.environ.get('DB_NAME')
-    cur = connect(dbUser, dbPassword, dbName)
+    conn = connect(dbUser, dbPassword, dbName)
 
-    # записать курсор
-    setInGlobalStorage('mariaDBconn', cur, saveLinks=True)
+    # записать подключение
+    setInGlobalStorage('mariaDBconn', conn, saveLinks=True)
 
     # установить кодировку
     app.config["JSON_AS_ASCII"] = False
