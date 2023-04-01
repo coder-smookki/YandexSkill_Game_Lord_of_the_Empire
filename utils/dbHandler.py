@@ -29,8 +29,8 @@ def connect(user, password, databaseName):
     createStatsTable = """
     CREATE TABLE IF NOT EXISTS stats (
         userId VARCHAR(255) PRIMARY KEY,
-        deaths INT
-        openEnds TEXT
+        deaths INT,
+        openEnds TEXT,
         meetedCharacters TEXT
     );
     """
