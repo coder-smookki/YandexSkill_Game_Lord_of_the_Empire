@@ -95,7 +95,7 @@ def getStat(conn, userId, statName):
     # gameInfo = cur['gameInfo']
     for (result) in cur:
     # print(f"First Name: {first_name}, Last Name: {last_name}")
-        print('getStat: ' + statName + ' ' + result)
+        print('getStat: ' + statName, result)
 
 def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     cur = conn.cursor()
