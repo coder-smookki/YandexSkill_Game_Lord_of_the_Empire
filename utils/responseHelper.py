@@ -85,6 +85,7 @@ def createResponse(event, originalConfig):
             # установить поле
             returnResponse["user_state_update"] = config["user_state_update"]
 
+        print('wasBefore',ownHaveGlobalState(event, 'wasBefore'))
         if not ownHaveGlobalState(event, 'wasBefore'):
             addGlobalStateInResponse(returnResponse, 'wasBefore', True)
         # addGlobalStateInResponse(returnResponse, 'wasBefore', False)

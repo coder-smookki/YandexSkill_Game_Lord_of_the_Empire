@@ -105,6 +105,7 @@ def getStat(conn, userId, statName='all'):
             return result[0]
 
 def insertNewStat(conn, userId):
+    print('insert new stat')
     cur = conn.cursor()
     sql = "INSERT INTO stats (userId,deaths,openEnds, meetedCharacters) VALUES (%s, %s,%s,%s)"
 
