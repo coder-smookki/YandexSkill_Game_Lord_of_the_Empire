@@ -152,7 +152,7 @@ def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     nowOpenEnds = getted["openEnds"]
     nowMeetedCharacters = getted["meetedCharacters"]
 
-    print('getted',getted)
+    print('getted',type(nowOpenEnds))
 
     if not openEnds is None:
         nowOpenEnds.append(openEnds)

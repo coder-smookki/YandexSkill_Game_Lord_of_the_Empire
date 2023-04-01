@@ -6,6 +6,6 @@ insertNewStat(conn, 'asd')
 
 print(getStat(conn,'asd'))
 
-# increaseStat(conn, 'zxc', 100, 'aboba', 'abobik')
+increaseStat(conn, 'zxc', 100, 'aboba', 'abobik')
 
 # print(getStat(conn,'zxc'))
