@@ -27,7 +27,7 @@ def getConfig(event):
     stats = getStat(conn, getUserId(event))
 
     print('stats',stats)
-
+    print('userId',getUserId(event))
     if stats is None:
         return {
             'message': 'У вас нет статистики',
