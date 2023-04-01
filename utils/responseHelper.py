@@ -80,15 +80,15 @@ def createResponse(event, originalConfig):
             else {},  # передаваемые стейты
             "version": event["version"],  # инфа для Алисы - версия
         }
-        #
-        if "user_state_update" in config:  # если нужно обновить глобальные стейты
+
+        # если нужно обновить глобальные стейты
+        if "user_state_update" in config: 
             # установить поле
             returnResponse["user_state_update"] = config["user_state_update"]
 
-        print('wasBefore',ownHaveGlobalState(event, 'wasBefore'))
-        # if not ownHaveGlobalState(event, 'wasBefore'):
-            # addGlobalStateInResponse(returnResponse, 'wasBefore', True)
-        addGlobalStateInResponse(returnResponse, 'wasBefore', False)
+        # если юзера раньше не было, то добавить глобальный стейт о том, что теперь он есть
+        if not ownHaveGlobalState(event, 'wasBefore'):
+            addGlobalStateInResponse(returnResponse, 'wasBefore', True)
 
         # вернуть получившийся респонс
         return returnResponse
