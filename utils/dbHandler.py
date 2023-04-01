@@ -80,7 +80,6 @@ def insertSave(conn, userId, save):
     print("save db", save)
     print("execute db:", result)
 
-
 def removeSave(conn, userId):
     cur = conn.cursor()
     sql = """
@@ -89,8 +88,12 @@ def removeSave(conn, userId):
     cur.execute(sql, [userId])
     conn.commit()
 
-def getStat(conn, userId, statName):
+def getStat(conn, userId, statName='all'):
     cur = conn.cursor()
+    if statName == 'all':
+        cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
+        for (result) in cur:
+            return result
     cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
     # gameInfo = cur['gameInfo']
     for (result) in cur:
