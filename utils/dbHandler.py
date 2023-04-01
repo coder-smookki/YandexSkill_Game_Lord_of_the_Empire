@@ -104,7 +104,7 @@ def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     SET deaths = deaths + %s, openEnds = openEnds + %s, meetedCharacters = meetedCharacters + %s
     WHERE userId = %s;
     """
-    cur.execute(sql, [deaths, openEnds, meetedCharacters])
+    cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
     conn.commit()
 
 def reduceStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
@@ -114,7 +114,7 @@ def reduceStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     SET deaths = deaths - %s, openEnds = openEnds - %s, meetedCharacters = meetedCharacters - %s
     WHERE userId = %s;
     """
-    cur.execute(sql, [deaths, openEnds, meetedCharacters])
+    cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
     conn.commit()
 
 def setStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
@@ -124,7 +124,7 @@ def setStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     SET deaths = %s, openEnds = %s, meetedCharacters = %s
     WHERE userId = %s;
     """
-    cur.execute(sql, [deaths, openEnds, meetedCharacters])
+    cur.execute(sql, [deaths, openEnds, meetedCharacters, userId])
     conn.commit()
 
 # deaths int(11)
