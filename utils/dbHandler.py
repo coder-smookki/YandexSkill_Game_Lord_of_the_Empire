@@ -166,6 +166,8 @@ def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
         nowMeetedCharacters.append(meetedCharacters)
         nowMeetedCharacters = removeRepeatsFromList(nowMeetedCharacters)
     
+    print(nowDeaths, nowOpenEnds, nowMeetedCharacters)
+
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
 def reduceStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
