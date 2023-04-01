@@ -2,10 +2,10 @@ from utils.dbHandler import *
 
 conn = connect('root','root', 'Lord_of_the_Empire')
 
-insertNewStat(conn, 'asd')
+# insertNewStat(conn, 'asd')
 
 print(getStat(conn,'asd'))
 
-increaseStat(conn, 'zxc', 100, 'aboba', 'abobik')
+increaseStat(conn, 'asd', 100, 'aboba', 'abobik')
 
-# print(getStat(conn,'zxc'))
+print(getStat(conn,'asd'))
