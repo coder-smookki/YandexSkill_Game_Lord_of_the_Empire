@@ -26,6 +26,15 @@ def isInCommandOr(event, arr):
     return False
 
 
+# является ли хоть один элемент массива отдельным словом пришедшей команды
+def isInCommandOrSplit(event, arr):
+    words = event["request"]['command'].split()
+    for elem in arr:
+        if elem in words:
+            return True
+    return False
+
+
 # являются ли все элементы массива подстроками пришедшей команды
 def isInCommandAnd(event, arr):
     command = event["request"]['command']
