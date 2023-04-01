@@ -4,8 +4,8 @@ conn = connect('root','root', 'Lord_of_the_Empire')
 
 # insertNewStat(conn, 'ggggggg')
 
-print(type(getStat(conn,'ggggggg')))
+print(type(getStat(conn,'gggggggg')))
 
-increaseStat(conn, 'ggggggg', 100, 'aboba', 'abobik')
+increaseStat(conn, 'gggggggg', 100, 'aboba', 'abobik')
 
-print(getStat(conn,'ggggggg'))
+print(getStat(conn,'gggggggg'))
