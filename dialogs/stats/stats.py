@@ -9,11 +9,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return "что" in getCommand(event) and (
-        "умеешь" in getCommand(event)
-        or "можешь" in getCommand(event)
-        or "способен" in getCommand(event)
-    )
+    return "стат" in getCommand(event)
 
 
 whatYouCan = {"getResponse": getResponse, "isTriggered": isTriggered}
