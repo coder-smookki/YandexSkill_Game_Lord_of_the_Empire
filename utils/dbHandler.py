@@ -94,8 +94,7 @@ def getStat(conn, userId, statName):
     cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
     # gameInfo = cur['gameInfo']
     for (result) in cur:
-    # print(f"First Name: {first_name}, Last Name: {last_name}")
-        print('getStat: ' + statName, result[0])
+        return result[0]
 
 def increaseStat(conn, userId, deaths=0, openEnds=0, meetedCharacters=0):
     cur = conn.cursor()
