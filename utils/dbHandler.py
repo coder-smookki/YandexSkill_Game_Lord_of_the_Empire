@@ -109,7 +109,7 @@ def getStat(conn, userId, statName="all"):
                 return returnResult
             except:
                 print('===========')
-                print(json.loads(result[0]),type(result[0]))
+                print(result[0],type(result[0]))
                 print(json.loads(result[1]),type(result[1]))
                 print(json.loads(result[2]),type(result[2]))
     else:
