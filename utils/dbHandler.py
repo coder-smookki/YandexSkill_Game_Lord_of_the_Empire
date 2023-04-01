@@ -152,10 +152,12 @@ def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     print('getted',getted)
 
     if not openEnds is None:
-        nowOpenEnds = removeRepeatsFromList(nowOpenEnds.append(openEnds))
+        nowOpenEnds.append(openEnds)
+        nowOpenEnds = removeRepeatsFromList(nowOpenEnds)
     
     if not meetedCharacters is None:
-        nowMeetedCharacters = removeRepeatsFromList(nowMeetedCharacters.append(meetedCharacters)),
+        nowMeetedCharacters.append(meetedCharacters)
+        nowMeetedCharacters = removeRepeatsFromList(nowMeetedCharacters),
     
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
@@ -167,10 +169,10 @@ def reduceStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     nowMeetedCharacters = getted["meetedCharacters"]
 
     if not openEnds is None:
-        nowOpenEnds = nowOpenEnds.remove(openEnds)
+        nowOpenEnds.remove(openEnds)
     
     if not meetedCharacters is None:
-        nowMeetedCharacters = nowMeetedCharacters.remove(openEnds)
+        nowMeetedCharacters.remove(openEnds)
     
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
