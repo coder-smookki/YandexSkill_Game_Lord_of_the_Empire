@@ -128,6 +128,7 @@ def insertNewStat(conn, userId):
 
 
 def removeRepeatsFromList(l):
+    print('removeRepeats',l)
     return [*set(l)]
 
 
