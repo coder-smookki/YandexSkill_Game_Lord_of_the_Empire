@@ -10,7 +10,6 @@ def get_id(
         values: list[int] | tuple[int, int, int, int],
         changes: list[int] | tuple[int, int, int, int],
 ) -> str | None:
-
     image = get_image_2(
         person=person,  # имя
         replica=replica,  # его речь
@@ -24,4 +23,3 @@ def get_id(
     del_thread.start()
 
     return image_id
-

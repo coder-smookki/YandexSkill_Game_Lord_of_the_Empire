@@ -2,6 +2,7 @@ from utils.dbHandler import getStat
 from utils.globalStorage import globalStorage
 from utils.responseHelper import getUserId
 
+
 def getConfig(event):
     config = {
         "tts": """Ваша статистика:""",
@@ -26,8 +27,8 @@ def getConfig(event):
     conn = globalStorage['mariaDBconn']
     stats = getStat(conn, getUserId(event))
 
-    print('stats',stats)
-    print('userId',getUserId(event))
+    print('stats', stats)
+    print('userId', getUserId(event))
     if stats is None:
         return {
             'message': 'У вас нет статистики',
@@ -35,7 +36,7 @@ def getConfig(event):
             "buttons": config["buttons"],
             "card": config["card"],
             "session_state": session_state,
-        } 
+        }
 
     config['tts'] += '\nСмерти: ' + str(stats['deaths'])
     config['tts'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 14'

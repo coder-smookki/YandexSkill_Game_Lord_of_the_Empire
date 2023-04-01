@@ -29,7 +29,7 @@ def getConfig(event):
 Выберите нужную категорию, которая поможет вам.
                 """,
         },
-}
+    }
 
     session_state = {"branch": "mainMenu"}
 

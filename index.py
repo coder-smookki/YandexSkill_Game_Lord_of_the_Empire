@@ -1,4 +1,4 @@
-from utils.globalStorage import globalStorage 
+from utils.globalStorage import globalStorage
 
 from gameCore.episodes.Opening.Opening import *
 from gameCore.episodes.ShuffledScenario import ShuffledScenario
@@ -13,7 +13,6 @@ from handler import handler
 import sys
 from dotenv import load_dotenv
 import os
-
 
 load_dotenv()
 

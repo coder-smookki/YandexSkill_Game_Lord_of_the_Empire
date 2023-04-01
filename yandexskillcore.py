@@ -7,19 +7,19 @@ from utils.dbHandler import *
 from utils.asyncHalper import *
 import os
 
+
 # функция для удобного запуска фласка
 def startServer(
-    startHistoryText: str,
-    historyText: str,
-    statsEnds: dict,
-    linkEpisodes: dict,
-    route: str = "/",
-    methods: list[str] = ["POST"],
-    host: str = "localhost",
-    port: int = 2083,
-    handler: callable = lambda data: print("handler works!"),
+        startHistoryText: str,
+        historyText: str,
+        statsEnds: dict,
+        linkEpisodes: dict,
+        route: str = "/",
+        methods: list[str] = ["POST"],
+        host: str = "localhost",
+        port: int = 2083,
+        handler: callable = lambda data: print("handler works!"),
 ):
-
     # билдинг истории в словарное-представление
     print(colored("+", "green"), "Старт синтезирования")
     startTime = datetime.now()

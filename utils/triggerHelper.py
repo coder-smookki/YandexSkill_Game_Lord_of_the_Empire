@@ -12,8 +12,10 @@ def haveGlobalState(event, state):
 def isNewSession(event):
     return event['session']['new'] is True
 
+
 def isAuthorized(event):
-    return 'session' in event and  'user' in event["session"] and  "user_id" in event["session"]["user"]
+    return 'session' in event and 'user' in event["session"] and "user_id" in event["session"]["user"]
+
 
 # является ли хоть один элемент массива подстрокой пришедшей команды
 def isInCommandOr(event, arr):
@@ -32,10 +34,12 @@ def isInCommandAnd(event, arr):
             return False
     return True
 
+
 def haveInterface(event):
     return 'screen' in event['meta']['interfaces']
 
-# есть ли в бренчах контекст "context" 
+
+# есть ли в бренчах контекст "context"
 def isInContext(event, context):
     if not 'state' in event or not 'session' in event['state'] or not 'branch' in event['state']['session']:
         return False
@@ -47,7 +51,8 @@ def isInContext(event, context):
         return False
     return context in event['state']['session']["branch"]
 
-# является ли последний контекст "context" 
+
+# является ли последний контекст "context"
 def isInLastContext(event, context):
     if not 'state' in event or not 'session' in event['state'] or not 'branch' in event['state']['session']:
         return False

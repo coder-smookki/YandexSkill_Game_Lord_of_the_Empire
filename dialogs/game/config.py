@@ -24,11 +24,11 @@ def getRandomSfx(sfx):
     return sfx[random.randint(0, len(sfx) - 1)]
 
 
-def compileConfigFromEpisode(event,episode, haveInterface):
+def compileConfigFromEpisode(event, episode, haveInterface):
     # получить статы
     stats = episode["stats"]
 
-    print('stats:',stats)
+    print('stats:', stats)
 
     # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
@@ -97,9 +97,9 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         config = {
             'message': 'zxc',
             "tts": tts,
-            'buttons': ['first button aboba','second button aboba']
+            'buttons': ['first button aboba', 'second button aboba']
         }
-        
+
         # вынести текущие фракции в виде строки
         statsStr = f"""Репутация текущий фракций:
             Церковь: {stats["church"]} единиц.
@@ -107,7 +107,7 @@ def compileConfigFromEpisode(event,episode, haveInterface):
             армия: {stats["army"]} единиц.
             казна: {stats["coffers"]} единиц.
         """
-        
+
         # добавить фракции в tts
         config['tts'] += statsStr
 
@@ -129,7 +129,7 @@ def compileConfigFromEpisode(event,episode, haveInterface):
 
         # айди юзера
         userId = getUserId(event)
-    
+
         # удалить последнее сохранение
         removeSave(conn, userId)
 
@@ -156,6 +156,7 @@ def createStartInfo(history):
         },
     }
 
+
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
     # разделить по пробелам команду
     commandArr = command.split(' ')
@@ -168,7 +169,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     for word in commandArr:
         # есть слово в массиве с первым выбором
         isInFirst = word in firstLastChoiceCommandArr
-        
+
         # есть слово в массиве со вторым выбором
         isInSecond = word in secondLastChoiceCommandArr
 
@@ -182,6 +183,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
     # если не нашлось единоличного совпадения
     return None
+
 
 def getConfig(event, needCreateNewInfo=False):
     haveUserInterface = haveInterface(event)
@@ -244,12 +246,12 @@ def getConfig(event, needCreateNewInfo=False):
         else:
             # получить выбор пользователя
             userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
-            print('Выбор пользователя:',userChoice)
-            
+            print('Выбор пользователя:', userChoice)
+
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                return compileConfigFromEpisode(event,lastEpisode,haveUserInterface)
+                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
@@ -266,7 +268,7 @@ def getConfig(event, needCreateNewInfo=False):
         return getConfig(event, True)
 
     if 'name' in episode and not episode['name'] is None:
-        increaseStat(conn,userId,meetedCharacters=episode['name'])
+        increaseStat(conn, userId, meetedCharacters=episode['name'])
 
     # закинуть текущий эпизод в качестве последнего для следующего вызова
     info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
@@ -275,4 +277,4 @@ def getConfig(event, needCreateNewInfo=False):
     updateSave(conn, userId, info)
 
     # скомпилировать конфиг из эпизода и вернуть его
-    return compileConfigFromEpisode(event,episode,haveUserInterface)
+    return compileConfigFromEpisode(event, episode, haveUserInterface)

@@ -10,17 +10,17 @@ import os
 
 def handler(event):
     if (
-        "session" in event
-        and "skill_id" in event["session"]
-        and event["session"]["skill_id"] != os.environ["SKILL_ID"]
+            "session" in event
+            and "skill_id" in event["session"]
+            and event["session"]["skill_id"] != os.environ["SKILL_ID"]
     ):
         return "привет =)"
-    
+
     # если человек раньше не заходил, то создать для него отдельную строку со статистикой 
     if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
-        print('isWasBefore:',haveGlobalState(event, 'wasBefore'))
+        print('isWasBefore:', haveGlobalState(event, 'wasBefore'))
         if haveGlobalState(event, 'wasBefore'):
-            print('wasBefore=',getGlobalState(event, 'wasBefore'))
+            print('wasBefore=', getGlobalState(event, 'wasBefore'))
         insertNewStat(globalStorage['mariaDBconn'], getUserId(event))
 
     # пройтись через мидлвейры

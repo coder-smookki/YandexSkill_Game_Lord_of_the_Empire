@@ -97,7 +97,6 @@ def getStat(conn, userId, statName="all"):
     if statName == "all":
         cur.execute("SELECT * FROM stats WHERE userId=%s", [userId])
         for (result) in cur:
-            
             returnResult = {}
             returnResult["deaths"] = result[1]
             returnResult["openEnds"] = json.loads(result[2])
@@ -144,48 +143,47 @@ def setStat(conn, userId, deaths=0, openEnds=[], meetedCharacters=[]):
     SET deaths = %s, openEnds = %s, meetedCharacters = %s
     WHERE userId = %s;
     """
-    cur.execute(sql, [deaths, json.dumps(openEnds, ensure_ascii=True), json.dumps(meetedCharacters, ensure_ascii=True), userId])
+    cur.execute(sql, [deaths, json.dumps(openEnds, ensure_ascii=True), json.dumps(meetedCharacters, ensure_ascii=True),
+                      userId])
     conn.commit()
+
 
 def increaseStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     getted = getStat(conn, userId)
-    
+
     # print('getted',getted)
 
     nowDeaths = getted["deaths"] + deaths
     nowOpenEnds = getted["openEnds"]
     nowMeetedCharacters = getted["meetedCharacters"]
 
-    
-
     if not openEnds is None:
         nowOpenEnds.append(openEnds)
         nowOpenEnds = removeRepeatsFromList(nowOpenEnds)
-    
+
     if not meetedCharacters is None:
         nowMeetedCharacters.append(meetedCharacters)
         nowMeetedCharacters = removeRepeatsFromList(nowMeetedCharacters)
-    
+
     # print(nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
 
+
 def reduceStat(conn, userId, deaths=0, openEnds=None, meetedCharacters=None):
     getted = getStat(conn, userId)
-    
+
     nowDeaths = getted["deaths"] - deaths
     nowOpenEnds = getted["openEnds"]
     nowMeetedCharacters = getted["meetedCharacters"]
 
     if not openEnds is None and openEnds in nowOpenEnds:
         nowOpenEnds.remove(openEnds)
-    
+
     if not meetedCharacters is None and meetedCharacters in nowMeetedCharacters:
         nowMeetedCharacters.remove(meetedCharacters)
-    
+
     setStat(conn, userId, nowDeaths, nowOpenEnds, nowMeetedCharacters)
-
-
 
 # deaths int(11)
 # openEnds smallint(6)

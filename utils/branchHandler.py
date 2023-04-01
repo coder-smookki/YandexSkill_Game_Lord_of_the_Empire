@@ -1,5 +1,6 @@
 import copy
 
+
 def updateBranchToResponse(event, response, firstBranchName):
     newEvent = copy.deepcopy(event)
     newResponse = copy.deepcopy(response)

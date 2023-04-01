@@ -234,7 +234,6 @@ def get_image_2(
     layout.show()
     return img_byte_arr.getvalue()
 
-
 # get_image_2(
 #     person='Дракон',
 #     replica='123',

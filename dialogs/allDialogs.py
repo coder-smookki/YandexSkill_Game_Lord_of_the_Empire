@@ -10,6 +10,7 @@ from dialogs.howToUse.howToUse import howToUse
 from dialogs.howToContactDevelopers.howToContactDevelopers import howToContactDeveloveps
 from dialogs.resetGame.resetGame import resetGame
 from dialogs.stats.stats import stats
+
 allDialogs = {
     "exitConfirm": exitConfirm,
     'game': game,

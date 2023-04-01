@@ -1,17 +1,19 @@
 import copy
 
+
 def ownHaveGlobalState(event, state):
     return 'state' in event and 'user' in event['state'] and state in event['state']['user']
 
+
 # создать ответ Алисе в удобном для игры формате
 def createCard(
-    event: dict,  # реквест Алисы
-    message: str,  # сообщение
-    tts: str = None,  # tts
-    buttons: list[str] = ["Нет", "Да"],  # кнопки
-    # если нет "imageCode", то поля ниже не используются
-    imageCode: str = None,  # айди картинки
-    title: str = None,  # заголовок
+        event: dict,  # реквест Алисы
+        message: str,  # сообщение
+        tts: str = None,  # tts
+        buttons: list[str] = ["Нет", "Да"],  # кнопки
+        # если нет "imageCode", то поля ниже не используются
+        imageCode: str = None,  # айди картинки
+        title: str = None,  # заголовок
 ):
     if tts is None:
         tts = message
@@ -82,7 +84,7 @@ def createResponse(event, originalConfig):
         }
 
         # если нужно обновить глобальные стейты
-        if "user_state_update" in config: 
+        if "user_state_update" in config:
             # установить поле
             returnResponse["user_state_update"] = config["user_state_update"]
 
@@ -121,6 +123,7 @@ def getSessionId(event):
 # получить ID пользователя
 def getUserId(event):
     return event["session"]["user"]["user_id"]
+
 
 # получить State
 def getState(event, state):

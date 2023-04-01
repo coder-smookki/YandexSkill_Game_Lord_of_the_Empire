@@ -8,6 +8,7 @@ def getResponse(event, allDialogs=None):
     config = getConfig(event)
     return createResponse(event, config)
 
+
 def isTriggered(event):
     return isInCommandOr(event, ContactDevelopersIntents)
 

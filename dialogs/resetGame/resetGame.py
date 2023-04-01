@@ -1,4 +1,4 @@
-from utils.intents import ResetIntents,YesIntents
+from utils.intents import ResetIntents, YesIntents
 from utils.triggerHelper import *
 from utils.branchHandler import *
 from utils.responseHelper import *
@@ -15,7 +15,6 @@ def getResponse(event, allDialogs=None):
         return getDialogResponseFromEnd(event, 2, allDialogs)
 
     return createResponse(event, getConfig(event))
-    
 
 
 def isTriggered(event):
