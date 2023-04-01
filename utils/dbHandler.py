@@ -109,9 +109,9 @@ def getStat(conn, userId, statName="all"):
                 return returnResult
             except:
                 print('===========')
-                print(result[0],type(result[0]))
-                print(result[1],type(result[1]))
-                print(result[2],type(result[2]))
+                print(json.loads(result[0]),type(result[0]))
+                print(json.loads(result[1]),type(result[1]))
+                print(json.loads(result[2]),type(result[2]))
     else:
         cur.execute("SELECT " + statName + " FROM stats WHERE userId=%s", [userId])
         # gameInfo = cur['gameInfo']
