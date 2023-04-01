@@ -99,9 +99,9 @@ def getStat(conn, userId, statName="all"):
         for (result) in cur:
             print('getStatResult',result)
             returnResult = {}
-            returnResult["deaths"] = result[0]
-            returnResult["openEnds"] = json.loads(result[1])
-            returnResult["meetedCharacters"] = json.loads(result[2])
+            returnResult["deaths"] = result[1]
+            returnResult["openEnds"] = json.loads(result[2])
+            returnResult["meetedCharacters"] = json.loads(result[3])
 
             return returnResult
 
