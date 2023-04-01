@@ -136,8 +136,8 @@ def compileConfigFromEpisode(event,episode, haveInterface):
         # если это первая игра
         if not haveGlobalState(event,'playedBefore') or not getGlobalState(event,'playedBefore'):
             print('first game')
-            config['session_state']["playedBefore"] = True 
-            config['session_state']["abobaAboba"] = 'hehehe' 
+            config['user_state_update']["playedBefore"] = True 
+            config['user_state_update']["abobaAboba"] = 'hehehe' 
 
     # вернуть конфиг
     return config
