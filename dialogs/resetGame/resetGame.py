@@ -8,7 +8,7 @@ from utils.globalStorage import globalStorage
 
 
 def getResponse(event, allDialogs=None):
-    if isInCommandOr(event, YesIntents) and isInLastContext(event, 'resetGame'):
+    if isInCommandOr(event, [*YesIntents, *ResetIntents]) and isInLastContext(event, 'resetGame'):
         userId = getUserId(event)
         conn = globalStorage['mariaDBconn']
         removeSave(conn, userId)
@@ -20,7 +20,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInCommandOr(event, ResetIntents) or (isInLastContext(event, 'resetGame') and isInCommandOr(event, YesIntents)) \
+    return isInCommandOr(event, ResetIntents) or (isInLastContext(event, 'resetGame') and isInCommandOr(event, [*YesIntents, *ResetIntents])) \
         
 
 
