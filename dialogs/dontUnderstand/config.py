@@ -9,10 +9,10 @@ ttss = [
 ]
 
 
-def getConfig(event, variants_of_the_choice='', branch='mainMenu'):
+def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
     tts = choice(ttss)
     config = {
-        "tts": f"""{tts}...{variants_of_the_choice}""",
+        "tts": f"""{tts}...{'...'.join(variants_of_the_choice)}""",
 
         "buttons": [
             "В главное меню",
@@ -28,6 +28,9 @@ def getConfig(event, variants_of_the_choice='', branch='mainMenu'):
             "description": tts,
         },
     }
+
+    if variants_of_the_choice:
+        config["buttons"] = [*variants_of_the_choice, *config["buttons"]]
 
     session_state = {"branch": branch}
 

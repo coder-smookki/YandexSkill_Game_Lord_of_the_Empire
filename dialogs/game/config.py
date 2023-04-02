@@ -274,8 +274,7 @@ def getConfig(event, needCreateNewInfo=False):
                 # вернуть прошлый эпизод
                 if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
                     return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-                after_tts = f'Варианты ответов: {"...".join(canLastChoicedArr)}'
-                return dontUnderstandConfig(event, variants_of_the_choice=after_tts, branch='game')
+                return dontUnderstandConfig(event, variants_of_the_choice=canLastChoicedArr, branch='game')
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
