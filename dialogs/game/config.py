@@ -264,6 +264,7 @@ def getConfig(event, needCreateNewInfo=False):
 
     
     if canLastChoicedArr:
+        print('canLastChoicedArr',canLastChoicedArr)
         # если история закончилась (на прошлом эпизоде не было кнопок)
         if len(canLastChoicedArr) == 0:
             print(2)
