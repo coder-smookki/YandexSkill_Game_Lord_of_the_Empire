@@ -248,6 +248,10 @@ def getConfig(event, needCreateNewInfo=False):
     if not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
         # если игрок попросил повторить
         if isInCommandOr(event, RepeatIntents):
+            # если это первая игра
+            if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
+                return compileConfigFromEpisode(event, lastEpisode, haveInterface, {'playedBefore': True})
+
             # вернуть последний эпизод
             return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
         
@@ -263,11 +267,10 @@ def getConfig(event, needCreateNewInfo=False):
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
-        # если это первая игра
-        if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
-            return compileConfigFromEpisode(event, lastEpisode, haveInterface, {'playedBefore': True})
+        return createResponse(event, getMainMenuConfig(event))
 
-        return compileConfigFromEpisode(event, lastEpisode, haveInterface)
+
+        
 
 
     if canLastChoicedArr:
