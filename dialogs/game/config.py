@@ -260,7 +260,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     ).split(" ")
 
     print('check1')
-
+    print(firstLastChoiceCommand)
     # пройтись по всем словам команды
     # если ответы "да" или "нет", то зачекать через интенты
     if firstLastChoiceCommand[0] == 'да':
