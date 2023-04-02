@@ -13,4 +13,4 @@ def isTriggered(event):
     return True
 
 
-repeat = {"getResponse": getResponse, "isTriggered": isTriggered}
+dontUnderstand = {"getResponse": getResponse, "isTriggered": isTriggered}
