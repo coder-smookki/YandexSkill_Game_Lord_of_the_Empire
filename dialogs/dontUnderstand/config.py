@@ -23,7 +23,7 @@ def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
         ],
         "card": {
             "type": "BigImage",
-            "image_id": "1533899/d371aab5224c91137cfc",
+            "image_id": "1533899/dcca2fdc4295374a69bc",
             "title": "НЕ СОВСЕМ ПОНЯТНО",
             "description": tts,
         },
