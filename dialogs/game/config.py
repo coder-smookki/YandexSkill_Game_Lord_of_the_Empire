@@ -11,6 +11,8 @@ from gameCore.historyHandler import passEpisode
 from utils.image_gen.get_id import get_id
 from dialogs.mainMenu.config import getConfig as getMainMenuConfig
 from utils.intents import RepeatIntents
+from utils.branchHandler import getDialogResponseFromEnd
+from dialogs.allDialogs import allDialogs
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -36,7 +38,7 @@ pre_ttss = ["Я вас не понял.", "Не удалось распозна�
 
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
-def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userStateUpdate=None):
+def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userStateUpdate=None, repeat=False):
     # получить статы
     stats = episode["stats"]
 
@@ -134,6 +136,20 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
 
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
+
+    if not repeat and len(episode['buttons']) == 0:
+        # соединение с БД
+        conn = globalStorage["mariaDBconn"]
+
+        # айди юзера
+        userId = getUserId(event)
+
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+
+        # добавить 1 смерть в статистику и новую концовку (если она новая)
+        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
+
 
     if userStateUpdate:
         if not 'user_state_update' in config:
@@ -250,24 +266,12 @@ def getConfig(event, needCreateNewInfo=False):
         if isInCommandOr(event, RepeatIntents):
             # если это первая игра
             if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
-                return compileConfigFromEpisode(event, lastEpisode, haveInterface, {'playedBefore': True})
+                return compileConfigFromEpisode(event, lastEpisode, haveInterface, userStateUpdate={'playedBefore': True}, repeat=True)
 
             # вернуть последний эпизод
-            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-        
-        # соединение с БД
-        conn = globalStorage["mariaDBconn"]
+            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface, repeat=True)
 
-        # айди юзера
-        userId = getUserId(event)
-
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-
-        # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
-
-        return getMainMenuConfig(event)
+        return getDialogResponseFromEnd(event, 2, allDialogs)
 
 
         
