@@ -238,6 +238,12 @@ def compileConfigFromEpisode(
                 **userStateUpdate,
             }
 
+    # if clearStats:
+    #     if not "user_state_update" in config:
+    #         config["user_state_update"] = userStateUpdate
+    #     else:
+    #         config["user_state_update"]['addStats'] = []
+
     # вернуть конфиг
     return config
 
@@ -323,12 +329,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     # айди юзера
     userId = getUserId(event)
 
-    clearStats = False
-    if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
-        stats = getGlobalState(event, 'addStats')
-        for stat in stats:
-            increaseStat(conn, userId, deaths=stat[0], openEnds=stat[1])
-        clearStats = True
+    # clearStats = False
+    # if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
+    #     stats = getGlobalState(event, 'addStats')
+    #     for stat in stats:
+    #         increaseStat(conn, userId, deaths=stat[0], openEnds=stat[1])
+    #     clearStats = True
 
 
     # если нужно создать новую игру
