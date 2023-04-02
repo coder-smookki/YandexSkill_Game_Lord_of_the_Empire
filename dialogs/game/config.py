@@ -268,7 +268,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
         if isReplicaSimilar(command, YesIntents):
             print('check3')
             return 'true'
-    if firstLastChoiceCommandArr[0] == 'нет':
+    if secondLastChoiceCommandArr[0] == 'нет':
         if isReplicaSimilar(command, NoIntents):
             return 'false'
     print('check4')
