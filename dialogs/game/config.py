@@ -285,6 +285,7 @@ def getConfig(event, needCreateNewInfo=False):
     #     print(event['state']['user'])
     # except KeyError as e:
     #     print('KEYERROR', e)
+
     # пройти к следующему эпизоду, если это первая игра
     if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
         episode = passEpisode(info, firstGameHistory, statsEnds)
@@ -292,12 +293,12 @@ def getConfig(event, needCreateNewInfo=False):
     else:
         episode = passEpisode(info, history, statsEnds)
 
-        # если история закончилась
+    # если история закончилась
     if episode == "its all":
         # удалить последнее сохранение
         removeSave(conn, userId)
 
-        # пройтись еще раз по функции с нулевым сохранением (начать игру заново)
+        # вернуться в главное меню
         return getMainMenuConfig(event)
 
     if 'name' in episode and not episode['name'] is None:
