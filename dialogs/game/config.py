@@ -403,7 +403,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         # increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
         # получить конфиг главного меню
-        config = getConfig(event)
+        config = getConfig(event, allDialogs)
 
         # стейт о том, что игрок сыграл впервый раз
         userState = {"playedBefore": True}
