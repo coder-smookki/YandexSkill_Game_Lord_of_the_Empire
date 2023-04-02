@@ -260,12 +260,17 @@ def getConfig(event, needCreateNewInfo=False):
     # получить команду
     command = getCommand(event)
 
+    print(1)
+
     # если история закончилась (на прошлом эпизоде не было кнопок)
     if not canLastChoicedArr:
+        print(2)
         if isInCommandOr(event, RepeatIntents):
+            print(3)
             # вернуть последний эпизод
             return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
         else:
+            print(4)
             # удалить последнее сохранение
             removeSave(conn, userId)
             
