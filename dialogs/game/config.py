@@ -245,7 +245,7 @@ def getConfig(event, needCreateNewInfo=False):
     command = getCommand(event)
 
     # если нет кнопок для выбора на прошлом эпизоде (игрок умер)
-    if canLastChoicedArr is None or len(canLastChoicedArr) == 0:
+    if len(canLastChoicedArr) == 0:
         # если игрок попросил повторить
         if isInCommandOr(event, RepeatIntents):
             # вернуть последний эпизод
