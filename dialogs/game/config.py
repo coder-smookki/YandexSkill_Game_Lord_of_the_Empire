@@ -10,6 +10,7 @@ from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 from utils.image_gen.get_id import get_id
 from dialogs.mainMenu.config import getConfig as getMainMenuConfig
+from utils.intents import RepeatIntents
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -256,16 +257,20 @@ def getConfig(event, needCreateNewInfo=False):
         lastEpisode = None
         canLastChoicedArr = None
 
-    # если история закончилась (на прошлом эпизоде не было кнопок)
-    if canLastChoicedArr:
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-
-        # вернуться в главное меню
-        return getMainMenuConfig(event)
-
     # получить команду
     command = getCommand(event)
+
+    # если история закончилась (на прошлом эпизоде не было кнопок)
+    if not canLastChoicedArr:
+        if isInCommandOr(event, RepeatIntents):
+            # вернуть последний эпизод
+            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        else:
+            # удалить последнее сохранение
+            removeSave(conn, userId)
+            
+            # вернуться в главное меню
+            return getMainMenuConfig(event)
 
     # если в прошлом эпизоде были выборы
     # если только один (обычно 2)
