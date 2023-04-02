@@ -33,11 +33,12 @@ def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
         config["buttons"] = [*variants_of_the_choice, *config["buttons"]]
         config["tts"] += f"Варианты ответов... {'...'.join(variants_of_the_choice)}"
 
-    # session_state = {"branch": branch}
+    session_state = {}
 
     return {
         'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
-        "card": config["card"]
+        "card": config["card"],
+        "session_state": session_state,
     }
