@@ -1,7 +1,6 @@
 import random
 import re
 
-from dialogs.dontUnderstand.config import getConfig as DUgetConfig
 from utils.globalStorage import *
 from utils.responseHelper import *
 from utils.dbHandler import *
@@ -29,8 +28,11 @@ names = list({"Александр", "Борис", "Василий", "Григо�
               "Бернард", "Вильгельм", "Генрих", "Давид", "Эдмунд", "Фердинанд", "Гарольд", "Исаак", "Карл", "Леопольд",
               "Матвей", "Николай", "Оскар", "Петр", "Ричард", "Сэмюэль", "Теодор", "Уильям"})
 
+pre_tts = ["Я вас не понял.", "Не удалось распознать выбор.", "Не понял, повторяю."]
 
-def compileConfigFromEpisode(event, episode, haveInterface):
+
+# preTts - фраза "я вас не понял, повторяю" когда не понял ход
+def compileConfigFromEpisode(event, episode, haveInterface, preTts = ''):
     # получить статы
     stats = episode["stats"]
 
@@ -42,7 +44,7 @@ def compileConfigFromEpisode(event, episode, haveInterface):
     # если в эпизоде есть имя (выступает персонаж)
     if episode["name"]:
         # добавить sfx, имя и сообщение в tts
-        tts = random.choice(sfx) + episode["name"] + ". " + episode["message"]
+        tts = random.choice(sfx) + preTts + episode["name"] + ". " + episode["message"]
 
         if haveInterface:
             # получить айди картинки
@@ -268,9 +270,7 @@ def getConfig(event, needCreateNewInfo=False):
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                # return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-                # вернуть я тя не пон бро
-                return DUgetConfig(event)
+                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface, random.choice(pre_tts))
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
