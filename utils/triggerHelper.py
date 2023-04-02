@@ -17,7 +17,7 @@ def isAuthorized(event):
     return 'session' in event and 'user' in event["session"] and "user_id" in event["session"]["user"]
 
 def isDangerousContext(event):
-    return 'markup' in event['request'] and event['request']['dangerous_context'] 
+    return 'markup' in event['request'] and 'dangerous_context' in event['request'] and event['request']['dangerous_context'] 
 
 
 # является ли хоть один элемент массива подстрокой пришедшей команды

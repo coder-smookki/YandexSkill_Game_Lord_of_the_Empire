@@ -29,3 +29,5 @@ allDialogs = {
     "mainMenu": mainMenu,
     "dontUnderstand": dontUnderstand
 }
+
+# помощь, как пользоваться
