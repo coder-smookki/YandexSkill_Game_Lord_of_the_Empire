@@ -11,8 +11,10 @@ from dialogs.howToContactDevelopers.howToContactDevelopers import howToContactDe
 from dialogs.resetGame.resetGame import resetGame
 from dialogs.stats.stats import stats
 from dialogs.dontUnderstand.dontUnderstand import dontUnderstand
+from dialogs.dontUnderstand.dontUnderstand import dontUnderstandDangerous
 
 allDialogs = {
+    'dontUnderstandDangerous': dontUnderstandDangerous,
     "exitConfirm": exitConfirm,
     'game': game,
     'resetGame': resetGame,
