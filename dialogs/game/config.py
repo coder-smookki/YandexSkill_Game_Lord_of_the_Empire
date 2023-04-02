@@ -262,26 +262,27 @@ def getConfig(event, needCreateNewInfo=False):
 
     print(1)
 
-    # если история закончилась (на прошлом эпизоде не было кнопок)
-    if "lastEpisode" in info and not canLastChoicedArr:
-        print(2)
-        if isInCommandOr(event, RepeatIntents):
-            print(3)
-            # вернуть последний эпизод
-            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-        else:
-            print(4)
-            # удалить последнее сохранение
-            removeSave(conn, userId)
-            
-            # вернуться в главное меню
-            return getMainMenuConfig(event)
-
+    
     if canLastChoicedArr:
-        # если в прошлом эпизоде были выборы
-        # если только один (обычно 2)
+        # если история закончилась (на прошлом эпизоде не было кнопок)
+        if len(canLastChoicedArr) == 0:
+            print(2)
+            if isInCommandOr(event, RepeatIntents):
+                print(3)
+                # вернуть последний эпизод
+                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+            else:
+                print(4)
+                # удалить последнее сохранение
+                removeSave(conn, userId)
+                
+                # вернуться в главное меню
+                return getMainMenuConfig(event)
+
+        # если только один
         if len(canLastChoicedArr) == 1:
             info["choice"] = "true"
+        # иначе их 2
         else:
             # получить выбор пользователя
             userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
