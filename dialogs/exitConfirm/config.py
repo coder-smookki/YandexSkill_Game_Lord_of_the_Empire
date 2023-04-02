@@ -18,7 +18,7 @@ config = {
     ],
     "card": {
         "type": "BigImage",
-        "image_id": "1533899/d371aab5224c91137cfc",
+        "image_id": "213044/f4706b04bb076f333b1b",
         "title": "ВЫЙТИ ИЗ НАВЫКА?",
         "description":
             """
