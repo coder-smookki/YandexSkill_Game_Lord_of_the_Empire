@@ -391,8 +391,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         # удалить последнее сохранение
         removeSave(conn, userId)
 
-        # если игрок не просил повторить еще раз
-        
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
