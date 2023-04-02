@@ -10,6 +10,8 @@ def getResponse(event, allDialogs=None):
 
     conn = globalStorage["mariaDBconn"]
 
+    config['user_state_update']['addStats'] = []
+
     if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
         stats = getGlobalState(event, 'addStats')
         for stat in stats:
