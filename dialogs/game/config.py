@@ -277,24 +277,25 @@ def getConfig(event, needCreateNewInfo=False):
             # вернуться в главное меню
             return getMainMenuConfig(event)
 
-    # если в прошлом эпизоде были выборы
-    # если только один (обычно 2)
-    if len(canLastChoicedArr) == 1:
-        info["choice"] = "true"
-    else:
-        # получить выбор пользователя
-        userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
-        print('Выбор пользователя:', userChoice)
-
-        # если определить выбор не удалось
-        if userChoice is None:
-            # вернуть прошлый эпизод
-            if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
-                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-            return dontUnderstandConfig(event, variants_of_the_choice=canLastChoicedArr, branch='game')
+    if canLastChoicedArr:
+        # если в прошлом эпизоде были выборы
+        # если только один (обычно 2)
+        if len(canLastChoicedArr) == 1:
+            info["choice"] = "true"
         else:
-            # иначе установить выбор в сохранении
-            info["choice"] = userChoice
+            # получить выбор пользователя
+            userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
+            print('Выбор пользователя:', userChoice)
+
+            # если определить выбор не удалось
+            if userChoice is None:
+                # вернуть прошлый эпизод
+                if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
+                    return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+                return dontUnderstandConfig(event, variants_of_the_choice=canLastChoicedArr, branch='game')
+            else:
+                # иначе установить выбор в сохранении
+                info["choice"] = userChoice
 
     # print('STATES', haveGlobalState(event, 'playedBefore'), getGlobalState(event, 'playedBefore'))
     # try:
