@@ -9,10 +9,10 @@ ttss = [
 ]
 
 
-def getConfig(event):
+def getConfig(event, variants_of_the_choice=''):
     tts = choice(ttss)
     config = {
-        "tts": f"""{tts}""",
+        "tts": f"""{tts}...{varients_of_the_choice}""",
 
         "buttons": [
             "В главное меню",
@@ -29,12 +29,12 @@ def getConfig(event):
         },
     }
 
-    session_state = {"branch": "dontUnderstand"}
+    #session_state = {"branch": "dontUnderstand"}
 
     return {
         'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
         "card": config["card"],
-        "session_state": session_state,
+        #"session_state": session_state,
     }

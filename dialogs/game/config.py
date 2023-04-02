@@ -1,6 +1,7 @@
 import random
 import re
 
+from dialogs.dontUnderstand.config import getConfig as dontUnderstandConfig
 from utils.globalStorage import *
 from utils.intents import LetsPlayIntents, RepeatIntents
 from utils.responseHelper import *
@@ -29,7 +30,7 @@ names = list({"Александр", "Борис", "Василий", "Григо�
               "Бернард", "Вильгельм", "Генрих", "Давид", "Эдмунд", "Фердинанд", "Гарольд", "Исаак", "Карл", "Леопольд",
               "Матвей", "Николай", "Оскар", "Петр", "Ричард", "Сэмюэль", "Теодор", "Уильям"})
 
-# pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Не понял, повторяю."]
+pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Не понял, повторяю."]
 
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
@@ -275,7 +276,9 @@ def getConfig(event, needCreateNewInfo=False):
                 # else:
                 #     pre_tts = random.choice(pre_ttss)
                 # вернуть прошлый эпизод
-                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+                # return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+                after_tts = f'Варианты ответов: {"...".join(canLastChoicedArr)}'
+                return dontUnderstandConfig(event, variants_of_the_choice=after_tts)
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
