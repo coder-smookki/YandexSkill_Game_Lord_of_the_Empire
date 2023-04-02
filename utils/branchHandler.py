@@ -14,7 +14,7 @@ def updateBranchToResponse(event, response, firstBranchName):
         newResponse['session_state']['branch'] = [firstBranchName]
         return newResponse
 
-    elif not newResponse['session_state']['branch']:
+    elif not newResponse['session_state']['branch'] and newResponse['session_state']['branch'] != '':
         newResponse['session_state']['branch'] = newEvent['state']['session']['branch']
         return newResponse
 
