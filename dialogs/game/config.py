@@ -482,20 +482,20 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
 
 
     if len(episode['buttons']) == 0:
-        addStatsState = {}
+        addStatsState = []
         if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
             stats = getGlobalState(event, 'addStats')
             stats.append([1, lastEpisode["message"]])
-            addStatsState['addStats'] = stats
+            addStatsState = stats
         else:
-            addStatsState['addStats'] = [[1, lastEpisode["message"]]]
+            addStatsState = [[1, lastEpisode["message"]]]
 
         if not "user_state_update" in config:
             config["user_state_update"] = {'addStats': addStatsState}
         else:
             config["user_state_update"] = {
                 **config["user_state_update"],
-                **addStatsState,
+                'addStats':addStatsState,
             }
 
     return config
