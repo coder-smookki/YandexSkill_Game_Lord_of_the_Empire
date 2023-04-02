@@ -20,13 +20,13 @@ allDialogs = {
     "howToContactDevelopers": howToContactDeveloveps,
     "whatYouCan": whatYouCan,
     "help": help,
+    "mainMenu": mainMenu,
     'game': game,
     'resetGame': resetGame,
     'stats': stats,
     "whoAreCreators": whoAreCreators,
     "backDialog": backDialog,
     "repeat": repeat,
-    "mainMenu": mainMenu,
     "dontUnderstand": dontUnderstand
 }
 
