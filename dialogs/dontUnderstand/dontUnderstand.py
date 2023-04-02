@@ -6,7 +6,7 @@ from utils.responseHelper import *
 
 def getResponse(event, allDialogs=None):
     config = getConfig(event)
-    return createResponse(event, config)
+    return createResponse(event, config, dontUpdateBranches=True)
 
 def isTriggered(event):
     return True

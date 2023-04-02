@@ -56,7 +56,7 @@ def createExitResponse(event):
 
 # функция, которая превращает конфиг с информацией о будующем респонсе в сам респонс
 # сделано, чтобы не запариваться по поводу полей в респонсе (их реально много и они неудобные :c)
-def createResponse(event, originalConfig):
+def createResponse(event, originalConfig, dontUpdateBranches=False):
     # скопировать конфиг, чтобы 100% избежать его изменения в другом файле (если там он создан глобально)
     config = copy.deepcopy(originalConfig)
     try:
@@ -81,6 +81,10 @@ def createResponse(event, originalConfig):
             else {},  # передаваемые стейты
             "version": event["version"],  # инфа для Алисы - версия
         }
+
+        # если не нужно будет обновлять бренчи, то поставить метку об этом
+        if dontUpdateBranches or 'branch' in returnResponse["session_state"]:
+            returnResponse['dontUpdateBranches'] = True
 
         # если нужно обновить глобальные стейты
         if "user_state_update" in config:
