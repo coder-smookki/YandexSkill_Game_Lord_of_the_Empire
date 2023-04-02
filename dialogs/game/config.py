@@ -12,7 +12,6 @@ from utils.image_gen.get_id import get_id
 from dialogs.mainMenu.config import getConfig as getMainMenuConfig
 from utils.intents import RepeatIntents
 from utils.branchHandler import getDialogResponseFromEnd
-from dialogs.allDialogs import allDialogs
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -205,7 +204,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 
-def getConfig(event, needCreateNewInfo=False):
+def getConfig(event, allDialogs, needCreateNewInfo=False):
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
