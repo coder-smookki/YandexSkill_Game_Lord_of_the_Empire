@@ -266,16 +266,18 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
 
     # если нет кнопок для выбора на прошлом эпизоде (игрок умер)
     if not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
-        # если игрок попросил повторить
-        if isInCommandOr(event, RepeatIntents):
-            # если это первая игра
-            if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
-                return compileConfigFromEpisode(event, lastEpisode, haveInterface, userStateUpdate={'playedBefore': True}, repeat=True)
+        if 'showedEnd' in info and info['showedEnd'] == True:    
+            # если игрок попросил повторить
+            if isInCommandOr(event, RepeatIntents):
+                # если это первая игра
+                if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
+                    return compileConfigFromEpisode(event, lastEpisode, haveInterface, userStateUpdate={'playedBefore': True}, repeat=True)
 
-            # вернуть последний эпизод
-            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface, repeat=True)
+                # вернуть последний эпизод
+                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface, repeat=True)
 
-        return getMainMenuConfig(event)
+            return getMainMenuConfig(event)
+        info['showedEnd'] = True
 
 
         
