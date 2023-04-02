@@ -257,7 +257,7 @@ def getConfig(event, needCreateNewInfo=False):
         canLastChoicedArr = None
 
     # если история закончилась (на прошлом эпизоде не было кнопок)
-    if len(canLastChoicedArr) == 0:
+    if canLastChoicedArr:
         # удалить последнее сохранение
         removeSave(conn, userId)
 
@@ -268,25 +268,23 @@ def getConfig(event, needCreateNewInfo=False):
     command = getCommand(event)
 
     # если в прошлом эпизоде были выборы
-    if canLastChoicedArr:
-        # если только один (обычно 2)
-        if len(canLastChoicedArr) == 1:
-            info["choice"] = "true"
+    # если только один (обычно 2)
+    if len(canLastChoicedArr) == 1:
+        info["choice"] = "true"
+    else:
+        # получить выбор пользователя
+        userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
+        print('Выбор пользователя:', userChoice)
 
+        # если определить выбор не удалось
+        if userChoice is None:
+            # вернуть прошлый эпизод
+            if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
+                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+            return dontUnderstandConfig(event, variants_of_the_choice=canLastChoicedArr, branch='game')
         else:
-            # получить выбор пользователя
-            userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
-            print('Выбор пользователя:', userChoice)
-
-            # если определить выбор не удалось
-            if userChoice is None:
-                # вернуть прошлый эпизод
-                if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
-                    return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-                return dontUnderstandConfig(event, variants_of_the_choice=canLastChoicedArr, branch='game')
-            else:
-                # иначе установить выбор в сохранении
-                info["choice"] = userChoice
+            # иначе установить выбор в сохранении
+            info["choice"] = userChoice
 
     # print('STATES', haveGlobalState(event, 'playedBefore'), getGlobalState(event, 'playedBefore'))
     # try:
