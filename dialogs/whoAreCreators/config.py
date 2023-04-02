@@ -24,6 +24,7 @@ def getConfig(event):
             "type": "BigImage",
             "image_id": "1521359/3349afd66fa90845fd03",
             "title": "СОЗДАТЕЛИ НАВЫКА",
+            "description": text
         },
     }
 
