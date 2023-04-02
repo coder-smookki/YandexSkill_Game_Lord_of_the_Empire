@@ -121,18 +121,21 @@ def compileConfigFromEpisode(
         tts = random.choice(sfx) + preTts + episode["name"] + ". " + episode["message"]
 
         if haveInterface:
-            # получить айди картинки
-            cardId = get_id(
-                person=episode["name"],
-                replica=episode["message"],
-                values=[
-                    stats["church"],
-                    stats["nation"],
-                    stats["army"],
-                    stats["coffers"],
-                ],
-                name=selectName(globalStorage["mariaDBconn"], getUserId(event))
-            )
+            if len(episode['buttons']) == 0:
+                cardId = '1533899/d371aab5224c91137cfc' # TODO: заменить арбуз на картинку смерти
+            else:
+                # получить айди картинки
+                cardId = get_id(
+                    person=episode["name"],
+                    replica=episode["message"],
+                    values=[
+                        stats["church"],
+                        stats["nation"],
+                        stats["army"],
+                        stats["coffers"],
+                    ],
+                    name=selectName(globalStorage["mariaDBconn"], getUserId(event))
+                )
 
             # # если карточка не вернулась, использовать арбуз
             # if cardId is None:
@@ -141,20 +144,22 @@ def compileConfigFromEpisode(
         # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
         tts = random.choice(sfx) + episode["message"]
 
-        if haveInterface:
-            # ̶и̶с̶п̶о̶л̶ь̶з̶о̶в̶а̶т̶ь̶ ̶а̶р̶б̶у̶з̶
-            # использовать картинку для текста
-            cardId = get_id(
-                person=None,
-                replica=episode["message"],
-                values=[
-                    stats["church"],
-                    stats["nation"],
-                    stats["army"],
-                    stats["coffers"],
-                ],
-                name=selectName(globalStorage["mariaDBconn"], getUserId(event))
-            )
+        if haveInterface:            
+            if len(episode['buttons']) == 0:
+                cardId = '1533899/d371aab5224c91137cfc' # TODO: заменить арбуз на картинку смерти
+            else:
+                # использовать картинку для текста
+                cardId = get_id(
+                    person=None,
+                    replica=episode["message"],
+                    values=[
+                        stats["church"],
+                        stats["nation"],
+                        stats["army"],
+                        stats["coffers"],
+                    ],
+                    name=selectName(globalStorage["mariaDBconn"], getUserId(event))
+                )
 
     if haveInterface:
         # создать конфиг для интерфейсных устройств
