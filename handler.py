@@ -39,6 +39,11 @@ def handler(event):
         if not allDialogs[key]["isTriggered"](event):
             continue
 
+        if haveGlobalState(event, 'addStats'):
+            print("Статы: ",getGlobalState(event, 'addStats'))
+        else:
+            print("Статов нет")
+
         # если диалог затриггерился, получить его респонс
         response = allDialogs[key]["getResponse"](event, allDialogs)
 
