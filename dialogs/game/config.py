@@ -412,7 +412,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
             increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
         # получить новый конфиг
-        config = getMainMenuConfig(event)
+        config = getConfig(event,allDialogs,True)
 
         # стейт о том, что игрок сыграл впервый раз
         userState = {"playedBefore": True}
