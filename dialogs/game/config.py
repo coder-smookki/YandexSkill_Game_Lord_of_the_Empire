@@ -262,10 +262,10 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     # пройтись по всем словам команды
     # если ответы "да" или "нет", то зачекать через интенты
     if firstLastChoiceCommand == 'да':
-        if isReplicaSimilar(word, YesIntents):
+        if isReplicaSimilar(command, YesIntents):
             return 'true'
     if firstLastChoiceCommand == 'нет':
-        if isReplicaSimilar(word, NoIntents):
+        if isReplicaSimilar(command, NoIntents):
             return 'false'
     # иначе смотреть по словам
     for word in commandArr:
