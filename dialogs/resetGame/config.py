@@ -16,7 +16,7 @@ config = {
     ],
     "card": {
         "type": "BigImage",
-        "image_id": "1533899/dcca2fdc4295374a69bc",
+        "image_id": "213044/f4706b04bb076f333b1b",
         "title": "СБРОСИТЬ СОХРАНЕНИЕ?",
         "description":
             """

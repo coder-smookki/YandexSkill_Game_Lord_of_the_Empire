@@ -50,6 +50,6 @@ def getConfig(event):
         'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
-        # "card": config["card"],
+        "card": config["card"],
         "session_state": session_state,
     }
