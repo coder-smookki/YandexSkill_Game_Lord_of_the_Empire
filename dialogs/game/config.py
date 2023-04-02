@@ -427,11 +427,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                 }
 
         if not "user_state_update" in config:
-            config["user_state_update"] = addStatsState
+            config["user_state_update"] = {'addStats': addStatsState}
         else:
             config["user_state_update"] = {
                 **config["user_state_update"],
-                **addStatsState,
+                'addStats': addStatsState,
             }
 
         # вернуть конфиг
