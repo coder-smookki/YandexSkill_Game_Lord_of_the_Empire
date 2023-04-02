@@ -31,7 +31,7 @@ def getConfig(event):
     session_state = {"branch": "whoAreCreators"}
 
     return {
-        'message': config["tts"],
+        'message': config["text"],
         "tts": config["tts"],
         "buttons": config["buttons"],
         "card": config["card"],
