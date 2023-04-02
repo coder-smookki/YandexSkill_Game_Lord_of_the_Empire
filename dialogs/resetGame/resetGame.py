@@ -23,7 +23,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInCommandOr(event, ResetIntents) or isInLastContext(event, 'resetGame')
+    return (isInCommandOr(event, ResetIntents) and isInLastContext(event, 'mainMenu')) or isInLastContext(event, 'resetGame')
         
 
 
