@@ -7,7 +7,7 @@ from utils.branchHandler import getDialogResponseFromEnd
 
 def getResponse(event, allDialogs=None):
     config = getConfig(event)
-    if isInContext(event, "exitConfirm") and isInCommandOr(event, ExitIntents):
+    if isInContext(event, "exitConfirm") and isInCommandOr(event, YesIntents):
         return getConfirmResponse(event)
     elif isInContext(event, "exitConfirm"):
         return getDialogResponseFromEnd(event, 2, allDialogs)
