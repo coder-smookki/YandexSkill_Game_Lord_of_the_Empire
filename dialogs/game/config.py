@@ -7,6 +7,7 @@ from utils.intents import LetsPlayIntents, RepeatIntents
 from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.triggerHelper import *
+from utils.intents import YesIntents,NoIntents
 from gameCore.historyHandler import passEpisode
 from utils.image_gen.get_id import get_id
 from dialogs.mainMenu.config import getConfig as getMainMenuConfig
@@ -94,6 +95,12 @@ names = list(
 )
 
 pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Не понял, повторяю."]
+
+def isReplicaSimilar(replica, arr):
+    for elem in arr:
+        if elem in replica:
+            return True
+    return False
 
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
@@ -253,6 +260,14 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     ).split(" ")
 
     # пройтись по всем словам команды
+    # если ответы "да" или "нет", то зачекать через интенты
+    if firstLastChoiceCommand == 'да':
+        if isReplicaSimilar(word, YesIntents):
+            return 'true'
+    if firstLastChoiceCommand == 'нет':
+        if isReplicaSimilar(word, NoIntents):
+            return 'false'
+    # иначе смотреть по словам
     for word in commandArr:
         # есть слово в массиве с первым выбором
         isInFirst = word in firstLastChoiceCommandArr
