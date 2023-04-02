@@ -270,7 +270,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
             # вернуть последний эпизод
             return compileConfigFromEpisode(event, lastEpisode, haveUserInterface, repeat=True)
 
-        return getDialogResponseFromEnd(event, 2, allDialogs)
+        return getMainMenuConfig(event)
 
 
         
