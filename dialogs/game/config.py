@@ -271,12 +271,9 @@ def getConfig(event, needCreateNewInfo=False):
 
             # если определить выбор не удалось
             if userChoice is None:
-                # if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
-                #     pre_tts = ''
-                # else:
-                #     pre_tts = random.choice(pre_ttss)
                 # вернуть прошлый эпизод
-                # return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+                if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
+                    return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
                 after_tts = f'Варианты ответов: {"...".join(canLastChoicedArr)}'
                 return dontUnderstandConfig(event, variants_of_the_choice=after_tts)
             else:

@@ -12,7 +12,7 @@ ttss = [
 def getConfig(event, variants_of_the_choice=''):
     tts = choice(ttss)
     config = {
-        "tts": f"""{tts}...{varients_of_the_choice}""",
+        "tts": f"""{tts}...{variants_of_the_choice}""",
 
         "buttons": [
             "В главное меню",
