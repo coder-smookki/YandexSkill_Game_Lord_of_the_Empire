@@ -407,13 +407,13 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
 
         # стейт о том, что игрок сыграл впервый раз
         userState = {"playedBefore": True}
-
+        addStatsState = {}
         if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
             stats = getGlobalState(event, 'addStats')
             stats.append([1, lastEpisode["message"]])
-            userState['addStats'] = stats
+            addStatsState['addStats'] = stats
         else:
-            userState['addStats'] = [[1, lastEpisode["message"]]]
+            addStatsState['addStats'] = [[1, lastEpisode["message"]]]
 
         # если это первая концовка игрока, то добавить глобальным стейтом "playedBefore"
         if not haveGlobalState(event,"playedBefore") or getGlobalState(event, "playedBefore") == False:
@@ -424,6 +424,14 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     **config["user_state_update"],
                     **userState,
                 }
+
+        if not "user_state_update" in config:
+            config["user_state_update"] = addStatsState
+        else:
+            config["user_state_update"] = {
+                **config["user_state_update"],
+                **addStatsState,
+            }
 
         # вернуть конфиг
         return config
