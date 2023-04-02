@@ -13,6 +13,7 @@ def getResponse(event, allDialogs=None):
     if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
         stats = getGlobalState(event, 'addStats')
         for stat in stats:
+            print('mainMenuStat')
             increaseStat(conn, getUserId(event), deaths=stat[0], openEnds=stat[1])
         if not 'user_state_update' in config:
             config['user_state_update'] = {}
