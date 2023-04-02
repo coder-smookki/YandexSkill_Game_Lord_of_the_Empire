@@ -38,7 +38,7 @@ def getConfig(event):
         },
     }
 
-    session_state = {"branch": "howToUse"}
+    session_state = {"branch": ""}
 
     return {
         'message': config["tts"],
