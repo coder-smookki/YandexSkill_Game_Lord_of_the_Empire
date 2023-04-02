@@ -136,18 +136,22 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
 
-    # соединение с БД
-    conn = globalStorage["mariaDBconn"]
+    
 
-    # айди юзера
-    userId = getUserId(event)
+    if len(episode['buttons']) == 0:
+        # соединение с БД
+        conn = globalStorage["mariaDBconn"]
 
-    # удалить последнее сохранение
-    removeSave(conn, userId)
+        # айди юзера
+        userId = getUserId(event)
 
-    if not repeat and len(episode['buttons']) == 0:
-        # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+
+        # если игрок не просил повторить еще раз
+        if not repeat:
+            # добавить 1 смерть в статистику и новую концовку (если она новая)
+            increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
 
     if userStateUpdate:
