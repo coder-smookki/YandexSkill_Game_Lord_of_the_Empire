@@ -267,7 +267,7 @@ def getConfig(event, needCreateNewInfo=False):
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
-        return createResponse(event, getMainMenuConfig(event))
+        return getMainMenuConfig(event)
 
 
         
