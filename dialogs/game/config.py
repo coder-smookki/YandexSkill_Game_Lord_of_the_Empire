@@ -351,7 +351,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         # если игрок не просил повторить еще раз
         
         # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
+        increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
         # получить конфиг главного меню
         config = getMainMenuConfig(event)
