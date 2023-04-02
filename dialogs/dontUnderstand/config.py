@@ -24,7 +24,7 @@ def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
         "card": {
             "type": "BigImage",
             "image_id": "1533899/d371aab5224c91137cfc",
-            "title": "НЕ СОВСЕМ НЕПОНЯТНО",
+            "title": "НЕ СОВСЕМ ПОНЯТНО",
             "description": tts,
         },
     }
