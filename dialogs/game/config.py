@@ -127,16 +127,26 @@ def compileConfigFromEpisode(
                 name=selectName(globalStorage["mariaDBconn"], getUserId(event))
             )
 
-            # если карточка не вернулась, использовать арбуз
-            if cardId is None:
-                cardId = "1533899/d371aab5224c91137cfc"
+            # # если карточка не вернулась, использовать арбуз
+            # if cardId is None:
+            #     cardId = "1533899/d371aab5224c91137cfc"
     else:
         # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
         tts = random.choice(sfx) + episode["message"]
 
         if haveInterface:
-            # использовать арбуз
-            cardId = "1533899/d371aab5224c91137cfc"
+            # ̶и̶с̶п̶о̶л̶ь̶з̶о̶в̶а̶т̶ь̶ ̶а̶р̶б̶у̶з̶
+            # использовать картинку для текста
+            cardId = get_id(
+                replica=episode["message"],
+                values=[
+                    stats["church"],
+                    stats["nation"],
+                    stats["army"],
+                    stats["coffers"],
+                ],
+                name=selectName(globalStorage["mariaDBconn"], getUserId(event))
+            )
 
     if haveInterface:
         # создать конфиг для интерфейсных устройств
