@@ -25,23 +25,85 @@ sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/3ee32d10-842e-4e93-86d6-da158cba6e3d.opus">',
 ]
 
-names = list({"Александр", "Борис", "Василий", "Григорий", "Дмитрий", "Евгений", "Ждан", "Захар", "Игорь", "Константин",
-              "Леонид", "Михаил", "Павел", "Роман", "Ульян", "Федор", "Харитон",
-              "Цезарь", "Чеслав", "Шамиль", "Эдуард", "Юлиан", "Анатолий", "Владимир", "Геннадий",
-              "Демид", "Елисей", "Жорес", "Зиновий", "Ипполит", "Кирилл", "Лев", "Матвей", "Нестор", "Осип", "Петр",
-              "Ростислав", "Станислав", "Тарас", "Устин", "Филипп", "Христофор", "Чеслав", "Юрий", "Альфонсо",
-              "Бернард", "Вильгельм", "Генрих", "Давид", "Эдмунд", "Фердинанд", "Гарольд", "Исаак", "Карл", "Леопольд",
-              "Матвей", "Николай", "Оскар", "Петр", "Ричард", "Сэмюэль", "Теодор", "Уильям"})
+names = list(
+    {
+        "Александр",
+        "Борис",
+        "Василий",
+        "Григорий",
+        "Дмитрий",
+        "Евгений",
+        "Ждан",
+        "Захар",
+        "Игорь",
+        "Константин",
+        "Леонид",
+        "Михаил",
+        "Павел",
+        "Роман",
+        "Ульян",
+        "Федор",
+        "Харитон",
+        "Цезарь",
+        "Чеслав",
+        "Шамиль",
+        "Эдуард",
+        "Юлиан",
+        "Анатолий",
+        "Владимир",
+        "Геннадий",
+        "Демид",
+        "Елисей",
+        "Жорес",
+        "Зиновий",
+        "Ипполит",
+        "Кирилл",
+        "Лев",
+        "Матвей",
+        "Нестор",
+        "Осип",
+        "Петр",
+        "Ростислав",
+        "Станислав",
+        "Тарас",
+        "Устин",
+        "Филипп",
+        "Христофор",
+        "Чеслав",
+        "Юрий",
+        "Альфонсо",
+        "Бернард",
+        "Вильгельм",
+        "Генрих",
+        "Давид",
+        "Эдмунд",
+        "Фердинанд",
+        "Гарольд",
+        "Исаак",
+        "Карл",
+        "Леопольд",
+        "Матвей",
+        "Николай",
+        "Оскар",
+        "Петр",
+        "Ричард",
+        "Сэмюэль",
+        "Теодор",
+        "Уильям",
+    }
+)
 
 pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Не понял, повторяю."]
 
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
-def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userStateUpdate=None, repeat=False):
+def compileConfigFromEpisode(
+    event, episode, haveInterface, preTts="", userStateUpdate=None, repeat=False
+):
     # получить статы
     stats = episode["stats"]
 
-    print('stats:', stats)
+    print("stats:", stats)
 
     # Local variable 'cardId' might be referenced before assignment
     cardId = None
@@ -63,7 +125,7 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
                     stats["coffers"],
                 ],
                 changes=[0, 0, 0, 0],
-                name=selectName(globalStorage["mariaDBconn"], getUserId(event))
+                name=selectName(globalStorage["mariaDBconn"], getUserId(event)),
             )
 
             # если карточка не вернулась, использовать арбуз
@@ -104,14 +166,16 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
                 buttonsStr += button + ". "
 
             # добавить в tts кнопки
-            config["tts"] = config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
+            config["tts"] = (
+                config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
+            )
 
     else:
         # создать конфиг для устройств без интерфейса
         config = {
-            'message': 'zxc',
+            "message": "zxc",
             "tts": tts,
-            'buttons': ['first button aboba', 'second button aboba']
+            "buttons": ["first button aboba", "second button aboba"],
         }
 
         # вынести текущие фракции в виде строки
@@ -123,12 +187,12 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
         """
 
         # добавить фракции в tts
-        config['tts'] += statsStr
+        config["tts"] += statsStr
 
         # вынести из массива кнопки в виде строки
         buttonsStr = ""
         for button in episode["buttons"]:
-            buttonsStr += button + ', '
+            buttonsStr += button + ", "
 
         # добавить в tts кнопки и статы
         config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
@@ -136,29 +200,14 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
 
-    
-
-    if len(episode['buttons']) == 0:
-        # соединение с БД
-        conn = globalStorage["mariaDBconn"]
-
-        # айди юзера
-        userId = getUserId(event)
-
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-
-        # если игрок не просил повторить еще раз
-        if not repeat:
-            # добавить 1 смерть в статистику и новую концовку (если она новая)
-            increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
-
-
     if userStateUpdate:
-        if not 'user_state_update' in config:
-            config['user_state_update'] = userStateUpdate
+        if not "user_state_update" in config:
+            config["user_state_update"] = userStateUpdate
         else:
-            config['user_state_update'] = {**config['user_state_update'], **userStateUpdate}
+            config["user_state_update"] = {
+                **config["user_state_update"],
+                **userStateUpdate,
+            }
 
     # вернуть конфиг
     return config
@@ -183,11 +232,15 @@ def createStartInfo(history):
 
 def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceCommand):
     # разделить по пробелам команду
-    commandArr = command.split(' ')
+    commandArr = command.split(" ")
 
     # убрать все, кроме букв и пробелов в строках, потом разделить по пробелам
-    firstLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', firstLastChoiceCommand.lower()).split(' ')
-    secondLastChoiceCommandArr = re.sub(r'[^A-Za-zА-Яа-я ]', '', secondLastChoiceCommand.lower()).split(' ')
+    firstLastChoiceCommandArr = re.sub(
+        r"[^A-Za-zА-Яа-я ]", "", firstLastChoiceCommand.lower()
+    ).split(" ")
+    secondLastChoiceCommandArr = re.sub(
+        r"[^A-Za-zА-Яа-я ]", "", secondLastChoiceCommand.lower()
+    ).split(" ")
 
     # пройтись по всем словам команды
     for word in commandArr:
@@ -197,13 +250,13 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
         # есть слово в массиве со вторым выбором
         isInSecond = word in secondLastChoiceCommandArr
 
-        # если есть в первом, но нет во втором 
+        # если есть в первом, но нет во втором
         if isInFirst and not isInSecond:
-            return 'true'
+            return "true"
 
         # если есть во втором, но нет в первом
         if isInSecond and not isInFirst:
-            return 'false'
+            return "false"
 
     # если не нашлось единоличного совпадения
     return None
@@ -264,24 +317,61 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     # получить команду
     command = getCommand(event)
 
-    # если нет кнопок для выбора на прошлом эпизоде (игрок умер)
-    if not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
-        if 'showedEnd' in info and info['showedEnd'] == True:    
-            # если игрок попросил повторить
-            if isInCommandOr(event, RepeatIntents):
-                # если это первая игра
-                if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
-                    return compileConfigFromEpisode(event, lastEpisode, haveInterface, userStateUpdate={'playedBefore': True}, repeat=True)
+    # если нет кнопок для выбора на прошлом эпизоде (игрок умер или была показана концовка)
+    if (
+        not canLastChoicedArr is None
+        and len(canLastChoicedArr) == 0
+    ):
+        # если игрок попросил повторить
+        if isInCommandOr(event, RepeatIntents):
+            # если это первая игра
+            if not haveGlobalState(event, "playedBefore") or not getGlobalState(
+                event, "playedBefore"
+            ):
+                return compileConfigFromEpisode(
+                    event,
+                    lastEpisode,
+                    haveInterface,
+                    userStateUpdate={"playedBefore": True}
+                )
 
-                # вернуть последний эпизод
-                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface, repeat=True)
+            # вернуть последний эпизод
+            return compileConfigFromEpisode(
+                event, lastEpisode, haveUserInterface, repeat=True
+            )
 
-            return getMainMenuConfig(event)
-        info['showedEnd'] = True
+        # соединение с БД
+        conn = globalStorage["mariaDBconn"]
 
+        # айди юзера
+        userId = getUserId(event)
 
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+
+        # если игрок не просил повторить еще раз
         
+        # добавить 1 смерть в статистику и новую концовку (если она новая)
+        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
+        # получить конфиг главного меню
+        config = getMainMenuConfig(event)
+        
+        # стейт о том, что игрок сыграл впервый раз
+        userState = {"playedBefore": True}
+
+        # если это первая концовка игрока, то добавить глобальным стейтом "playedBefore"
+        if not haveGlobalState(event,"playedBefore") or getGlobalState(event, "playedBefore") == False:
+            if not "user_state_update" in config:
+                config["user_state_update"] = userState
+            else:
+                config["user_state_update"] = {
+                    **config["user_state_update"],
+                    **userState,
+                }
+
+        # вернуть конфиг
+        return config
 
     if canLastChoicedArr:
         # если только один
@@ -290,15 +380,23 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         # иначе их 2
         else:
             # получить выбор пользователя
-            userChoice = checkIfLastChoiceSimiliar(command, canLastChoicedArr[0], canLastChoicedArr[1])
-            print('Выбор пользователя:', userChoice)
+            userChoice = checkIfLastChoiceSimiliar(
+                command, canLastChoicedArr[0], canLastChoicedArr[1]
+            )
+            print("Выбор пользователя:", userChoice)
 
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(event, RepeatIntents):
-                    return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-                return dontUnderstandConfig(event, variants_of_the_choice=canLastChoicedArr, branch='game')
+                if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(
+                    event, RepeatIntents
+                ):
+                    return compileConfigFromEpisode(
+                        event, lastEpisode, haveUserInterface
+                    )
+                return dontUnderstandConfig(
+                    event, variants_of_the_choice=canLastChoicedArr, branch="game"
+                )
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
@@ -310,15 +408,16 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     #     print('KEYERROR', e)
 
     # пройти к следующему эпизоду, если это первая игра
-    if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
+    if not haveGlobalState(event, "playedBefore") or not getGlobalState(
+        event, "playedBefore"
+    ):
         episode = passEpisode(info, firstGameHistory, statsEnds)
     # пройти к следующему эпизоду, если юзер уже играл
     else:
         episode = passEpisode(info, history, statsEnds)
 
-
-    if 'name' in episode and not episode['name'] is None:
-        increaseStat(conn, userId, meetedCharacters=episode['name'])
+    if "name" in episode and not episode["name"] is None:
+        increaseStat(conn, userId, meetedCharacters=episode["name"])
 
     # закинуть текущий эпизод в качестве последнего для следующего вызова
     info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
