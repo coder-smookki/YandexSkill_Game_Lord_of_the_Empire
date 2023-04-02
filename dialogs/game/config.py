@@ -138,6 +138,7 @@ def compileConfigFromEpisode(
             # ̶и̶с̶п̶о̶л̶ь̶з̶о̶в̶а̶т̶ь̶ ̶а̶р̶б̶у̶з̶
             # использовать картинку для текста
             cardId = get_id(
+                person=None,
                 replica=episode["message"],
                 values=[
                     stats["church"],
