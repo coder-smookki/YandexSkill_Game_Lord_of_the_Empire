@@ -9,7 +9,7 @@ ttss = [
 ]
 
 
-def getConfig(event, variants_of_the_choice=''):
+def getConfig(event, variants_of_the_choice='', branch='mainMenu'):
     tts = choice(ttss)
     config = {
         "tts": f"""{tts}...{variants_of_the_choice}""",
@@ -29,7 +29,7 @@ def getConfig(event, variants_of_the_choice=''):
         },
     }
 
-    #session_state = {"branch": "dontUnderstand"}
+    session_state = {"branch": branch}
 
     return {
         'message': config["tts"],
