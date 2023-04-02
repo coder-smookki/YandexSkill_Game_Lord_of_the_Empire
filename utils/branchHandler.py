@@ -5,28 +5,22 @@ def updateBranchToResponse(event, response, firstBranchName):
     newEvent = copy.deepcopy(event)
     newResponse = copy.deepcopy(response)
 
-    print(newResponse['session_state'])
-
     if 'dontUpdateBranches' in response:
         return response
 
     if not 'branch' in newEvent['state']['session']:
-        print('zxc')
         newResponse['session_state']['branch'] = [firstBranchName]
         return newResponse
 
     elif not newResponse['session_state']['branch'] and newResponse['session_state']['branch'] != '':
-        print('aboba')
         newResponse['session_state']['branch'] = newEvent['state']['session']['branch']
         return newResponse
 
     else:
         eventBranch = newEvent['state']['session']['branch']
         responseState = newResponse['session_state']['branch']
-        print(1)
         # если диалог не имел брэнча
         if responseState == '' or not responseState:
-            print(2)
             newResponse['session_state']['branch'] = eventBranch
             return newResponse
 
