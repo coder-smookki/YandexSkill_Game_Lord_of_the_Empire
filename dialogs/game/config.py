@@ -309,7 +309,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
         stats = getGlobalState(event, 'addStats')
         for stat in stats:
-            increaseStat(stat[0], stat[1], deaths=stat[2], openEnds=stat[3])
+            increaseStat(conn, userId, deaths=stat[0], openEnds=stat[1])
         clearStats = True
     
     haveUserInterface = haveInterface(event)
