@@ -162,7 +162,7 @@ def compileConfigFromEpisode(
                 "type": "BigImage",
                 "image_id": cardId,
                 "title": episode["name"],
-                "description": episode["message"],
+                "description": episode["message"] if episode["name"] else None,
             },
         }
 
