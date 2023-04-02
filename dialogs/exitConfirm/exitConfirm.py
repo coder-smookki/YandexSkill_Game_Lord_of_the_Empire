@@ -8,6 +8,9 @@ from utils.branchHandler import getDialogResponseFromEnd
 def getResponse(event, allDialogs=None):
     isYes = isInCommandOr(event, YesIntents)
     isExit = isInCommandOr(event, ExitIntents)
+
+    print(isYes)
+    print(isExit)
     if isInLastContext(event, 'exitConfirm'):
         if isExit or isYes:
             return getConfirmResponse(event)
