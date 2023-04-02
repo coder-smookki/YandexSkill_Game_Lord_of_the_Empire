@@ -105,7 +105,7 @@ def isReplicaSimilar(replica, arr):
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
-    event, episode, haveInterface, preTts="", userStateUpdate=None, repeat=False
+    event, episode, haveInterface, preTts="", userStateUpdate=None, setEndGameFalse=False
 ):
     # получить статы
     stats = episode["stats"]
@@ -238,6 +238,9 @@ def compileConfigFromEpisode(
                 **userStateUpdate,
             }
 
+    if setEndGameFalse:
+        config["user_state_update"]['endGame'] = False
+
     # вернуть конфиг
     return config
 
@@ -325,10 +328,14 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     # айди юзера
     userId = getUserId(event)
 
+    setEndGameFalse = False
+
     # если нужно создать новую игру
     if needCreateNewInfo:
         # создать стартовое сохранение (создать новую игру)
         info = createStartInfo(history)
+
+        setEndGameFalse = True
 
         # вставить это сохранение в БД
         insertSave(conn, userId, random.choice(names), info)
@@ -341,6 +348,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         if not info:
             # создать стартовое сохранение (создать новую игру)
             info = createStartInfo(history)
+
+            setEndGameFalse = True
 
             # вставить это сохранение в БД
             insertSave(conn, userId, random.choice(names), info)
@@ -376,12 +385,13 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event,
                     lastEpisode,
                     haveInterface,
-                    userStateUpdate={"playedBefore": True}
+                    userStateUpdate={"playedBefore": True},
+                    setEndGameFalse=setEndGameFalse
                 )
 
             # вернуть последний эпизод
             return compileConfigFromEpisode(
-                event, lastEpisode, haveUserInterface, repeat=True
+                event, lastEpisode, haveUserInterface,setEndGameFalse=setEndGameFalse
             )
 
         # соединение с БД
@@ -393,11 +403,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         # удалить последнее сохранение
         removeSave(conn, userId)
         
-        # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
+        if haveGlobalState(event, 'endGame') and getGlobalState(event, 'endGame') == True:
+            # добавить 1 смерть в статистику и новую концовку (если она новая)
+            increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
         # получить новый конфиг
-        config = getConfig(event, allDialogs, True)
+        config = getMainMenuConfig(event)
 
         # стейт о том, что игрок сыграл впервый раз
         userState = {"playedBefore": True}
@@ -412,7 +423,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     **userState,
                 }
 
-        config['session_state']['endGame'] = True
+        config["user_state_update"]['endGame'] = True
 
         # вернуть конфиг
         return config
@@ -436,7 +447,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event, RepeatIntents
                 ):
                     return compileConfigFromEpisode(
-                        event, lastEpisode, haveUserInterface
+                        event, lastEpisode, haveUserInterface,setEndGameFalse=setEndGameFalse
                     )
                 return dontUnderstandConfig(
                     event, variants_of_the_choice=canLastChoicedArr, branch="game"
@@ -470,4 +481,4 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     updateSave(conn, userId, info)
 
     # скомпилировать конфиг из эпизода и вернуть его
-    return compileConfigFromEpisode(event, episode, haveUserInterface)
+    return compileConfigFromEpisode(event, episode, haveUserInterface,setEndGameFalse=setEndGameFalse)
