@@ -39,6 +39,5 @@ def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
         'message': config["tts"],
         "tts": config["tts"],
         "buttons": config["buttons"],
-        "card": config["card"],
-        "session_state": session_state,
+        "card": config["card"]
     }

@@ -12,5 +12,9 @@ def getResponse(event, allDialogs=None):
 def isTriggered(event):
     return True
 
+def isTriggeredDangerous(event):
+    return True
+
 
 dontUnderstand = {"getResponse": getResponse, "isTriggered": isTriggered}
+dontUnderstandDangerous = {"getResponse": getResponse, "isTriggered": isTriggeredDangerous}
