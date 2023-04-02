@@ -407,7 +407,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         # удалить последнее сохранение
         removeSave(conn, userId)
         
-        if haveGlobalState(event, 'endGame') and getGlobalState(event, 'endGame') == True:
+        if not haveGlobalState(event, 'endGame') or getGlobalState(event, 'endGame') == False:
             # добавить 1 смерть в статистику и новую концовку (если она новая)
             increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
