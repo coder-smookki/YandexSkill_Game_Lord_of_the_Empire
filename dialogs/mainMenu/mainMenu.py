@@ -3,14 +3,21 @@ from utils.responseHelper import *
 from utils.triggerHelper import *
 from utils.intents import MenuIntents
 from utils.dbHandler import *
+from utils.globalStorage import globalStorage
 
 def getResponse(event, allDialogs=None):
     config = getConfig(event)
 
-    if not haveGlobalState(event, 'endGame') or getGlobalState(event, 'endGame') == False:
-        # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, getUserId(event), deaths=1, openEnds=lastEpisode["message"])
+    conn = globalStorage["mariaDBconn"]
 
+    if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
+        stats = getGlobalState(event, 'addStats')
+        for stat in stats:
+            increaseStat(conn, getUserId(event), deaths=stat[0], openEnds=stat[1])
+        if not 'user_state_update' in config:
+            config['user_state_update'] = {}
+        config['user_state_update']['addStats'] = []
+    
     return createResponse(event, config)
 
 

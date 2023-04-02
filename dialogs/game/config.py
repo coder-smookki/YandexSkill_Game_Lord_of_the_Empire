@@ -105,7 +105,7 @@ def isReplicaSimilar(replica, arr):
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
-    event, episode, haveInterface, preTts="", userStateUpdate=None, repeat=False
+    event, episode, haveInterface, preTts="", userStateUpdate=None, clearStats=False
 ):
     # получить статы
     stats = episode["stats"]
@@ -305,6 +305,13 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 
 def getConfig(event, allDialogs, needCreateNewInfo=False):
+    clearStats = False
+    if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
+        stats = getGlobalState(event, 'addStats')
+        for stat in stats:
+            increaseStat(stat[0], stat[1], deaths=stat[2], openEnds=stat[3])
+        clearStats = True
+    
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -374,12 +381,13 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event,
                     lastEpisode,
                     haveInterface,
-                    userStateUpdate={"playedBefore": True}
+                    userStateUpdate={"playedBefore": True},
+                    clearStats=clearStats
                 )
 
             # вернуть последний эпизод
             return compileConfigFromEpisode(
-                event, lastEpisode, haveUserInterface, repeat=True
+                event, lastEpisode, haveUserInterface, clearStats=clearStats
             )
 
         # соединение с БД
@@ -392,13 +400,20 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         removeSave(conn, userId)
 
         # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
+        # increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
         # получить конфиг главного меню
-        config = getMainMenuConfig(event)
+        config = getConfig(event)
 
         # стейт о том, что игрок сыграл впервый раз
         userState = {"playedBefore": True}
+
+        if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
+            stats = getGlobalState(event, 'addStats')
+            stats.append([1, lastEpisode["message"]])
+            userState['addStats'] = stats
+        else:
+            userState['addStats'] = [[1, lastEpisode["message"]]]
 
         # если это первая концовка игрока, то добавить глобальным стейтом "playedBefore"
         if not haveGlobalState(event,"playedBefore") or getGlobalState(event, "playedBefore") == False:
@@ -432,7 +447,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event, RepeatIntents
                 ):
                     return compileConfigFromEpisode(
-                        event, lastEpisode, haveUserInterface
+                        event, lastEpisode, haveUserInterface,clearStats=clearStats
                     )
                 return dontUnderstandConfig(
                     event, variants_of_the_choice=canLastChoicedArr, branch="game"
@@ -466,4 +481,4 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     updateSave(conn, userId, info)
 
     # скомпилировать конфиг из эпизода и вернуть его
-    return compileConfigFromEpisode(event, episode, haveUserInterface)
+    return compileConfigFromEpisode(event, episode, haveUserInterface,clearStats=clearStats)
