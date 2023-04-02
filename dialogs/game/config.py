@@ -256,6 +256,14 @@ def getConfig(event, needCreateNewInfo=False):
         lastEpisode = None
         canLastChoicedArr = None
 
+    # если история закончилась (на прошлом эпизоде не было кнопок)
+    if len(canLastChoicedArr) == 0:
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+
+        # вернуться в главное меню
+        return getMainMenuConfig(event)
+
     # получить команду
     command = getCommand(event)
 
@@ -292,14 +300,6 @@ def getConfig(event, needCreateNewInfo=False):
     # пройти к следующему эпизоду, если юзер уже играл
     else:
         episode = passEpisode(info, history, statsEnds)
-
-    # если история закончилась
-    if episode == "its all":
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-
-        # вернуться в главное меню
-        return getMainMenuConfig(event)
 
     if 'name' in episode and not episode['name'] is None:
         increaseStat(conn, userId, meetedCharacters=episode['name'])
