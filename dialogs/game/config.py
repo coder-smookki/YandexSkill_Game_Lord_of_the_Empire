@@ -259,14 +259,19 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
         r"[^A-Za-zА-Яа-я ]", "", secondLastChoiceCommand.lower()
     ).split(" ")
 
+    print('check1')
+
     # пройтись по всем словам команды
     # если ответы "да" или "нет", то зачекать через интенты
     if firstLastChoiceCommand == 'да':
+        print('check2')
         if isReplicaSimilar(command, YesIntents):
+            print('check3')
             return 'true'
     if firstLastChoiceCommand == 'нет':
         if isReplicaSimilar(command, NoIntents):
             return 'false'
+    print('check4')
     # иначе смотреть по словам
     for word in commandArr:
         # есть слово в массиве с первым выбором
