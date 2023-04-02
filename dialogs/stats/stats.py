@@ -10,7 +10,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInCommandOr(event, StatsIntents)
+    return isInCommandOr(event, StatsIntents) and isInLastContext(event, 'mainMenu')
 
 
 stats = {"getResponse": getResponse, "isTriggered": isTriggered}
