@@ -136,16 +136,16 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
 
+    # соединение с БД
+    conn = globalStorage["mariaDBconn"]
+
+    # айди юзера
+    userId = getUserId(event)
+
+    # удалить последнее сохранение
+    removeSave(conn, userId)
+
     if not repeat and len(episode['buttons']) == 0:
-        # соединение с БД
-        conn = globalStorage["mariaDBconn"]
-
-        # айди юзера
-        userId = getUserId(event)
-
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
 
@@ -155,7 +155,7 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
             config['user_state_update'] = userStateUpdate
         else:
             config['user_state_update'] = {**config['user_state_update'], **userStateUpdate}
-            
+
     # вернуть конфиг
     return config
 
