@@ -36,7 +36,7 @@ pre_ttss = ["Я вас не понял.", "Не удалось распозна�
 
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
-def compileConfigFromEpisode(event, episode, haveInterface, preTts = ''):
+def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userStateUpdate=None):
     # получить статы
     stats = episode["stats"]
 
@@ -135,27 +135,11 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = ''):
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
 
-    # если нет кнопок для выбора (игрок умер)
-    if episode["buttons"] is None or len(episode["buttons"]) == 0:
-        # соединение с БД
-        conn = globalStorage["mariaDBconn"]
-
-        # айди юзера
-        userId = getUserId(event)
-
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-
-        # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
-
-        # если это первая игра
-        if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
-            print('first game')
-            if not 'user_state_update' in config:
-                config['user_state_update'] = {}
-            config['user_state_update']["playedBefore"] = True
-
+    if userStateUpdate:
+        if not 'user_state_update' in config:
+            config['user_state_update'] = userStateUpdate
+        else:
+            config['user_state_update'] = {**config['user_state_update'], **userStateUpdate}
     # вернуть конфиг
     return config
 
@@ -260,22 +244,28 @@ def getConfig(event, needCreateNewInfo=False):
     # получить команду
     command = getCommand(event)
 
-    print(1)
-
-    # если история закончилась (на прошлом эпизоде не было кнопок) иил выдался "its all"
-    if lastEpisode and len(lastEpisode['buttons']) == 0:
-        print(2)
+    # если нет кнопок для выбора на прошлом эпизоде (игрок умер)
+    if canLastChoicedArr is None or len(canLastChoicedArr) == 0:
+        # если игрок попросил повторить
         if isInCommandOr(event, RepeatIntents):
-            print(3)
             # вернуть последний эпизод
             return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-        else:
-            print(4)
-            # удалить последнее сохранение
-            removeSave(conn, userId)
-            
-            # вернуться в главное меню
-            return getMainMenuConfig(event)
+        
+        # соединение с БД
+        conn = globalStorage["mariaDBconn"]
+
+        # айди юзера
+        userId = getUserId(event)
+
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+
+        # добавить 1 смерть в статистику и новую концовку (если она новая)
+        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
+
+        # если это первая игра
+        if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
+            return compileConfigFromEpisode(event, lastEpisode, haveInterface, {'playedBefore': True})
 
     if canLastChoicedArr:
         # если только один
@@ -309,6 +299,7 @@ def getConfig(event, needCreateNewInfo=False):
     # пройти к следующему эпизоду, если юзер уже играл
     else:
         episode = passEpisode(info, history, statsEnds)
+
 
     if 'name' in episode and not episode['name'] is None:
         increaseStat(conn, userId, meetedCharacters=episode['name'])
