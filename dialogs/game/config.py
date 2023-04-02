@@ -267,6 +267,9 @@ def getConfig(event, needCreateNewInfo=False):
         if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
             return compileConfigFromEpisode(event, lastEpisode, haveInterface, {'playedBefore': True})
 
+        return compileConfigFromEpisode(event, lastEpisode, haveInterface)
+
+
     if canLastChoicedArr:
         # если только один
         if len(canLastChoicedArr) == 1:
