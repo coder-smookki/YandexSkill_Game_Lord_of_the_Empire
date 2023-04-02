@@ -495,7 +495,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         else:
             config["user_state_update"] = {
                 **config["user_state_update"],
-                'addStats': addStatsState,
+                **addStatsState,
             }
 
     return config
