@@ -1,6 +1,7 @@
 import random
 import re
 
+from dialogs.dontUnderstand.config import getConfig as DUgetConfig
 from utils.globalStorage import *
 from utils.responseHelper import *
 from utils.dbHandler import *
@@ -267,7 +268,9 @@ def getConfig(event, needCreateNewInfo=False):
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+                # return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+                # вернуть я тя не пон бро
+                return DUgetConfig(event)
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice

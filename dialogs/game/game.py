@@ -11,7 +11,8 @@ def getResponse(event, allDialogs=None):
 
 def isTriggered(event):
     return (
-            isInCommandOr(event, LetsPlayIntents) or isInLastContext(event, "game")
+        isInCommandOr(event, LetsPlayIntents)
+        or isInLastContext(event, "game")
     ) and not isInCommandOr(event, MenuIntents)
 
 
