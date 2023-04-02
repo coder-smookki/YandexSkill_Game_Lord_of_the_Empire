@@ -238,6 +238,10 @@ def compileConfigFromEpisode(
                 **userStateUpdate,
             }
 
+    if not "user_state_update" in config:
+        config["user_state_update"] = {}
+
+
     if setEndGameFalse:
         config["user_state_update"]['endGame'] = False
 
