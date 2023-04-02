@@ -9,6 +9,7 @@ from utils.dbHandler import *
 from utils.triggerHelper import *
 from gameCore.historyHandler import passEpisode
 from utils.image_gen.get_id import get_id
+from dialogs.mainMenu.config import getConfig as getMainMenuConfig
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -297,7 +298,7 @@ def getConfig(event, needCreateNewInfo=False):
         removeSave(conn, userId)
 
         # пройтись еще раз по функции с нулевым сохранением (начать игру заново)
-        return getConfig(event, True)
+        return getMainMenuConfig(event)
 
     if 'name' in episode and not episode['name'] is None:
         increaseStat(conn, userId, meetedCharacters=episode['name'])
