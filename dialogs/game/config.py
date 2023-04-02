@@ -174,7 +174,7 @@ def compileConfigFromEpisode(
                 "type": "BigImage",
                 "image_id": cardId,
                 "title": episode["name"] if "name" in episode else None,
-                "description": episode["message"],
+                "description": episode["message"] if len(episode["buttons"]) != 0 else 'КОНЕЦ',
             },
         }
 
