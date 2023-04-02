@@ -119,18 +119,18 @@ def get_image(
 
     # Наложение имени
     draw = ImageDraw.Draw(layout)
-    # name = 'Владыка ' + name  # Расскомент для приставки к имени
+    name = 'Владыка ' + name  # Расскомент для приставки к имени
     bbox = name_font.getbbox(name)
     text_x = big_border + (block - bbox[2]) // 2
     draw.text((text_x, layout.height - big_border + 5), name, font=name_font, fill=name_color)  # игрек нарандомил
 
-    # Наложение корон
-    bbox = emoji_font.getbbox('👑')
-    text_y = layout.height - small_border - black_line + (black_line - bbox[3]) // 2 - 3
-    text_x = big_border + bbox[2] // 3
-    draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
-    text_x = big_border + block - bbox[2] - bbox[2] // 3
-    draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
+    # # Наложение корон
+    # bbox = emoji_font.getbbox('👑')
+    # text_y = layout.height - small_border - black_line + (black_line - bbox[3]) // 2 - 3
+    # text_x = big_border + bbox[2] // 3
+    # draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
+    # text_x = big_border + block - bbox[2] - bbox[2] // 3
+    # draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
 
     # Итог
     img_byte_arr = BytesIO()
