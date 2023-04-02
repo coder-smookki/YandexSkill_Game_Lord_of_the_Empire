@@ -21,7 +21,7 @@ def updateBranchToResponse(event, response, firstBranchName):
         responseState = newResponse['session_state']['branch']
 
         # если диалог не имел брэнча
-        if not responseState:
+        if responseState == '' or not responseState:
             newResponse['session_state']['branch'] = eventBranch
             return newResponse
 
