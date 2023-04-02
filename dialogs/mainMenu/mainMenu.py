@@ -9,7 +9,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInCommandOr(event, MenuIntents)
+    return isInCommandOr(event, MenuIntents) or isNewSession(event)
 
 
 mainMenu = {'getResponse': getResponse, 'isTriggered': isTriggered}
