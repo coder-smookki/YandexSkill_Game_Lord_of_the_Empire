@@ -16,6 +16,9 @@ def isNewSession(event):
 def isAuthorized(event):
     return 'session' in event and 'user' in event["session"] and "user_id" in event["session"]["user"]
 
+def isDangerousContext(event):
+    return 'markup' in event['request'] and event['request']['dangerous_context'] 
+
 
 # является ли хоть один элемент массива подстрокой пришедшей команды
 def isInCommandOr(event, arr):

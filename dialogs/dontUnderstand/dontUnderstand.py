@@ -8,12 +8,11 @@ def getResponse(event, allDialogs=None):
     config = getConfig(event)
     return createResponse(event, config)
 
-
 def isTriggered(event):
     return True
 
 def isTriggeredDangerous(event):
-    return True
+    return isDangerousContext(event)
 
 
 dontUnderstand = {"getResponse": getResponse, "isTriggered": isTriggered}
