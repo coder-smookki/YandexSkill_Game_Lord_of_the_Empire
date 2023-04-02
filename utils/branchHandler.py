@@ -42,5 +42,10 @@ def updateBranchToResponse(event, response, firstBranchName):
 def getDialogResponseFromEnd(event, dialogNumber, dialogs):
     branchList = event["state"]["session"]["branch"]
     if dialogNumber > len(branchList):
-        return dialogs[branchList[0]]['getResponse'](event, None)
+        response = dialogs[branchList[0]]['getResponse'](event, None)
+        if 'card' in response and response['card']['description']:
+            response['card']['description'] = 'Назад уже некуда. ' + response['card']['description']
+        else:
+            response['text'] = 'Назад уже некуда. ' + response['text']
+        return response
     return dialogs[branchList[-dialogNumber]]['getResponse'](event, None)
