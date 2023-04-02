@@ -155,6 +155,7 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
             config['user_state_update'] = userStateUpdate
         else:
             config['user_state_update'] = {**config['user_state_update'], **userStateUpdate}
+            
     # вернуть конфиг
     return config
 
