@@ -261,7 +261,7 @@ def getConfig(event, needCreateNewInfo=False):
         removeSave(conn, userId)
 
         # добавить 1 смерть в статистику и новую концовку (если она новая)
-        increaseStat(conn, userId, deaths=1, openEnds=episode["message"])
+        increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
         # если это первая игра
         if not haveGlobalState(event, 'playedBefore') or not getGlobalState(event, 'playedBefore'):
