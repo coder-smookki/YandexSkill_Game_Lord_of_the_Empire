@@ -36,11 +36,11 @@ def getConfig(event):
             "session_state": session_state,
         }
 
-    config['tts'] += '\nСмерти: ' + str(stats['deaths'] + '.')
+    config['tts'] += '\nСмерти: ' + str(stats['deaths']) + '.'
     config['tts'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 15.'
     config['tts'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 21.'
 
-    config['card']['description'] += '\nСмерти: ' + str(stats['deaths'] + '.')
+    config['card']['description'] += '\nСмерти: ' + str(stats['deaths']) + '.'
     config['card']['description'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 15.'
     config['card']['description'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 21.'
 
