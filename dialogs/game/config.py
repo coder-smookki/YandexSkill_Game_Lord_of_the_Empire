@@ -62,7 +62,6 @@ def compileConfigFromEpisode(event, episode, haveInterface, preTts = '', userSta
                     stats["army"],
                     stats["coffers"],
                 ],
-                changes=[0, 0, 0, 0],
                 name=selectName(globalStorage["mariaDBconn"], getUserId(event))
             )
 
