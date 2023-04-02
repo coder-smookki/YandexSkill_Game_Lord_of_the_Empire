@@ -122,7 +122,7 @@ def compileConfigFromEpisode(
 
         if haveInterface:
             if len(episode['buttons']) == 0:
-                cardId = '1533899/d371aab5224c91137cfc' # TODO: заменить арбуз на картинку смерти
+                cardId = '1540737/c91ef7d5c3116ed113fc'
             else:
                 # получить айди картинки
                 cardId = get_id(
@@ -146,7 +146,7 @@ def compileConfigFromEpisode(
 
         if haveInterface:            
             if len(episode['buttons']) == 0:
-                cardId = '1533899/d371aab5224c91137cfc' # TODO: заменить арбуз на картинку смерти
+                cardId = '1540737/c91ef7d5c3116ed113fc'
             else:
                 # использовать картинку для текста
                 cardId = get_id(
