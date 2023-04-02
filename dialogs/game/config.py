@@ -304,14 +304,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 
-def getConfig(event, allDialogs, needCreateNewInfo=False):
-    clearStats = False
-    if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
-        stats = getGlobalState(event, 'addStats')
-        for stat in stats:
-            increaseStat(conn, userId, deaths=stat[0], openEnds=stat[1])
-        clearStats = True
-    
+def getConfig(event, allDialogs, needCreateNewInfo=False):    
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -329,6 +322,14 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
 
     # айди юзера
     userId = getUserId(event)
+
+    clearStats = False
+    if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
+        stats = getGlobalState(event, 'addStats')
+        for stat in stats:
+            increaseStat(conn, userId, deaths=stat[0], openEnds=stat[1])
+        clearStats = True
+
 
     # если нужно создать новую игру
     if needCreateNewInfo:
