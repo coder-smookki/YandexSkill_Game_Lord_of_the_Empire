@@ -124,12 +124,7 @@ def compileConfigFromEpisode(
                     stats["army"],
                     stats["coffers"],
                 ],
-<<<<<<< HEAD
-                changes=[0, 0, 0, 0],
-                name=selectName(globalStorage["mariaDBconn"], getUserId(event)),
-=======
                 name=selectName(globalStorage["mariaDBconn"], getUserId(event))
->>>>>>> 8b7f1ff315eb4f66c6f9bc3462b4a1e61cf07042
             )
 
             # если карточка не вернулась, использовать арбуз
