@@ -263,7 +263,7 @@ def getConfig(event, needCreateNewInfo=False):
     print(1)
 
     # если история закончилась (на прошлом эпизоде не было кнопок)
-    if not canLastChoicedArr:
+    if "lastEpisode" in info and not canLastChoicedArr:
         print(2)
         if isInCommandOr(event, RepeatIntents):
             print(3)
