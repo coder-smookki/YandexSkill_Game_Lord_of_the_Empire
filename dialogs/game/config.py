@@ -264,22 +264,6 @@ def getConfig(event, needCreateNewInfo=False):
 
     
     if canLastChoicedArr:
-        print('canLastChoicedArr',canLastChoicedArr)
-        # если история закончилась (на прошлом эпизоде не было кнопок)
-        if len(canLastChoicedArr) == 0:
-            print(2)
-            if isInCommandOr(event, RepeatIntents):
-                print(3)
-                # вернуть последний эпизод
-                return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-            else:
-                print(4)
-                # удалить последнее сохранение
-                removeSave(conn, userId)
-                
-                # вернуться в главное меню
-                return getMainMenuConfig(event)
-
         # если только один
         if len(canLastChoicedArr) == 1:
             info["choice"] = "true"
@@ -311,6 +295,21 @@ def getConfig(event, needCreateNewInfo=False):
     # пройти к следующему эпизоду, если юзер уже играл
     else:
         episode = passEpisode(info, history, statsEnds)
+
+    # если история закончилась (на прошлом эпизоде не было кнопок) иил выдался "its all"
+    if episode == 'its all' or len(episode['buttons']) == 0:
+        print(2)
+        if isInCommandOr(event, RepeatIntents):
+            print(3)
+            # вернуть последний эпизод
+            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        else:
+            print(4)
+            # удалить последнее сохранение
+            removeSave(conn, userId)
+            
+            # вернуться в главное меню
+            return getMainMenuConfig(event)
 
     if 'name' in episode and not episode['name'] is None:
         increaseStat(conn, userId, meetedCharacters=episode['name'])
