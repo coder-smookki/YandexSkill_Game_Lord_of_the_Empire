@@ -8,8 +8,8 @@ from utils.globalStorage import globalStorage
 
 
 def getResponse(event, allDialogs=None):
-    isYes = isInCommandOr(event, [YesIntents])
-    isReset = isInCommandOr(event, [ResetIntents])
+    isYes = isInCommandOr(event, YesIntents)
+    isReset = isInCommandOr(event, ResetIntents)
     if isInLastContext(event, 'resetGame'):
         if isReset or isYes:
             userId = getUserId(event)
