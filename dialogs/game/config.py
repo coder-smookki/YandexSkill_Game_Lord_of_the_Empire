@@ -174,7 +174,7 @@ def compileConfigFromEpisode(
                 "type": "BigImage",
                 "image_id": cardId,
                 "title": episode["name"] if "name" in episode else None,
-                "description": episode["message"] if len(episode["buttons"]) != 0 else 'КОНЕЦ',
+                "description": episode["message"],
             },
         }
 
@@ -191,7 +191,8 @@ def compileConfigFromEpisode(
             config["tts"] = (
                 config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
             )
-
+        else:
+            config['card']['title'] = 'КОНЕЦ' 
     else:
         # создать конфиг для устройств без интерфейса
         config = {
