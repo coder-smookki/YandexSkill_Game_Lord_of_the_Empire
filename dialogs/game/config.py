@@ -423,6 +423,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     **userState,
                 }
 
+        if not "user_state_update" in config:
+            config["user_state_update"] = {}
+
         config["user_state_update"]['endGame'] = True
 
         # вернуть конфиг
