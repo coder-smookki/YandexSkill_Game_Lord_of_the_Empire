@@ -10,6 +10,7 @@ from dialogs.howToUse.howToUse import howToUse
 from dialogs.howToContactDevelopers.howToContactDevelopers import howToContactDeveloveps
 from dialogs.resetGame.resetGame import resetGame
 from dialogs.stats.stats import stats
+from dialogs.dontUnderstand import dontUnderstand
 
 allDialogs = {
     "exitConfirm": exitConfirm,
@@ -23,5 +24,6 @@ allDialogs = {
     "help": help,
     "backDialog": backDialog,
     "repeat": repeat,
-    "mainMenu": mainMenu
+    "mainMenu": mainMenu,
+    "dontUnderstand": dontUnderstand
 }

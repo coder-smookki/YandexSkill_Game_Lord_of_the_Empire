@@ -1,7 +1,7 @@
 from .config import getConfig
 from utils.responseHelper import *
 from utils.triggerHelper import *
-
+from utils.intents import MenuIntents
 
 def getResponse(event, allDialogs=None):
     config = getConfig(event)
@@ -9,7 +9,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return True
+    return isInCommandOr(event, MenuIntents)
 
 
 mainMenu = {'getResponse': getResponse, 'isTriggered': isTriggered}
