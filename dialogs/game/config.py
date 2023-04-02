@@ -193,6 +193,8 @@ def compileConfigFromEpisode(
             )
         else:
             config['card']['title'] = 'КОНЕЦ' 
+            config['card']['description'] += ' Чтобы выйти в главное меню, скажите или нажмите кнопку "Главное меню"'
+            config['tts'] += ' Чтобы выйти в главное меню, скажите или нажмите кнопку "Главное меню"'
     else:
         # создать конфиг для устройств без интерфейса
         config = {
@@ -219,6 +221,10 @@ def compileConfigFromEpisode(
 
         # добавить в tts кнопки и статы
         config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
+
+        if len(episode["buttons"]) == 0: 
+            config['card']['description'] += ' Чтобы выйти в главное меню, скажите "Главное меню"'
+            config['tts'] += ' Чтобы выйти в главное меню, скажите "Главное меню"'
 
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
