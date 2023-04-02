@@ -15,7 +15,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return (isInContext(event, "exitConfirm") and (isInCommandOr(event, YesIntents) or isInCommandOr(event, ExitIntents))) or (isInCommandOr(event, ExitIntents) and not isInCommandOr(event, MenuIntents))
+    return (isInContext(event, "exitConfirm") and (isInCommandOr(event, [*YesIntents, *ExitIntents]))) or (isInCommandOr(event, ExitIntents) and not isInCommandOr(event, MenuIntents))
 
 
 exitConfirm = {"getResponse": getResponse, "isTriggered": isTriggered}
