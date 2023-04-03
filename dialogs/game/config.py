@@ -372,7 +372,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # вернуть прошлый эпизод, если игрок попросил повторить
     if repeat or isInCommandOr(event, RepeatIntents):
-        config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
     # получить команду
     command = getCommand(event)
