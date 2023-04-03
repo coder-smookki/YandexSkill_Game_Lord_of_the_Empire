@@ -58,13 +58,13 @@ def handler(event):
         print("---------------------------")
 
         # branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
-
+        checkVersion = 1.2
         if (
             haveGlobalState(event, "version")
-            and getGlobalState(event, "version") != 1.1
+            and getGlobalState(event, "version") != checkVersion
         ):
             if "user_state_update" in branchedResponse:
-                branchedResponse["user_state_update"]["version"] = 1.1
+                branchedResponse["user_state_update"]["version"] = checkVersion
                 branchedResponse["user_state_update"] = {
                     **branchedResponse["user_state_update"],
                     **{
@@ -76,7 +76,7 @@ def handler(event):
                 }
             else:
                 branchedResponse["user_state_update"] = {
-                    "version": 1.1,
+                    "version": checkVersion,
                     "wasBefore": None,
                     "playedBefore": None,
                     "endGame": None,
