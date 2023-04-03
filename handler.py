@@ -26,8 +26,8 @@ def handler(event):
     # Я сделал через запрос в бд, потому что мы не первый раз, а в бд нас нет
     # if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
     if getStat(globalStorage["mariaDBconn"], getUserId(event)) is None:
-        print('isWasBefore:', haveGlobalState(event, 'wasBefore'))
-        insertNewStat(globalStorage['mariaDBconn'], getUserId(event))
+        print("isWasBefore:", haveGlobalState(event, "wasBefore"))
+        insertNewStat(globalStorage["mariaDBconn"], getUserId(event))
 
     # глобальные стейты
     print(event["state"]["user"])
@@ -39,8 +39,8 @@ def handler(event):
         if not allDialogs[key]["isTriggered"](event):
             continue
 
-        if haveGlobalState(event, 'addStats'):
-            print("Статы: ",getGlobalState(event, 'addStats'))
+        if haveGlobalState(event, "addStats"):
+            print("Статы: ", getGlobalState(event, "addStats"))
         else:
             print("Статов нет")
 
@@ -58,6 +58,30 @@ def handler(event):
         print("---------------------------")
 
         # branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
+
+        if (
+            haveGlobalState(event, "version")
+            and getGlobalState(event, "version") != 1.1
+        ):
+            if "user_state_update" in branchedResponse:
+                branchedResponse["user_state_update"]["version"] = 1.1
+                branchedResponse["user_state_update"] = {
+                    **branchedResponse["user_state_update"],
+                    **{
+                        "wasBefore": None,
+                        "playedBefore": None,
+                        "endGame": None,
+                        "addStats": None,
+                    },
+                }
+            else:
+                branchedResponse["user_state_update"] = {
+                    "version": 1.1,
+                    "wasBefore": None,
+                    "playedBefore": None,
+                    "endGame": None,
+                    "addStats": None,
+                }
 
         return branchedResponse
 
