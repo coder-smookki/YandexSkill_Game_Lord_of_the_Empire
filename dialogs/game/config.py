@@ -371,7 +371,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         canLastChoicedArr = None
 
     # вернуть прошлый эпизод, если игрок попросил повторить
-    if repeat or isInCommandOr(event, RepeatIntents):
+    if (repeat and lastEpisode) or isInCommandOr(event, RepeatIntents):
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
     # получить команду
@@ -477,6 +477,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # пройти к следующему эпизоду, если юзер уже играл
     else:
         episode = passEpisode(info, history, statsEnds)
+
+
 
     if "name" in episode and not episode["name"] is None:
         increaseStat(conn, userId, meetedCharacters=episode["name"])
