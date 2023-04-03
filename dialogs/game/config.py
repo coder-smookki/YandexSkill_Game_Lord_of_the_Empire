@@ -444,13 +444,13 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             # если определить выбор не удалось
             if userChoice is None:
                 # вернуть прошлый эпизод
-                if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(
-                    event, RepeatIntents
-                ):
+                # if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(
+                #     event, RepeatIntents
+                # ):
                     
-                    return dontUnderstandConfig(
-                        event, variants_of_the_choice=canLastChoicedArr, branch="game"
-                    )
+                return dontUnderstandConfig(
+                    event, variants_of_the_choice=canLastChoicedArr, branch="game"
+                )
                     
                     
                     # if repeat:
