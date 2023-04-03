@@ -105,7 +105,7 @@ def isReplicaSimilar(replica, arr):
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
-    event, episode, haveInterface, preTts="", userStateUpdate=None, clearStats=False
+    event, episode, haveInterface, preTts="", userStateUpdate=None
 ):
     # получить статы
     stats = episode["stats"]
@@ -237,13 +237,6 @@ def compileConfigFromEpisode(
                 **config["user_state_update"],
                 **userStateUpdate,
             }
-
-    # if clearStats:
-    #     if not "user_state_update" in config:
-    #         config["user_state_update"] = userStateUpdate
-    #     else:
-    #         config["user_state_update"]['addStats'] = []
-
     # вернуть конфиг
     return config
 
@@ -329,14 +322,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     # айди юзера
     userId = getUserId(event)
 
-    # clearStats = False
-    # if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
-    #     stats = getGlobalState(event, 'addStats')
-    #     for stat in stats:
-    #         increaseStat(conn, userId, deaths=stat[0], openEnds=stat[1])
-    #     clearStats = True
-
-
     # если нужно создать новую игру
     if needCreateNewInfo:
         # создать стартовое сохранение (создать новую игру)
@@ -388,13 +373,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event,
                     lastEpisode,
                     haveInterface,
-                    userStateUpdate={"playedBefore": True},
-                    clearStats=clearStats
+                    userStateUpdate={"playedBefore": True}
                 )
 
             # вернуть последний эпизод
             return compileConfigFromEpisode(
-                event, lastEpisode, haveUserInterface, clearStats=clearStats
+                event, lastEpisode, haveUserInterface
             )
 
         # соединение с БД
@@ -448,7 +432,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event, RepeatIntents
                 ):
                     return compileConfigFromEpisode(
-                        event, lastEpisode, haveUserInterface,clearStats=clearStats
+                        event, lastEpisode, haveUserInterface
                     )
                 return dontUnderstandConfig(
                     event, variants_of_the_choice=canLastChoicedArr, branch="game"
@@ -484,7 +468,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     updateSave(conn, userId, info)
 
     # скомпилировать конфиг из эпизода и вернуть его
-    config = compileConfigFromEpisode(event, episode, haveUserInterface,clearStats=clearStats)
+    config = compileConfigFromEpisode(event, episode, haveUserInterface)
 
 
     if len(episode['buttons']) == 0:
