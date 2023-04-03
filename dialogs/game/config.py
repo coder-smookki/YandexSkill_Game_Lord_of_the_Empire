@@ -452,7 +452,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                     event, variants_of_the_choice=canLastChoicedArr, branch="game"
                 )
 
-                if 'session_state' in config:
+                if not 'session_state' in config:
                     config['session_state'] = {}
 
                 config['session_state']['fromGame'] = True
