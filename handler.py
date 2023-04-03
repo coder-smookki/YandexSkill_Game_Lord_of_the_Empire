@@ -15,16 +15,6 @@ def handler(event):
         and event["session"]["skill_id"] != os.environ["SKILL_ID"]
     ):
         return "привет =)"
-    
-    # если человек раньше не заходил, то создать для него отдельную строку со статистикой
-    # Я сделал через запрос в бд, потому что мы не первый раз, а в бд нас нет
-    # if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
-    if getStat(globalStorage["mariaDBconn"], getUserId(event)) is None:
-        print('isWasBefore:', haveGlobalState(event, 'wasBefore'))
-        insertNewStat(globalStorage['mariaDBconn'], getUserId(event))
-
-    # глобальные стейты
-    print(event["state"]["user"])
 
     # пройтись через мидлвейры
     for key in allMiddlewares:
@@ -32,12 +22,27 @@ def handler(event):
             continue
         return allMiddlewares[key]["getResponse"](event, allDialogs)
 
+    # если человек раньше не заходил, то создать для него отдельную строку со статистикой
+    # Я сделал через запрос в бд, потому что мы не первый раз, а в бд нас нет
+    # if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
+    if getStat(globalStorage["mariaDBconn"], getUserId(event)) is None:
+        print("isWasBefore:", haveGlobalState(event, "wasBefore"))
+        insertNewStat(globalStorage["mariaDBconn"], getUserId(event))
+
+    # глобальные стейты
+    print(event["state"]["user"])
+
     response = None  # на строке `return response` красным горело, поэтому так
     # искать диалог, подходящий под запрос
     for key in allDialogs:
         # если диалог не затриггерился
         if not allDialogs[key]["isTriggered"](event):
             continue
+
+        if haveGlobalState(event, "addStats"):
+            print("Статы: ", getGlobalState(event, "addStats"))
+        else:
+            print("Статов нет")
 
         # если диалог затриггерился, получить его респонс
         response = allDialogs[key]["getResponse"](event, allDialogs)
@@ -51,6 +56,32 @@ def handler(event):
         else:
             print("Брэнчей нет")
         print("---------------------------")
+
+        # branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
+
+        if (
+            haveGlobalState(event, "version")
+            and getGlobalState(event, "version") != 1.1
+        ):
+            if "user_state_update" in branchedResponse:
+                branchedResponse["user_state_update"]["version"] = 1.1
+                branchedResponse["user_state_update"] = {
+                    **branchedResponse["user_state_update"],
+                    **{
+                        "wasBefore": None,
+                        "playedBefore": None,
+                        "endGame": None,
+                        "addStats": None,
+                    },
+                }
+            else:
+                branchedResponse["user_state_update"] = {
+                    "version": 1.1,
+                    "wasBefore": None,
+                    "playedBefore": None,
+                    "endGame": None,
+                    "addStats": None,
+                }
 
         return branchedResponse
 
