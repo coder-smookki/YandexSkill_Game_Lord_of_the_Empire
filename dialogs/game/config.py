@@ -314,7 +314,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 
-def getConfig(event, allDialogs, needCreateNewInfo=False):
+def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True):
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -446,9 +446,10 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     return compileConfigFromEpisode(
                         event, lastEpisode, haveUserInterface
                     )
-                return dontUnderstandConfig(
-                    event, variants_of_the_choice=canLastChoicedArr, branch="game"
-                )
+                if not fromGame:
+                    return dontUnderstandConfig(
+                        event, variants_of_the_choice=canLastChoicedArr, branch="game"
+                    )
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
@@ -500,5 +501,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                 "addStats": addStatsState,
             }
         config['user_state_update']['playedBefore'] = True
+
+    config['session_state']['fromGame'] = True
 
     return config
