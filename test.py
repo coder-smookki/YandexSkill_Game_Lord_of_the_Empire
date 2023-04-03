@@ -1,11 +1,14 @@
-from utils.dbHandler import *
+from utils.triggerHelper import isInCommandOr
+import re
 
-conn = connect('root', 'root', 'Lord_of_the_Empire')
+a = ['zxc', 'vbn', re.compile('[A-Za-zа-яА-Я]')]
 
-# insertNewStat(conn, 'ggggggggg')
+event = {
+    'request': {
+        'command': 'а'
+    }
+}
 
-print(type(getStat(conn, 'ggggggggg')))
-
-reduceStat(conn, 'ggggggggg', 100, 'aboba', 'abobik')
-
-print(getStat(conn, 'ggggggggg'))
+print(
+    isInCommandOr(event, a)
+)

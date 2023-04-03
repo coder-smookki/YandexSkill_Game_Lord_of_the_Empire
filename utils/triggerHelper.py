@@ -1,3 +1,5 @@
+import re
+
 # есть стейт или нет
 def haveState(event, state):
     return 'state' in event and state in event['state']['session']
@@ -24,7 +26,12 @@ def isDangerousContext(event):
 def isInCommandOr(event, arr):
     command = event["request"]['command']
     for elem in arr:
-        if elem in command:
+        
+        if isinstance(elem, re.Pattern):
+            print('repattern')
+            if re.search(elem, command):
+                return True
+        elif elem in command:
             return True
     return False
 
@@ -42,7 +49,10 @@ def isInCommandOrSplit(event, arr):
 def isInCommandAnd(event, arr):
     command = event["request"]['command']
     for elem in arr:
-        if not (elem in command):
+        if isinstance(elem, re.Pattern):
+            if not re.search(elem, command):
+                return False        
+        elif not (elem in command):
             return False
     return True
 
