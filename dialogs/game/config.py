@@ -448,14 +448,17 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                     event, RepeatIntents
                 ):
                     
-                    if repeat:
-                        return compileConfigFromEpisode(
-                            event, lastEpisode, haveUserInterface
-                        )
-            
                     return dontUnderstandConfig(
                         event, variants_of_the_choice=canLastChoicedArr, branch="game"
                     )
+                    
+                    
+                    # if repeat:
+                    #     return compileConfigFromEpisode(
+                    #         event, lastEpisode, haveUserInterface
+                    #     )
+            
+                    
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
