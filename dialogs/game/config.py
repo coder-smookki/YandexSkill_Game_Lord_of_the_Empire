@@ -292,10 +292,10 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     isYes = isReplicaSimilar(command, YesIntents)
     isNo = isReplicaSimilar(command, NoIntents)
     if firstLastChoiceCommandArr[0] == "да":
-        if isYes and not isNo:
+        if (isYes and not isNo) or isReplicaSimilar(command, ['перв', 'слев', 'один', '1']):
             return "true"
     if secondLastChoiceCommandArr[0] == "нет":
-        if isNo:
+        if isNo or isReplicaSimilar(command, ['второй', 'справа', 'два', '2']):
             return "false"
 
     # иначе смотреть по словам
