@@ -100,10 +100,14 @@ pre_ttss = ["Я вас не понял.", "Не удалось распозна�
 
 def isReplicaSimilar(replica, arr):
     for elem in arr:
-        if elem in replica:
+        
+        if isinstance(elem, re.Pattern):
+            print('repattern')
+            if re.search(elem, replica):
+                return True
+        elif elem in replica:
             return True
     return False
-
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
