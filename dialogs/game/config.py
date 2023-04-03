@@ -100,7 +100,6 @@ pre_ttss = ["Я вас не понял.", "Не удалось распозна�
 
 def isReplicaSimilar(replica, arr):
     for elem in arr:
-        
         if isinstance(elem, re.Pattern):
             print('repattern')
             if re.search(elem, replica):
