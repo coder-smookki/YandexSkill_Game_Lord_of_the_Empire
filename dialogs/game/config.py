@@ -493,11 +493,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
             addStatsState = [[1, lastEpisode["message"]]]
 
         if not "user_state_update" in config:
-            config["user_state_update"] = {"addStats": addStatsState}
+            config["user_state_update"] = {"addStats": addStatsState} 
         else:
             config["user_state_update"] = {
                 **config["user_state_update"],
                 "addStats": addStatsState,
             }
+    config['user_state_update']['playedBefore'] = True
 
     return config
