@@ -448,7 +448,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                     event, RepeatIntents
                 ):
                     
-                    if not fromGame:
+                    if repeat:
                         return compileConfigFromEpisode(
                             event, lastEpisode, haveUserInterface
                         )
