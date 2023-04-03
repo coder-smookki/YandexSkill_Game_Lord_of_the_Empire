@@ -5,8 +5,11 @@ from utils.triggerHelper import *
 
 
 def getResponse(event, allDialogs=None):
-    
-    config = getConfig(event, allDialogs)
+
+    if not haveState(event, 'fromGame') or getState(event, 'fromGame') == False:
+        config = getConfig(event, allDialogs, repeat=True)
+    else:
+        config = getConfig(event, allDialogs)
 
     return createResponse(event, config)
 

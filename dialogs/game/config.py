@@ -249,6 +249,9 @@ def compileConfigFromEpisode(
                 **config["user_state_update"],
                 **userStateUpdate,
             }
+
+    config['session_state']['fromGame'] = True
+
     # вернуть конфиг
     return config
 
@@ -315,7 +318,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 
-def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True):
+def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -368,8 +371,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True):
         canLastChoicedArr = None
 
     # вернуть прошлый эпизод, если игрок попросил повторить
-    if isInCommandOr(event, RepeatIntents):
-        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+    if repeat or isInCommandOr(event, RepeatIntents):
+        config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
     # получить команду
     command = getCommand(event)
@@ -502,7 +505,5 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True):
                 "addStats": addStatsState,
             }
         config['user_state_update']['playedBefore'] = True
-
-    config['session_state']['fromGame'] = True
 
     return config
