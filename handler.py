@@ -15,7 +15,13 @@ def handler(event):
         and event["session"]["skill_id"] != os.environ["SKILL_ID"]
     ):
         return "привет =)"
-    
+
+    # пройтись через мидлвейры
+    for key in allMiddlewares:
+        if not allMiddlewares[key]["isTriggered"](event):
+            continue
+        return allMiddlewares[key]["getResponse"](event, allDialogs)
+
     # если человек раньше не заходил, то создать для него отдельную строку со статистикой
     # Я сделал через запрос в бд, потому что мы не первый раз, а в бд нас нет
     # if not haveGlobalState(event, 'wasBefore') or getGlobalState(event, 'wasBefore') == False:
@@ -25,12 +31,6 @@ def handler(event):
 
     # глобальные стейты
     print(event["state"]["user"])
-
-    # пройтись через мидлвейры
-    for key in allMiddlewares:
-        if not allMiddlewares[key]["isTriggered"](event):
-            continue
-        return allMiddlewares[key]["getResponse"](event, allDialogs)
 
     response = None  # на строке `return response` красным горело, поэтому так
     # искать диалог, подходящий под запрос
