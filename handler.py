@@ -57,6 +57,8 @@ def handler(event):
             print("Брэнчей нет")
         print("---------------------------")
 
+        branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
+
         return branchedResponse
 
     return response
