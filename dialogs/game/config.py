@@ -7,7 +7,7 @@ from utils.intents import LetsPlayIntents, RepeatIntents
 from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.triggerHelper import *
-from utils.intents import YesIntents,NoIntents
+from utils.intents import YesIntents, NoIntents
 from gameCore.historyHandler import passEpisode
 from utils.image_gen.get_id import get_id
 from dialogs.mainMenu.config import getConfig as getMainMenuConfig
@@ -96,6 +96,7 @@ names = list(
 
 pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Не понял, повторяю."]
 
+
 def isReplicaSimilar(replica, arr):
     for elem in arr:
         if elem in replica:
@@ -121,8 +122,8 @@ def compileConfigFromEpisode(
         tts = random.choice(sfx) + preTts + episode["name"] + ". " + episode["message"]
 
         if haveInterface:
-            if len(episode['buttons']) == 0:
-                cardId = '1540737/c91ef7d5c3116ed113fc'
+            if len(episode["buttons"]) == 0:
+                cardId = "1540737/c91ef7d5c3116ed113fc"
             else:
                 # получить айди картинки
                 cardId = get_id(
@@ -134,7 +135,7 @@ def compileConfigFromEpisode(
                         stats["army"],
                         stats["coffers"],
                     ],
-                    name=selectName(globalStorage["mariaDBconn"], getUserId(event))
+                    name=selectName(globalStorage["mariaDBconn"], getUserId(event)),
                 )
 
             # # если карточка не вернулась, использовать арбуз
@@ -144,9 +145,9 @@ def compileConfigFromEpisode(
         # если эпизод - оповещение (нет имени), то добавить sfx и сообщение в tts
         tts = random.choice(sfx) + episode["message"]
 
-        if haveInterface:            
-            if len(episode['buttons']) == 0:
-                cardId = '1540737/c91ef7d5c3116ed113fc'
+        if haveInterface:
+            if len(episode["buttons"]) == 0:
+                cardId = "1540737/c91ef7d5c3116ed113fc"
             else:
                 # использовать картинку для текста
                 cardId = get_id(
@@ -158,7 +159,7 @@ def compileConfigFromEpisode(
                         stats["army"],
                         stats["coffers"],
                     ],
-                    name=selectName(globalStorage["mariaDBconn"], getUserId(event))
+                    name=selectName(globalStorage["mariaDBconn"], getUserId(event)),
                 )
 
     if haveInterface:
@@ -192,9 +193,17 @@ def compileConfigFromEpisode(
                 config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
             )
         else:
-            config['card']['title'] = 'КОНЕЦ' 
-            config['card']['description'] += ' Чтобы выйти в главное меню, скажите или нажмите кнопку "Главное меню"'
-            config['tts'] += ' Чтобы выйти в главное меню, скажите или нажмите кнопку "Главное меню"'
+            config["card"]["title"] = "КОНЕЦ"
+            config["card"][
+                "description"
+            ] += (
+                ' Чтобы выйти в главное меню, скажите или нажмите кнопку "Главное меню"'
+            )
+            config[
+                "tts"
+            ] += (
+                ' Чтобы выйти в главное меню, скажите или нажмите кнопку "Главное меню"'
+            )
     else:
         # создать конфиг для устройств без интерфейса
         config = {
@@ -222,9 +231,11 @@ def compileConfigFromEpisode(
         # добавить в tts кнопки и статы
         config["tts"] = config["tts"] + ". " + "Варианты ответа: " + buttonsStr
 
-        if len(episode["buttons"]) == 0: 
-            config['card']['description'] += ' Чтобы выйти в главное меню, скажите "Главное меню"'
-            config['tts'] += ' Чтобы выйти в главное меню, скажите "Главное меню"'
+        if len(episode["buttons"]) == 0:
+            config["card"][
+                "description"
+            ] += ' Чтобы выйти в главное меню, скажите "Главное меню"'
+            config["tts"] += ' Чтобы выйти в главное меню, скажите "Главное меню"'
 
     # добавить бренч в конфиг
     config["session_state"] = {"branch": "game"}
@@ -270,18 +281,18 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
         r"[^A-Za-zА-Яа-я ]", "", secondLastChoiceCommand.lower()
     ).split(" ")
 
-    print('check1')
+    print("check1")
     print(firstLastChoiceCommand)
     # пройтись по всем словам команды
     # если ответы "да" или "нет", то зачекать через интенты
     isYes = isReplicaSimilar(command, YesIntents)
-    isNo = isReplicaSimilar(command, NoIntents) 
-    if firstLastChoiceCommandArr[0] == 'да':
+    isNo = isReplicaSimilar(command, NoIntents)
+    if firstLastChoiceCommandArr[0] == "да":
         if isYes and not isNo:
-            return 'true'
-    if secondLastChoiceCommandArr[0] == 'нет':
+            return "true"
+    if secondLastChoiceCommandArr[0] == "нет":
         if isNo:
-            return 'false'
+            return "false"
 
     # иначе смотреть по словам
     for word in commandArr:
@@ -303,7 +314,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
     return None
 
 
-def getConfig(event, allDialogs, needCreateNewInfo=False):    
+def getConfig(event, allDialogs, needCreateNewInfo=False):
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -355,14 +366,15 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
         lastEpisode = None
         canLastChoicedArr = None
 
+    # вернуть прошлый эпизод, если игрок попросил повторить
+    if isInCommandOr(event, RepeatIntents):
+        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+
     # получить команду
     command = getCommand(event)
 
     # если нет кнопок для выбора на прошлом эпизоде (игрок умер или была показана концовка)
-    if (
-        not canLastChoicedArr is None
-        and len(canLastChoicedArr) == 0
-    ):
+    if not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
         # если игрок попросил повторить
         if isInCommandOr(event, RepeatIntents):
             # если это первая игра
@@ -373,13 +385,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                     event,
                     lastEpisode,
                     haveInterface,
-                    userStateUpdate={"playedBefore": True}
+                    userStateUpdate={"playedBefore": True},
                 )
 
             # вернуть последний эпизод
-            return compileConfigFromEpisode(
-                event, lastEpisode, haveUserInterface
-            )
+            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
         # соединение с БД
         conn = globalStorage["mariaDBconn"]
@@ -398,10 +408,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
 
         # стейт о том, что игрок сыграл впервый раз
         userState = {"playedBefore": True}
-        
 
         # если это первая концовка игрока, то добавить глобальным стейтом "playedBefore"
-        if not haveGlobalState(event,"playedBefore") or getGlobalState(event, "playedBefore") == False:
+        if (
+            not haveGlobalState(event, "playedBefore")
+            or getGlobalState(event, "playedBefore") == False
+        ):
             if not "user_state_update" in config:
                 config["user_state_update"] = userState
             else:
@@ -456,8 +468,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     else:
         episode = passEpisode(info, history, statsEnds)
 
-
-
     if "name" in episode and not episode["name"] is None:
         increaseStat(conn, userId, meetedCharacters=episode["name"])
 
@@ -470,22 +480,24 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
     # скомпилировать конфиг из эпизода и вернуть его
     config = compileConfigFromEpisode(event, episode, haveUserInterface)
 
-
-    if len(episode['buttons']) == 0:
+    if len(episode["buttons"]) == 0:
         addStatsState = []
-        if haveGlobalState(event, 'addStats') and type(getGlobalState(event, 'addStats')) == list:
-            stats = getGlobalState(event, 'addStats')
+        if (
+            haveGlobalState(event, "addStats")
+            and type(getGlobalState(event, "addStats")) == list
+        ):
+            stats = getGlobalState(event, "addStats")
             stats.append([1, lastEpisode["message"]])
             addStatsState = stats
         else:
             addStatsState = [[1, lastEpisode["message"]]]
 
         if not "user_state_update" in config:
-            config["user_state_update"] = {'addStats': addStatsState}
+            config["user_state_update"] = {"addStats": addStatsState}
         else:
             config["user_state_update"] = {
                 **config["user_state_update"],
-                'addStats':addStatsState,
+                "addStats": addStatsState,
             }
 
     return config
