@@ -448,11 +448,15 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 #     event, RepeatIntents
                 # ):
                     
-                return dontUnderstandConfig(
+                config = dontUnderstandConfig(
                     event, variants_of_the_choice=canLastChoicedArr, branch="game"
                 )
-                    
-                    
+
+                if 'session_state' in config:
+                    config['session_state'] = {}
+
+                config['session_state']['fromGame'] = True
+                return config
                     # if repeat:
                     #     return compileConfigFromEpisode(
                     #         event, lastEpisode, haveUserInterface
