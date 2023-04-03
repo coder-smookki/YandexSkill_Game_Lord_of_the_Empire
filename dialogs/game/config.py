@@ -499,6 +499,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False):
                 **config["user_state_update"],
                 "addStats": addStatsState,
             }
-    config['user_state_update']['playedBefore'] = True
+        config['user_state_update']['playedBefore'] = True
 
     return config
