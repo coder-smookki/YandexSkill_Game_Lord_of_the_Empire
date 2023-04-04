@@ -162,7 +162,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     # print(info)
 
     if info['playEnd'] == True:
-        return passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
+        return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
 
 
     print('detectorEvent =',info["pastHasEvent"])
@@ -446,7 +446,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
 
-    if not skipEnds and info['playEnd'] == False:
+    if info['playEnd'] == False:
         # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
         for fraction in info['stats']:
             if info['stats'][fraction] >= 100:
@@ -456,18 +456,21 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
 
                 print('!!! 100+ stat')
                 info['playEnd'] = True
-                info['endHistory'] = statsEnds[fraction]['full']
+                info['endHistory'] = [fraction,'full']
+                # info['endHistory'] = statsEnds[fraction]['full']
                 
-                episode = passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
+                episode = passEpisode(info, history, statsEnds, skipEnds=True)
                 print('endEpisode:',episode)
                 return episode
                 
             elif info['stats'][fraction] <= 0:
+                info = createStartInfo(statsEnds[fraction]['empty'])
+                
                 print('!!! 0- stat')
                 info['playEnd'] = True
-                info['endHistory'] = statsEnds[fraction]['empty']
+                info['endHistory'] = [fraction,'empty']
                 
-                episode = passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
+                episode = passEpisode(info, history, statsEnds, skipEnds=True)
                 print('endEpisode:',episode)
                 return episode
 
