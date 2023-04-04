@@ -485,7 +485,16 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
-
+    # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
+    for fraction in info['stats']:
+        if info['stats'][fraction] >= 100:
+            print('!!! 100+ stat')
+            # do 100+ end
+            pass
+        elif info['stats'][fraction] <= 0:
+            print('!!! 0- stat')
+            # do 0- end
+            pass
 
     if "name" in episode and not episode["name"] is None:
         increaseStat(conn, userId, meetedCharacters=episode["name"])
