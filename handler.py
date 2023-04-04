@@ -64,7 +64,7 @@ def handler(event):
 
 
 
-        checkVersion = 1.3
+        checkVersion = 1.4
         if (
             haveGlobalState(event, "version")
             and getGlobalState(event, "version") != checkVersion
