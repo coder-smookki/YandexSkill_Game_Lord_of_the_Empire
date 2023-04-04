@@ -2,6 +2,20 @@ import copy
 import random
 import re
 
+def createStartInfo(history):
+    return {
+        "posEpisode": [0],
+        "maxPosEpisode": [len(history) - 1],
+        'playEnd': False,
+        "choice": "none",
+        "pastHasEvent": None,
+        "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
+        "notAppliedStats": {
+            "true": [0, 0, 0, 0],
+            "false": [0, 0, 0, 0],
+            "always": [0, 0, 0, 0],
+        },
+    }
 
 def formateEpisodeInfo(episodeInfo):
     trueButton = episodeInfo[1][1:-1]
@@ -147,7 +161,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     #     print("skipEnds")
     # print(info)
 
-    if info['playEnd'] == True and info['playEnd'] == False:
+    if info['playEnd'] == True:
         return passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
 
 
@@ -437,24 +451,21 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         for fraction in info['stats']:
             if info['stats'][fraction] >= 100:
                 # do 100+ end
+
+                info = createStartInfo(statsEnds[fraction]['full'])
+
                 print('!!! 100+ stat')
                 info['playEnd'] = True
                 info['endHistory'] = statsEnds[fraction]['full']
-
-                info["posEpisode"] = [0]
-                info['maxPosEpisode'] = [len(info['endHistory']) - 1]
                 
                 episode = passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
                 print('endEpisode:',episode)
                 return episode
                 
             elif info['stats'][fraction] <= 0:
-                print('!!! 100+ stat')
+                print('!!! 0- stat')
                 info['playEnd'] = True
                 info['endHistory'] = statsEnds[fraction]['empty']
-
-                info["posEpisode"] = [0]
-                info['maxPosEpisode'] = [len(info['endHistory']) - 1]
                 
                 episode = passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
                 print('endEpisode:',episode)
