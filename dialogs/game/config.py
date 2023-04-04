@@ -493,11 +493,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
-    # если игрок попросил повторить
-
+    # если навык закончился
     if episode == 'its all':
         return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
 
+    # если надо принудительно повторить
     if repeat:
         # если это первая игра
         if not haveGlobalState(event, "playedBefore") or not getGlobalState(
@@ -518,6 +518,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
     for fraction in info['stats']:
+        print(fraction)
         if info['stats'][fraction] >= 100:
             print('!!! 100+ stat')
             # do 100+ end
