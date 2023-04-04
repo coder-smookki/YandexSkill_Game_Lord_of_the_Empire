@@ -2,20 +2,6 @@ import copy
 import random
 import re
 
-def createStartInfo(history):
-    return {
-        "posEpisode": [0],
-        "maxPosEpisode": [len(history) - 1],
-        'playEnd': True,
-        "choice": "none",
-        "pastHasEvent": None,
-        "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-        "notAppliedStats": {
-            "true": [0, 0, 0, 0],
-            "false": [0, 0, 0, 0],
-            "always": [0, 0, 0, 0],
-        },
-    }
 
 def formateEpisodeInfo(episodeInfo):
     trueButton = episodeInfo[1][1:-1]
@@ -155,27 +141,19 @@ def getEpisode(pos: list, history: list):
 
 
 # пройти эпизод
-def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
+def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     # FOR DEBUG
-    # if skipEnds:
-    #     # print("skipEnds")
-    # # print(info)
-
-    print('IDIDIDIIDIDID', info)
-
-    if info['playEnd'] == True and not skipEnds:
-        print('hehe endddd')
-        return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
-
+    # if recursive:
+    #     print("Recursive")
+    # print(info)
     
 
 
-    # print('detectorEvent =',info["pastHasEvent"])
+    print('detectorEvent =',info["pastHasEvent"])
 
-    # print('posBefore',info["posEpisode"])
 
     if info["choice"] == "true":
-        # print('acceptTrueStats')
+        print('acceptTrueStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["true"][0]
         info["stats"]["army"] += info["notAppliedStats"]["true"][1]
@@ -187,7 +165,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["notAppliedStats"]["false"] = [0, 0, 0, 0]
 
     elif info["choice"] == "false":
-        # print('acceptFalseStats')
+        print('acceptFalseStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["false"][0]
         info["stats"]["army"] += info["notAppliedStats"]["false"][1]
@@ -228,7 +206,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, history, statsEnds)
+        return passEpisode(info, history, statsEnds, True)
 
     # аналогично для "false"
     elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
@@ -255,11 +233,11 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, history, statsEnds)
+        return passEpisode(info, history, statsEnds, True)
 
     # если какой-то ивент был, но пользователь ответил иначе
     elif not (info["pastHasEvent"] is None):
-        # print('acceptAnotherStats')
+        print('acceptAnotherStats')
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -272,7 +250,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     while True:
         # условие для шафла
         if len(info["posEpisode"]) >= 2 and type(info["posEpisode"][-2]) == str and 'shuffle' in info["posEpisode"][-2]:
-            print('!!!!shuffle cycle')
             info["posEpisode"] = info["posEpisode"][:-1]
             info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
 
@@ -313,8 +290,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
 
         # для всего остального
         if (info["posEpisode"][-1] > info["maxPosEpisode"][-1]):
-            print('!!!!other cycle')
-            
             # обрезать на 1 элемент
             info["posEpisode"] = info["posEpisode"][:-1]
             info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
@@ -352,7 +327,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(maxIndex)
 
-        return passEpisode(info, history, statsEnds)
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод - шафл
     if "[shuffle" in episode["response"]:
@@ -364,7 +339,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         else:
             totalShows = int(totalShows[0])
 
-        # # print('ASDASDASD',totalShows)
+        # print('ASDASDASD',totalShows)
 
         # shuffle-usedIndexes
         info["posEpisode"].append("shuffle-")
@@ -374,7 +349,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["posEpisode"].append(shuffleIndex)
         info["maxPosEpisode"].append(shuffleIndex)
 
-        return passEpisode(info, history, statsEnds)
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод имеет шанс
     if "[chance" in episode["response"]:
@@ -386,14 +361,14 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["posEpisode"].append(chanceIndex)
         info["maxPosEpisode"].append(chanceIndex)
 
-        return passEpisode(info, history, statsEnds)
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод - связка, то зарегистрировать его для дальнейшего вывода
     # и запустить функцию еще раз для вывода эпизода
     if type(episode) == list:
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(len(episode) - 1)
-        return passEpisode(info, history, statsEnds)
+        return passEpisode(info, history, statsEnds, True)
 
     # если эпизод имеет ивент, то записать его, чтобы на следующем запуске функции он отработался
     if "onTrue" in episode and "onFalse" in episode:
@@ -405,6 +380,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     else:
         # если все условия выше прошли стороной, то мы дошли до обычного эпизода
         # и стоит сместить позицию на 1 вправо
+        info["pastPosEpisode"] = info["posEpisode"]
         info["posEpisode"][-1] += 1
 
     episodeInfo = episode["response"].split("//")
@@ -449,55 +425,10 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         if falseButton != "None":
             buttons.append(falseButton)
 
-    # print('info["notAppliedStats"]',info["notAppliedStats"])
+    print('info["notAppliedStats"]',info["notAppliedStats"])
 
     result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
-
-    # print('-------------')
-    # print('playEnd',info['playEnd'])
-    # print('-------------')
-
-
-    if info['playEnd'] == False:
-        # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-        for fraction in info['stats']:
-            if info['stats'][fraction] >= 100:
-                # do 100+ end
-                saveStats = info['stats']
-
-                info = createStartInfo(statsEnds[fraction]['full'])
-                info['stats'] = saveStats
-                # print('!!! 100+ stat')
-                info['playEnd'] = True
-                info['endHistory'] = [fraction,'full']
-                # info['endHistory'] = statsEnds[fraction]['full']
-                
-                # info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1]
-
-                episode = passEpisode(info, history, statsEnds)
-                # print('endEpisode:',episode)
-                return episode
-                
-            elif info['stats'][fraction] <= 0:
-                saveStats = info['stats']
-
-                info = createStartInfo(statsEnds[fraction]['empty'])
-                info['stats'] = saveStats
-
-                # print('!!! 0- stat')
-                info['playEnd'] = True
-                info['endHistory'] = [fraction,'empty']
-                
-                # info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1]
-
-                episode = passEpisode(info, history, statsEnds)
-                # print('endEpisode:',episode)
-                return episode
-
-    # print('result',result)
-
-    # print('posAfter',info["posEpisode"])
 
     return result
