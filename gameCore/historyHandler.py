@@ -147,6 +147,10 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     #     print("Recursive")
     # print(info)
 
+    if info['playEnd'] == True:
+        passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+
+
     print('detectorEvent =',info["pastHasEvent"])
 
 
@@ -378,7 +382,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     else:
         # если все условия выше прошли стороной, то мы дошли до обычного эпизода
         # и стоит сместить позицию на 1 вправо
-        info["pastPosEpisode"] = info["posEpisode"]
         info["posEpisode"][-1] += 1
 
     episodeInfo = episode["response"].split("//")
@@ -428,5 +431,30 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
+
+    # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
+    for fraction in info['stats']:
+        if info['stats'][fraction] >= 100:
+            # do 100+ end
+            print('!!! 100+ stat')
+            info['playEnd'] = True
+            info['endHistory'] = statsEnds[fraction]['full']
+
+            info["posEpisode"] = [0]
+            info['maxPosEpisode'] = [info['endHistory']]
+            
+            passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+
+            
+        elif info['stats'][fraction] <= 0:
+            print('!!! 100+ stat')
+            info['playEnd'] = True
+            info['endHistory'] = statsEnds[fraction]['empty']
+
+            info["posEpisode"] = [0]
+            info['maxPosEpisode'] = [info['endHistory']]
+            
+            passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+
 
     return result

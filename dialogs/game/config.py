@@ -280,7 +280,7 @@ def createStartInfo(history):
     return {
         "posEpisode": [0],
         "maxPosEpisode": [len(history) - 1],
-        "pastPosEpisode": None,
+        'playEnd': False,
         "choice": "none",
         "pastHasEvent": None,
         "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
@@ -528,22 +528,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
         # вернуть последний эпизод
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
-
-
-    # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-    for fraction in info['stats']:
-        print('fraction army full',statsEnds['army']['full'])
-
-        if info['stats'][fraction] >= 100:
-            print('!!! 100+ stat')
-            # do 100+ end
-            return compileConfigFromEpisode(event, statsEnds[fraction]['full'], haveInterface)
-
-        elif info['stats'][fraction] <= 0:
-            print('!!! 0- stat')
-            # do 0- end
-            # compileConfigFromEpisode()
-            return compileConfigFromEpisode(event, statsEnds[fraction]['empty'], haveInterface)
 
     if "name" in episode and not episode["name"] is None:
         increaseStat(conn, userId, meetedCharacters=episode["name"])
