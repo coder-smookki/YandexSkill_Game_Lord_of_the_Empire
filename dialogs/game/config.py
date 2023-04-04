@@ -339,9 +339,6 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 
 def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
-    print('repeat?', repeat)
-    print('####start pos',info['posEpisode'])
-    print('####start maxPos',info['maxPosEpisode'])
     
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
@@ -379,6 +376,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
             # вставить это сохранение в БД
             insertSave(conn, userId, random.choice(names), info)
+
+    print('repeat?', repeat)
+    print('####start pos',info['posEpisode'])
+    print('####start maxPos',info['maxPosEpisode'])
+    
 
     # если в текущем сохранении есть прошлый эпизод
     if "lastEpisode" in info and not info["lastEpisode"] is None:
