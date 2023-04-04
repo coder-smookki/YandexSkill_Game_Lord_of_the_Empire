@@ -141,14 +141,14 @@ def getEpisode(pos: list, history: list):
 
 
 # пройти эпизод
-def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
+def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     # FOR DEBUG
-    # if recursive:
-    #     print("Recursive")
+    # if skipEnds:
+    #     print("skipEnds")
     # print(info)
 
-    if info['playEnd'] == True and not recursive:
-        return passEpisode(info, info['endHistory'], statsEnds, recursive=True)
+    if info['playEnd'] == True and not skipEnds:
+        return passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
 
 
     print('detectorEvent =',info["pastHasEvent"])
@@ -432,7 +432,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
 
-    if not recursive:
+    if not skipEnds:
         # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
         for fraction in info['stats']:
             if info['stats'][fraction] >= 100:
@@ -444,7 +444,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
                 info["posEpisode"] = [0]
                 info['maxPosEpisode'] = [len(info['endHistory']) - 1]
                 
-                episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
+                episode = passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
                 print('endEpisode:',episode)
                 return episode
                 
@@ -456,7 +456,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
                 info["posEpisode"] = [0]
                 info['maxPosEpisode'] = [len(info['endHistory']) - 1]
                 
-                episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
+                episode = passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
                 print('endEpisode:',episode)
                 return episode
 
