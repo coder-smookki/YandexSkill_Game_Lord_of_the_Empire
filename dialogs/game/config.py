@@ -513,7 +513,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
 
     # если надо принудительно повторить
-    if repeat:
+    if repeat and lastEpisode:
         # если это первая игра
         if not haveGlobalState(event, "playedBefore") or not getGlobalState(
             event, "playedBefore"
