@@ -270,6 +270,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     while True:
         # условие для шафла
         if len(info["posEpisode"]) >= 2 and type(info["posEpisode"][-2]) == str and 'shuffle' in info["posEpisode"][-2]:
+            print('!!!!shuffle cycle')
             info["posEpisode"] = info["posEpisode"][:-1]
             info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
 
@@ -310,6 +311,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
 
         # для всего остального
         if (info["posEpisode"][-1] > info["maxPosEpisode"][-1]):
+            print('!!!!other cycle')
+            
             # обрезать на 1 элемент
             info["posEpisode"] = info["posEpisode"][:-1]
             info["maxPosEpisode"] = info["maxPosEpisode"][:-1]
@@ -469,7 +472,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info['endHistory'] = [fraction,'full']
                 # info['endHistory'] = statsEnds[fraction]['full']
                 
-                info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1] 
+                # info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1]
 
                 episode = passEpisode(info, history, statsEnds)
                 # print('endEpisode:',episode)
@@ -485,7 +488,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'empty']
                 
-                info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1]
+                # info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1]
 
                 episode = passEpisode(info, history, statsEnds)
                 # print('endEpisode:',episode)
