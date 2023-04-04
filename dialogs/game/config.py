@@ -377,6 +377,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             # вставить это сохранение в БД
             insertSave(conn, userId, random.choice(names), info)
 
+
     print('repeat?', repeat)
     print('####start pos',info['posEpisode'])
     print('####start maxPos',info['maxPosEpisode'])
@@ -512,13 +513,38 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         episode = passEpisode(info, firstGameHistory, statsEnds)
     # пройти к следующему эпизоду, если юзер уже играл
     else:
-        episode = passEpisode(info, history, statsEnds)
+    # info = createStartInfo(statsEnds[fraction]['full'])
+    # info['playEnding'] = True
+    # info['whatPlayEnding'] = [fraction,'full']
+    # updateSave(conn,userId,info)
+    # return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+
+    
+        if 'playEnding' in info and info['playEnding'] == True:
+            episode = passEpisode(info, statsEnds[info['whatPlayEnding'][0]][info['whatPlayEnding'][1]], statsEnds)
+        else:
+            episode = passEpisode(info, history, statsEnds)
 
     print('####pos',info['posEpisode'])
     print('####maxPos',info['maxPosEpisode'])
 
     nowStats = info['stats']
     print('nowStats',nowStats)
+
+    if not 'playEnding' in info or info['playEnding'] != True:
+        for fraction in nowStats:
+            if nowStats['fraction'] >= 100:
+                info = createStartInfo(statsEnds[fraction]['full'])
+                info['playEnding'] = True
+                info['whatPlayEnding'] = [fraction,'full']
+                updateSave(conn,userId,info)
+                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+            elif nowStats['fraction'] <= 0:
+                info = createStartInfo(statsEnds[fraction]['empty'])
+                info['playEnding'] = True
+                info['whatPlayEnding'] = [fraction,'empty']
+                updateSave(conn,userId,info)
+                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
 
     # если навык закончился
     if episode == 'its all':
