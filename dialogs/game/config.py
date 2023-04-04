@@ -340,6 +340,9 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
     print('repeat?', repeat)
+    print('####start pos',info['posEpisode'])
+    print('####start maxPos',info['maxPosEpisode'])
+    
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -508,6 +511,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # пройти к следующему эпизоду, если юзер уже играл
     else:
         episode = passEpisode(info, history, statsEnds)
+
+    print('####pos',info['posEpisode'])
+    print('####maxPos',info['maxPosEpisode'])
 
     # если навык закончился
     if episode == 'its all':
