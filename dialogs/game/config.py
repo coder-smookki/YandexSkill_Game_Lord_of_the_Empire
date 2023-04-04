@@ -493,8 +493,28 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
+    # если игрок попросил повторить
+
     if episode == 'its all':
-        return getConfig(event, allDialogs, needCreateNewInfo=needCreateNewInfo, fromGame=fromGame, repeat=repeat)
+        return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
+
+    if repeat:
+        # если это первая игра
+        if not haveGlobalState(event, "playedBefore") or not getGlobalState(
+            event, "playedBefore"
+        ):
+            return compileConfigFromEpisode(
+                event,
+                lastEpisode,
+                haveInterface,
+                userStateUpdate={"playedBefore": True},
+            )
+
+        print('pelmeny')
+
+        # вернуть последний эпизод
+        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+
 
     # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
     for fraction in info['stats']:
