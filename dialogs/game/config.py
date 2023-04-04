@@ -534,13 +534,17 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     if not 'playEnding' in info or info['playEnding'] != True:
         for fraction in nowStats:
             if nowStats[fraction] >= 100:
+                saveStats = info['stats']
                 info = createStartInfo(statsEnds[fraction]['full'])
+                info['stats'] = saveStats
                 info['playEnding'] = True
                 info['whatPlayEnding'] = [fraction,'full']
                 updateSave(conn,userId,info)
                 return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
             elif nowStats[fraction] <= 0:
+                saveStats = info['stats']
                 info = createStartInfo(statsEnds[fraction]['empty'])
+                info['stats'] = saveStats
                 info['playEnding'] = True
                 info['whatPlayEnding'] = [fraction,'empty']
                 updateSave(conn,userId,info)
