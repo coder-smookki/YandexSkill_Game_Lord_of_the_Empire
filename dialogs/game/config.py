@@ -514,9 +514,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
-    # обновить сохранение в БД
-    updateSave(conn, userId, info)
-
     print('####pos',info['posEpisode'])
     print('####maxPos',info['maxPosEpisode'])
 
@@ -583,5 +580,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             }
 
         config['user_state_update']['playedBefore'] = True
+
+    # обновить сохранение в БД
+    updateSave(conn, userId, info)
 
     return config
