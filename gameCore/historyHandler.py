@@ -165,9 +165,12 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         print('hehe endddd')
         return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
 
+    
+
 
     print('detectorEvent =',info["pastHasEvent"])
 
+    print('posBefore',info["posEpisode"])
 
     if info["choice"] == "true":
         print('acceptTrueStats')
@@ -480,4 +483,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 return episode
 
     print('result',result)
+
+    print('posAfter',info["posEpisode"])
+
     return result
