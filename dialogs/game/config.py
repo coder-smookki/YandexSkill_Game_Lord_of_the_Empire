@@ -115,6 +115,8 @@ def compileConfigFromEpisode(
     # получить статы
     stats = episode["stats"]
 
+    print(episode['message'])
+
     print("stats:", stats)
 
     # Local variable 'cardId' might be referenced before assignment
