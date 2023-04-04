@@ -126,6 +126,7 @@ def addStatsInInfo(info, episode):
 def compileConfigFromEpisode(
     event, episode, haveInterface, preTts="", userStateUpdate=None
 ):
+    print('abobaEpisode',episode)
     # получить статы
     stats = episode["stats"]
 
