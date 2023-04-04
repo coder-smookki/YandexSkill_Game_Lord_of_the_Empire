@@ -162,7 +162,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     # # print(info)
 
     if info['playEnd'] == True and not skipEnds:
-        # print('hehe endddd')
+        print('hehe endddd')
         return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
 
     
