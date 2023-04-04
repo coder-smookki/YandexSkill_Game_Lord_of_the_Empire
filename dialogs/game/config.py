@@ -339,6 +339,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 
 def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
+    print('repeat?', repeat)
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
