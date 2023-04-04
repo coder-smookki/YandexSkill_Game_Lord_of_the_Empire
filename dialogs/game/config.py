@@ -512,7 +512,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     if not haveGlobalState(event, "playedBefore") or not getGlobalState(
         event, "playedBefore"
     ):
-        episode = passEpisode(info, firstGameHistory, statsEnds)
+        if 'playEnding' in info and info['playEnding'] == True:
+            episode = passEpisode(info, statsEnds[info['whatPlayEnding'][0]][info['whatPlayEnding'][1]], statsEnds)
+        else:
+            episode = passEpisode(info, firstGameHistory, statsEnds)
+        
+        
     # пройти к следующему эпизоду, если юзер уже играл
     else:
     # info = createStartInfo(statsEnds[fraction]['full'])
