@@ -375,10 +375,10 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         canLastChoicedArr = None
 
     # вернуть прошлый эпизод, если игрок попросил повторить
-    if isInCommandOr(event, RepeatIntents):
+    if isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0):
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
-    if repeat and (canLastChoicedArr and len(canLastChoicedArr) != 0 or not canLastChoicedArr):
+    if repeat and (canLastChoicedArr and len(canLastChoicedArr) != 0):
         print('nadristal')
         print(lastEpisode)
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
