@@ -341,6 +341,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # айди юзера
     userId = getUserId(event)
+    
+    if haveGlobalState(event, 'endGame') and getGlobalState(event, 'endGame') == True:
+        config = getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame)
+        config['user_state_update']['endGame'] = False
+        return config
 
     # если нужно создать новую игру
     if needCreateNewInfo:
@@ -349,7 +354,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
         # вставить это сохранение в БД
         insertSave(conn, userId, random.choice(names), info)
-
     else:
         # получить инфо по айди юзера
         info = selectGameInfo(conn, userId)
@@ -529,6 +533,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 **config["user_state_update"],
                 "addStats": addStatsState,
             }
+
         config['user_state_update']['playedBefore'] = True
+        config['user_state_update']['endGame'] = True
 
     return config
