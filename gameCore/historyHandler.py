@@ -147,7 +147,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     #     print("skipEnds")
     # print(info)
 
-    if info['playEnd'] == True and not skipEnds:
+    if info['playEnd'] == True and info['playEnd'] == False:
         return passEpisode(info, info['endHistory'], statsEnds, skipEnds=True)
 
 
@@ -432,7 +432,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
 
-    if not skipEnds:
+    if not skipEnds and info['playEnd'] == False:
         # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
         for fraction in info['stats']:
             if info['stats'][fraction] >= 100:
