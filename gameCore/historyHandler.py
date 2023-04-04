@@ -150,8 +150,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     print('detectorEvent =',info["pastHasEvent"])
 
     # если прошлый эпизод имел ивент "true" и выбор игрока совпадает с ивентом, то обработать ивент
-    # if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
-    if info[
+    if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "true":
         print('acceptTrueStats')
@@ -186,8 +185,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         return passEpisode(info, history, statsEnds, True)
 
     # аналогично для "false"
-    # elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
-    if info[
+    elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "false":
         print('acceptFalseStats')
