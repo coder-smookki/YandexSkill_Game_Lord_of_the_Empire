@@ -161,8 +161,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     #     print("skipEnds")
     # print(info)
 
-    # if info['playEnd'] == True:
-    #     return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
+    if info['playEnd'] == True and not skipEnds:
+        return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
 
 
     print('detectorEvent =',info["pastHasEvent"])
@@ -459,7 +459,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info['endHistory'] = [fraction,'full']
                 # info['endHistory'] = statsEnds[fraction]['full']
                 
-                episode = passEpisode(info, history, statsEnds, skipEnds=True)
+                episode = passEpisode(info, history, statsEnds, skipEnds=False)
                 print('endEpisode:',episode)
                 return episode
                 
@@ -470,7 +470,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'empty']
                 
-                episode = passEpisode(info, history, statsEnds, skipEnds=True)
+                episode = passEpisode(info, history, statsEnds, skipEnds=False)
                 print('endEpisode:',episode)
                 return episode
 
