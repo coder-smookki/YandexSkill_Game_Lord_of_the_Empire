@@ -158,22 +158,22 @@ def getEpisode(pos: list, history: list):
 def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     # FOR DEBUG
     # if skipEnds:
-    #     print("skipEnds")
-    # print(info)
+    #     # print("skipEnds")
+    # # print(info)
 
     if info['playEnd'] == True and not skipEnds:
-        print('hehe endddd')
+        # print('hehe endddd')
         return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
 
     
 
 
-    print('detectorEvent =',info["pastHasEvent"])
+    # print('detectorEvent =',info["pastHasEvent"])
 
-    print('posBefore',info["posEpisode"])
+    # print('posBefore',info["posEpisode"])
 
     if info["choice"] == "true":
-        print('acceptTrueStats')
+        # print('acceptTrueStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["true"][0]
         info["stats"]["army"] += info["notAppliedStats"]["true"][1]
@@ -185,7 +185,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["notAppliedStats"]["false"] = [0, 0, 0, 0]
 
     elif info["choice"] == "false":
-        print('acceptFalseStats')
+        # print('acceptFalseStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["false"][0]
         info["stats"]["army"] += info["notAppliedStats"]["false"][1]
@@ -257,7 +257,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
 
     # если какой-то ивент был, но пользователь ответил иначе
     elif not (info["pastHasEvent"] is None):
-        print('acceptAnotherStats')
+        # print('acceptAnotherStats')
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
@@ -359,7 +359,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         else:
             totalShows = int(totalShows[0])
 
-        # print('ASDASDASD',totalShows)
+        # # print('ASDASDASD',totalShows)
 
         # shuffle-usedIndexes
         info["posEpisode"].append("shuffle-")
@@ -444,15 +444,15 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         if falseButton != "None":
             buttons.append(falseButton)
 
-    print('info["notAppliedStats"]',info["notAppliedStats"])
+    # print('info["notAppliedStats"]',info["notAppliedStats"])
 
     result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
 
-    print('-------------')
-    print('playEnd',info['playEnd'])
-    print('-------------')
+    # print('-------------')
+    # print('playEnd',info['playEnd'])
+    # print('-------------')
 
 
     if info['playEnd'] == False:
@@ -464,13 +464,13 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
 
                 info = createStartInfo(statsEnds[fraction]['full'])
                 info['stats'] = saveStats
-                print('!!! 100+ stat')
+                # print('!!! 100+ stat')
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'full']
                 # info['endHistory'] = statsEnds[fraction]['full']
                 
                 episode = passEpisode(info, history, statsEnds)
-                print('endEpisode:',episode)
+                # print('endEpisode:',episode)
                 return episode
                 
             elif info['stats'][fraction] <= 0:
@@ -479,16 +479,16 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info = createStartInfo(statsEnds[fraction]['empty'])
                 info['stats'] = saveStats
 
-                print('!!! 0- stat')
+                # print('!!! 0- stat')
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'empty']
                 
                 episode = passEpisode(info, history, statsEnds)
-                print('endEpisode:',episode)
+                # print('endEpisode:',episode)
                 return episode
 
-    print('result',result)
+    # print('result',result)
 
-    print('posAfter',info["posEpisode"])
+    # print('posAfter',info["posEpisode"])
 
     return result
