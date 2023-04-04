@@ -441,9 +441,9 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
             info['endHistory'] = statsEnds[fraction]['full']
 
             info["posEpisode"] = [0]
-            info['maxPosEpisode'] = [info['endHistory']]
+            info['maxPosEpisode'] = [len(info['endHistory']) - 1]
             
-            passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+            return passEpisode(info, info['endHistory'], statsEnds, recursive=False)
 
             
         elif info['stats'][fraction] <= 0:
@@ -452,9 +452,9 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
             info['endHistory'] = statsEnds[fraction]['empty']
 
             info["posEpisode"] = [0]
-            info['maxPosEpisode'] = [info['endHistory']]
+            info['maxPosEpisode'] = [len(info['endHistory']) - 1]
             
-            passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+            return passEpisode(info, info['endHistory'], statsEnds, recursive=False)
 
 
     return result
