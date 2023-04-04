@@ -379,6 +379,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
     if repeat and not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
+        print('nadristal')
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
     # получить команду
