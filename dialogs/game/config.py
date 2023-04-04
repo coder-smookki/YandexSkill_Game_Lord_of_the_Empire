@@ -339,7 +339,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 
 def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
-    print('repeat?', repeat)
+    
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -376,6 +376,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
             # вставить это сохранение в БД
             insertSave(conn, userId, random.choice(names), info)
+
+
+    print('repeat?', repeat)
+    print('####start pos',info['posEpisode'])
+    print('####start maxPos',info['maxPosEpisode'])
+    
 
     # если в текущем сохранении есть прошлый эпизод
     if "lastEpisode" in info and not info["lastEpisode"] is None:
@@ -507,10 +513,47 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         episode = passEpisode(info, firstGameHistory, statsEnds)
     # пройти к следующему эпизоду, если юзер уже играл
     else:
-        episode = passEpisode(info, history, statsEnds)
+    # info = createStartInfo(statsEnds[fraction]['full'])
+    # info['playEnding'] = True
+    # info['whatPlayEnding'] = [fraction,'full']
+    # updateSave(conn,userId,info)
+    # return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+
+    
+        if 'playEnding' in info and info['playEnding'] == True:
+            episode = passEpisode(info, statsEnds[info['whatPlayEnding'][0]][info['whatPlayEnding'][1]], statsEnds)
+        else:
+            episode = passEpisode(info, history, statsEnds)
+
+    print('####pos',info['posEpisode'])
+    print('####maxPos',info['maxPosEpisode'])
+
+    nowStats = info['stats']
+    print('nowStats',nowStats)
+
+    if not 'playEnding' in info or info['playEnding'] != True:
+        for fraction in nowStats:
+            if nowStats[fraction] >= 100:
+                saveStats = info['stats']
+                info = createStartInfo(statsEnds[fraction]['full'])
+                info['stats'] = saveStats
+                info['playEnding'] = True
+                info['whatPlayEnding'] = [fraction,'full']
+                updateSave(conn,userId,info)
+                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+            elif nowStats[fraction] <= 0:
+                saveStats = info['stats']
+                info = createStartInfo(statsEnds[fraction]['empty'])
+                info['stats'] = saveStats
+                info['playEnding'] = True
+                info['whatPlayEnding'] = [fraction,'empty']
+                updateSave(conn,userId,info)
+                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
 
     # если навык закончился
     if episode == 'its all':
+        # удалить последнее сохранение
+        removeSave(conn, userId)
         return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
 
     # если надо принудительно повторить
@@ -542,10 +585,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     #   "false": [0, 0, 0, 0],
     #   "always": [0, 0, 0, 0],
     #xcv
-    info['notAppliedStats']
+    # info['notAppliedStats']
 
-    # обновить сохранение в БД
-    updateSave(conn, userId, info)
+    
 
     # скомпилировать конфиг из эпизода и вернуть его
     config = compileConfigFromEpisode(event, episode, haveUserInterface)
@@ -571,5 +613,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             }
 
         config['user_state_update']['playedBefore'] = True
+
+    # обновить сохранение в БД
+    updateSave(conn, userId, info)
 
     return config
