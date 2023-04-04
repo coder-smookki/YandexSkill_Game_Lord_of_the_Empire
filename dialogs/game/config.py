@@ -535,13 +535,14 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         if info['stats'][fraction] >= 100:
             print('!!! 100+ stat')
             # do 100+ end
-            
-            return compileConfigFromEpisode(event, statsEnds[fraction]['full'], haveInterface)
+            pass
+            # return compileConfigFromEpisode(event, statsEnds[fraction]['full'], haveInterface)
 
         elif info['stats'][fraction] <= 0:
             print('!!! 0- stat')
             # do 0- end
-            return compileConfigFromEpisode(event, statsEnds[fraction]['empty'], haveInterface)
+            # compileConfigFromEpisode()
+            # return compileConfigFromEpisode(event, statsEnds[fraction]['empty'], haveInterface)
             pass
 
     if "name" in episode and not episode["name"] is None:
