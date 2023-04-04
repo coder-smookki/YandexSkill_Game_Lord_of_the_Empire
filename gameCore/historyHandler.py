@@ -161,8 +161,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         # очистить статы
         info["notAppliedStats"]["true"] = [0, 0, 0, 0]
         info["notAppliedStats"]["false"] = [0, 0, 0, 0]
-        
-    if info["choice"] == "false":
+
+    elif info["choice"] == "false":
         print('acceptFalseStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["false"][0]
