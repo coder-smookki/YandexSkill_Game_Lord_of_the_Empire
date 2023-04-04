@@ -517,6 +517,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     print('####pos',info['posEpisode'])
     print('####maxPos',info['maxPosEpisode'])
 
+    nowStats = info['stats']
+    print('nowStats',nowStats)
+
     # если навык закончился
     if episode == 'its all':
         # удалить последнее сохранение
