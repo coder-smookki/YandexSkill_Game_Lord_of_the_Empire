@@ -432,32 +432,33 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
 
-    # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-    for fraction in info['stats']:
-        if info['stats'][fraction] >= 100:
-            # do 100+ end
-            print('!!! 100+ stat')
-            info['playEnd'] = True
-            info['endHistory'] = statsEnds[fraction]['full']
+    if not recursive:
+        # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
+        for fraction in info['stats']:
+            if info['stats'][fraction] >= 100:
+                # do 100+ end
+                print('!!! 100+ stat')
+                info['playEnd'] = True
+                info['endHistory'] = statsEnds[fraction]['full']
 
-            info["posEpisode"] = [0]
-            info['maxPosEpisode'] = [len(info['endHistory']) - 1]
-            
-            episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
-            print('endEpisode:',episode)
-            return episode
-            
-        elif info['stats'][fraction] <= 0:
-            print('!!! 100+ stat')
-            info['playEnd'] = True
-            info['endHistory'] = statsEnds[fraction]['empty']
+                info["posEpisode"] = [0]
+                info['maxPosEpisode'] = [len(info['endHistory']) - 1]
+                
+                episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
+                print('endEpisode:',episode)
+                return episode
+                
+            elif info['stats'][fraction] <= 0:
+                print('!!! 100+ stat')
+                info['playEnd'] = True
+                info['endHistory'] = statsEnds[fraction]['empty']
 
-            info["posEpisode"] = [0]
-            info['maxPosEpisode'] = [len(info['endHistory']) - 1]
-            
-            episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
-            print('endEpisode:',episode)
-            return episode
+                info["posEpisode"] = [0]
+                info['maxPosEpisode'] = [len(info['endHistory']) - 1]
+                
+                episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
+                print('endEpisode:',episode)
+                return episode
 
     print('result',result)
     return result
