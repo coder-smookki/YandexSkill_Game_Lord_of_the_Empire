@@ -147,6 +147,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     #     print("Recursive")
     # print(info)
 
+    print('detectorEvent =',info["pastHasEvent"])
+
     # если прошлый эпизод имел ивент "true" и выбор игрока совпадает с ивентом, то обработать ивент
     if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
         "choice"
