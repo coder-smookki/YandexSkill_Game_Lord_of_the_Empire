@@ -459,4 +459,5 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
             print('endEpisode:',episode)
             return episode
 
+    print('result',result)
     return result
