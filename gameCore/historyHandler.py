@@ -469,7 +469,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info['endHistory'] = [fraction,'full']
                 # info['endHistory'] = statsEnds[fraction]['full']
                 
-                info['maxPosEpisode'] = len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1 
+                info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1] 
 
                 episode = passEpisode(info, history, statsEnds)
                 # print('endEpisode:',episode)
@@ -485,7 +485,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'empty']
                 
-                info['maxPosEpisode'] = len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1
+                info['maxPosEpisode'] = [len(statsEnds[info['endHistory'][0]][info['endHistory'][1]]) - 1]
 
                 episode = passEpisode(info, history, statsEnds)
                 # print('endEpisode:',episode)
