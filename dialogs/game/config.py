@@ -389,7 +389,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # если нет кнопок для выбора на прошлом эпизоде (игрок умер или была показана концовка)
     if not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
         # если игрок попросил повторить
-        if repeat or isInCommandOr(event, RepeatIntents):
+        if isInCommandOr(event, RepeatIntents):
             # если это первая игра
             if not haveGlobalState(event, "playedBefore") or not getGlobalState(
                 event, "playedBefore"
