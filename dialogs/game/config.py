@@ -514,6 +514,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
+    # обновить сохранение в БД
+    updateSave(conn, userId, info)
+
     print('####pos',info['posEpisode'])
     print('####maxPos',info['maxPosEpisode'])
 
@@ -552,10 +555,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     #   "false": [0, 0, 0, 0],
     #   "always": [0, 0, 0, 0],
     #xcv
-    info['notAppliedStats']
+    # info['notAppliedStats']
 
-    # обновить сохранение в БД
-    updateSave(conn, userId, info)
+    
 
     # скомпилировать конфиг из эпизода и вернуть его
     config = compileConfigFromEpisode(event, episode, haveUserInterface)
