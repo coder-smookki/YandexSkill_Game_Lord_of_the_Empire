@@ -1,25 +1,3 @@
-# концовки при переполнении/недостатка какой-то статы
-# формат такой-же
-# full - когда стата заполняется на 100+
-# empty - когда стата опускается до 0-
-StatsEnds = {
-    "church": {
-        "full": '"fullChurch // None // None // // card"',
-        "empty": '"emptyChurch // None // None // // card"',
-    },
-    "army": {
-        "full": '"fullArmy // None // None // // card"',
-        "empty": '"emptyArmy // None // None // // card"',
-    },
-    "nation": {
-        "full": '"fullNation // None // None // // card"',
-        "empty": '"emptyNation // None // None // // card"',
-    },
-    "coffers": {
-        "full": '"fullCoffers // None // None // // card"',
-        "empty": '"emptyCoffers // None // None // // card"',
-    },
-}
 # я устал помогите реально тильт, нет сил, я раб
 
 example = """
@@ -131,3 +109,28 @@ ZeroPercentFinance = """
     false:
         "*Вы были пойманы и отправлены на публичную виселицу. Стоит лучше думать о своём народе* // None // None //  // None"
 """
+
+
+# концовки при переполнении/недостатка какой-то статы
+# формат такой-же
+# full - когда стата заполняется на 100+
+# empty - когда стата опускается до 0-
+StatsEnds = {
+    "church": {
+        "full": OneHundredPercentChurch,
+        "empty": ZeroPercentChurch,
+    },
+    "army": {
+        "full": OneHundredPercentArmy,
+        "empty": ZeroPercentArmy,
+    },
+    "nation": {
+        "full": OneHundredPercentNation,
+        "empty": ZeroPercentNation,
+    },
+    "coffers": {
+        "full": OneHundredPercentFinance,
+        "empty": ZeroPercentFinance,
+    },
+}
+
