@@ -6,7 +6,7 @@ def createStartInfo(history):
     return {
         "posEpisode": [0],
         "maxPosEpisode": [len(history) - 1],
-        'playEnd': False,
+        'playEnd': True,
         "choice": "none",
         "pastHasEvent": None,
         "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
