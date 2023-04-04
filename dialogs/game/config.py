@@ -108,10 +108,25 @@ def isReplicaSimilar(replica, arr):
             return True
     return False
 
+def addStatsInInfo(info, episode):
+    stats = episode['stats']
+
+    # "notAppliedStats": {
+    #   "true": [0, 0, 0, 0],
+    #   "false": [0, 0, 0, 0],
+    #   "always": [0, 0, 0, 0],
+    # },
+
+    for fraction in info['stats']:
+        info['stats'][fraction] += stats['fraction']
+
+    
+
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
     event, episode, haveInterface, preTts="", userStateUpdate=None
 ):
+    print('abobaEpisode',episode)
     # получить статы
     stats = episode["stats"]
 
@@ -266,7 +281,7 @@ def createStartInfo(history):
     return {
         "posEpisode": [0],
         "maxPosEpisode": [len(history) - 1],
-        "pastPosEpisode": None,
+        'playEnd': False,
         "choice": "none",
         "pastHasEvent": None,
         "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
@@ -324,6 +339,7 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 
 def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
+    print('repeat?', repeat)
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -418,7 +434,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         # increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
-        # получить конфиг главного меню
+        # получить конфиг
         config = getConfig(event, allDialogs)
 
         # стейт о том, что игрок сыграл впервый раз
@@ -493,12 +509,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
-    # если игрок попросил повторить
-
+    # если навык закончился
     if episode == 'its all':
         return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
 
-    if repeat:
+    # если надо принудительно повторить
+    if repeat and lastEpisode:
         # если это первая игра
         if not haveGlobalState(event, "playedBefore") or not getGlobalState(
             event, "playedBefore"
@@ -515,23 +531,18 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         # вернуть последний эпизод
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
-
-    # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
-    for fraction in info['stats']:
-        if info['stats'][fraction] >= 100:
-            print('!!! 100+ stat')
-            # do 100+ end
-            pass
-        elif info['stats'][fraction] <= 0:
-            print('!!! 0- stat')
-            # do 0- end
-            pass
-
     if "name" in episode and not episode["name"] is None:
         increaseStat(conn, userId, meetedCharacters=episode["name"])
 
     # закинуть текущий эпизод в качестве последнего для следующего вызова
     info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
+
+
+    # "true": [0, 0, 0, 0],
+    #   "false": [0, 0, 0, 0],
+    #   "always": [0, 0, 0, 0],
+    #xcv
+    info['notAppliedStats']
 
     # обновить сохранение в БД
     updateSave(conn, userId, info)
