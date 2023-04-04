@@ -443,7 +443,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
             info["posEpisode"] = [0]
             info['maxPosEpisode'] = [len(info['endHistory']) - 1]
             
-            episode = passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+            episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
             print('endEpisode:',episode)
             return episode
             
@@ -455,7 +455,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
             info["posEpisode"] = [0]
             info['maxPosEpisode'] = [len(info['endHistory']) - 1]
             
-            episode = passEpisode(info, info['endHistory'], statsEnds, recursive=False)
+            episode = passEpisode(info, info['endHistory'], statsEnds, recursive=True)
             print('endEpisode:',episode)
             return episode
 
