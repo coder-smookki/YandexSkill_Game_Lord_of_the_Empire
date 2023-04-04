@@ -341,11 +341,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # айди юзера
     userId = getUserId(event)
-    
-    if haveGlobalState(event, 'endGame') and getGlobalState(event, 'endGame') == True:
-        config = getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame)
-        config['user_state_update']['endGame'] = False
-        return config
 
     # если нужно создать новую игру
     if needCreateNewInfo:
@@ -380,7 +375,10 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         canLastChoicedArr = None
 
     # вернуть прошлый эпизод, если игрок попросил повторить
-    if (repeat and lastEpisode) or isInCommandOr(event, RepeatIntents):
+    if isInCommandOr(event, RepeatIntents):
+        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+
+    if repeat and not canLastChoicedArr is None and len(canLastChoicedArr) == 0:
         return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
     # получить команду
@@ -535,6 +533,5 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             }
 
         config['user_state_update']['playedBefore'] = True
-        config['user_state_update']['endGame'] = True
 
     return config
