@@ -151,6 +151,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "true":
+        print('acceptTrueStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["true"][0]
         info["stats"]["army"] += info["notAppliedStats"]["true"][1]
@@ -185,6 +186,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "false":
+        print('acceptFalseStats')
         # применить статы
         info["stats"]["church"] += info["notAppliedStats"]["false"][0]
         info["stats"]["army"] += info["notAppliedStats"]["false"][1]
@@ -218,6 +220,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
 
     # если какой-то ивент был, но пользователь ответил иначе
     elif not (info["pastHasEvent"] is None):
+        print('acceptAnotherStats')
         # очистить детектор ивента
         info["pastHasEvent"] = None
 
