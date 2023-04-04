@@ -450,6 +450,11 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
 
+    print('-------------')
+    print('playEnd',info['playEnd'])
+    print('-------------')
+
+
     if info['playEnd'] == False:
         # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
         for fraction in info['stats']:
