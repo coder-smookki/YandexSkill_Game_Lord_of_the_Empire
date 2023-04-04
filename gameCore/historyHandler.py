@@ -161,8 +161,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
     #     print("skipEnds")
     # print(info)
 
-    if info['playEnd'] == True:
-        return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
+    # if info['playEnd'] == True:
+    #     return passEpisode(info, statsEnds[info['endHistory'][0]][info['endHistory'][1]], statsEnds, skipEnds=True)
 
 
     print('detectorEvent =',info["pastHasEvent"])
