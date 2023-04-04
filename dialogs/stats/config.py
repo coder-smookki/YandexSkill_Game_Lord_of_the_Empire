@@ -39,11 +39,11 @@ def getConfig(event):
         }
 
     config['tts'] += '\nСмерти: ' + str(stats['deaths']) + '.'
-    config['tts'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 15.'
+    config['tts'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 23.'
     config['tts'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 21.'
 
     config['card']['description'] += '\nСмерти: ' + str(stats['deaths']) + '.'
-    config['card']['description'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 15.'
+    config['card']['description'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 23.'
     config['card']['description'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 21.'
 
     # deaths, openEnds, meetedCharacters
