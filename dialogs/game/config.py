@@ -511,6 +511,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # если навык закончился
     if episode == 'its all':
+        # удалить последнее сохранение
+        removeSave(conn, userId)
         return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
 
     # если надо принудительно повторить
