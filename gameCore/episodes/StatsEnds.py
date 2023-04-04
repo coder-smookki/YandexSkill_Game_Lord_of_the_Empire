@@ -116,10 +116,10 @@ ZeroPercentFinance = """
 # full - когда стата заполняется на 100+
 # empty - когда стата опускается до 0-
 StatsEnds = {
-    "church": {
-        "full": OneHundredPercentChurch,
-        "empty": ZeroPercentChurch,
-    },
+    # "church": {
+    #     "full": OneHundredPercentChurch,
+    #     "empty": ZeroPercentChurch,
+    # },
     "army": {
         "full": OneHundredPercentArmy,
         "empty": ZeroPercentArmy,
