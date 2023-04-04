@@ -223,7 +223,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, history, statsEnds, True)
+        return passEpisode(info, history, statsEnds)
 
     # аналогично для "false"
     elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
@@ -250,7 +250,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["maxPosEpisode"].append(len(episode) - 1)
 
         # пройтись по новой ветке
-        return passEpisode(info, history, statsEnds, True)
+        return passEpisode(info, history, statsEnds)
 
     # если какой-то ивент был, но пользователь ответил иначе
     elif not (info["pastHasEvent"] is None):
@@ -344,7 +344,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(maxIndex)
 
-        return passEpisode(info, history, statsEnds, True)
+        return passEpisode(info, history, statsEnds)
 
     # если эпизод - шафл
     if "[shuffle" in episode["response"]:
@@ -366,7 +366,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["posEpisode"].append(shuffleIndex)
         info["maxPosEpisode"].append(shuffleIndex)
 
-        return passEpisode(info, history, statsEnds, True)
+        return passEpisode(info, history, statsEnds)
 
     # если эпизод имеет шанс
     if "[chance" in episode["response"]:
@@ -378,14 +378,14 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         info["posEpisode"].append(chanceIndex)
         info["maxPosEpisode"].append(chanceIndex)
 
-        return passEpisode(info, history, statsEnds, True)
+        return passEpisode(info, history, statsEnds)
 
     # если эпизод - связка, то зарегистрировать его для дальнейшего вывода
     # и запустить функцию еще раз для вывода эпизода
     if type(episode) == list:
         info["posEpisode"].append(0)
         info["maxPosEpisode"].append(len(episode) - 1)
-        return passEpisode(info, history, statsEnds, True)
+        return passEpisode(info, history, statsEnds)
 
     # если эпизод имеет ивент, то записать его, чтобы на следующем запуске функции он отработался
     if "onTrue" in episode and "onFalse" in episode:
@@ -452,26 +452,30 @@ def passEpisode(info: dict, history: list, statsEnds: dict, skipEnds=False):
         for fraction in info['stats']:
             if info['stats'][fraction] >= 100:
                 # do 100+ end
+                saveStats = info['stats']
 
                 info = createStartInfo(statsEnds[fraction]['full'])
-
+                info['stats'] = saveStats
                 print('!!! 100+ stat')
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'full']
                 # info['endHistory'] = statsEnds[fraction]['full']
                 
-                episode = passEpisode(info, history, statsEnds, skipEnds=False)
+                episode = passEpisode(info, history, statsEnds)
                 print('endEpisode:',episode)
                 return episode
                 
             elif info['stats'][fraction] <= 0:
+                saveStats = info['stats']
+
                 info = createStartInfo(statsEnds[fraction]['empty'])
-                
+                info['stats'] = saveStats
+
                 print('!!! 0- stat')
                 info['playEnd'] = True
                 info['endHistory'] = [fraction,'empty']
                 
-                episode = passEpisode(info, history, statsEnds, skipEnds=False)
+                episode = passEpisode(info, history, statsEnds)
                 print('endEpisode:',episode)
                 return episode
 
