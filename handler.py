@@ -57,7 +57,13 @@ def handler(event):
             print("Брэнчей нет")
         print("---------------------------")
 
-        # branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
+        
+        
+        branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
+
+
+
+
         checkVersion = 1.2
         if (
             haveGlobalState(event, "version")
