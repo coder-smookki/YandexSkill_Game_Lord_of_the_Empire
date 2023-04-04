@@ -401,6 +401,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                     userStateUpdate={"playedBefore": True},
                 )
 
+            print('arbuzi')
+
             # вернуть последний эпизод
             return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
 
