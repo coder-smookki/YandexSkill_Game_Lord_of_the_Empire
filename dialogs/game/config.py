@@ -108,6 +108,20 @@ def isReplicaSimilar(replica, arr):
             return True
     return False
 
+def addStatsInInfo(info, episode):
+    stats = episode['stats']
+
+    # "notAppliedStats": {
+    #   "true": [0, 0, 0, 0],
+    #   "false": [0, 0, 0, 0],
+    #   "always": [0, 0, 0, 0],
+    # },
+
+    for fraction in info['stats']:
+        info['stats'][fraction] += stats['fraction']
+
+    
+
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
     event, episode, haveInterface, preTts="", userStateUpdate=None
@@ -418,7 +432,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         # добавить 1 смерть в статистику и новую концовку (если она новая)
         # increaseStat(conn, userId, deaths=1, openEnds=lastEpisode["message"])
 
-        # получить конфиг главного меню
+        # получить конфиг
         config = getConfig(event, allDialogs)
 
         # стейт о том, что игрок сыграл впервый раз
@@ -518,7 +532,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
     for fraction in info['stats']:
-        print(fraction)
         if info['stats'][fraction] >= 100:
             print('!!! 100+ stat')
             # do 100+ end
@@ -533,6 +546,13 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # закинуть текущий эпизод в качестве последнего для следующего вызова
     info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
+
+
+    # "true": [0, 0, 0, 0],
+    #   "false": [0, 0, 0, 0],
+    #   "always": [0, 0, 0, 0],
+    #xcv
+    info['notAppliedStats']
 
     # обновить сохранение в БД
     updateSave(conn, userId, info)

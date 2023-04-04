@@ -405,6 +405,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         if falseButton != "None":
             buttons.append(falseButton)
 
+    print('info["notAppliedStats"]',info["notAppliedStats"])
+
     result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику
     result["changeStats"] = stats  # и возможные изменения на каждый выбор
