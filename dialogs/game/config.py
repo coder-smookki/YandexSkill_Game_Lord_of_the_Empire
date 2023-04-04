@@ -489,6 +489,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     else:
         episode = passEpisode(info, history, statsEnds)
 
+    if episode == 'its all':
+        return getConfig(event, allDialogs, needCreateNewInfo=needCreateNewInfo, fromGame=fromGame, repeat=repeat)
+
     # "stats": {"church": 50, "army": 50, "nation": 50, "coffers": 50},
     for fraction in info['stats']:
         if info['stats'][fraction] >= 100:
