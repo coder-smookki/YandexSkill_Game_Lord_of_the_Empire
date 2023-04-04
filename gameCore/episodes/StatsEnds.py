@@ -120,7 +120,7 @@ test = """
 
 StatsEnds = {
     "church": {
-        "full": OneHundredPercentArmy,
+        "full": OneHundredPercentChurch,
         "empty": ZeroPercentChurch,
     },
     "army": {
