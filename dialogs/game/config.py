@@ -533,6 +533,13 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     nowStats = info['stats']
     print('nowStats',nowStats)
 
+    # если навык закончился
+    if episode == 'its all':
+        # удалить последнее сохранение
+        removeSave(conn, userId)
+        return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
+
+
     if not 'playEnding' in info or info['playEnding'] != True:
         for fraction in nowStats:
             if nowStats[fraction] >= 100:
@@ -552,11 +559,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 updateSave(conn,userId,info)
                 return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
 
-    # если навык закончился
-    if episode == 'its all':
-        # удалить последнее сохранение
-        removeSave(conn, userId)
-        return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
+
 
     # если надо принудительно повторить
     if repeat and lastEpisode:
