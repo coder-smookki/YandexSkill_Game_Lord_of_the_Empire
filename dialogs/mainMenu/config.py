@@ -59,3 +59,5 @@ def getConfig(event):
         if not 'user_state_update' in config:
             config['user_state_update'] = {}
         config['user_state_update']['addStats'] = []
+
+    return config
