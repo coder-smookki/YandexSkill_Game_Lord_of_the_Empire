@@ -3,6 +3,7 @@ from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.globalStorage import *
 
+
 def getConfig(event):
     config = {
         "tts":

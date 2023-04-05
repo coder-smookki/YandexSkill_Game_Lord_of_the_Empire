@@ -16,15 +16,15 @@ from dialogs.dontUnderstand.dontUnderstand import dontUnderstandDangerous
 allDialogs = {
     'dontUnderstandDangerous': dontUnderstandDangerous,
     "exitConfirm": exitConfirm,
-    
+
     'game': game,
-    
+
     "howToUse": howToUse,
     "howToContactDevelopers": howToContactDeveloveps,
     "whatYouCan": whatYouCan,
     "help": help,
     "mainMenu": mainMenu,
-    
+
     'resetGame': resetGame,
     'stats': stats,
     "whoAreCreators": whoAreCreators,

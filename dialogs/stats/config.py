@@ -15,7 +15,7 @@ def getConfig(event):
         ],
         "card": {
             "type": "BigImage",
-            "image_id": "1533899/dcca2fdc4295374a69bc",
+            "image_id": "213044/429b006958760896984b",
             "title": "СТАТИСТИКА",
             "description": """
             Ваша статистика:

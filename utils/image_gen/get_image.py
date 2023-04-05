@@ -23,7 +23,6 @@ green_arrow = Image.open(images_path / 'green_arrow.png', mode='r', formats=["PN
 red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
 default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])  # заглушка
 
-
 persons = {
     "Кошка с вселившимся демоном": Image.open(persons_path / 'cat_demon600.png', mode='r', formats=["PNG"]),
     "Крестьянин Александр": Image.open(persons_path / "krestyanin_alexsandr600.png", mode='r', formats=["PNG"]),
@@ -52,7 +51,6 @@ persons = {
 backgrounds = {
     'light_background2': Image.open(images_path / f'light_background2.png', mode='r', formats=["PNG"]),
 }
-
 
 # Константы для второго генератора!!!
 small_border = 44
@@ -166,7 +164,6 @@ def get_person(person: str | None, replica: str) -> Image:
         text_y += y_delta
 
     return layout
-
 
 # get_image(
 #     person='',

@@ -146,11 +146,8 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     # if recursive:
     #     print("Recursive")
     # print(info)
-    
 
-
-    print('detectorEvent =',info["pastHasEvent"])
-
+    print('detectorEvent =', info["pastHasEvent"])
 
     if info["choice"] == "true":
         print('acceptTrueStats')
@@ -175,14 +172,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         # очистить статы
         info["notAppliedStats"]["true"] = [0, 0, 0, 0]
         info["notAppliedStats"]["false"] = [0, 0, 0, 0]
-
-
-
-
-
-
-
-
 
     # если прошлый эпизод имел ивент "true" и выбор игрока совпадает с ивентом, то обработать ивент
     if (info["pastHasEvent"] == "true" or info["pastHasEvent"] == "both") and info[
@@ -212,7 +201,6 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
     elif (info["pastHasEvent"] == "false" or info["pastHasEvent"] == "both") and info[
         "choice"
     ] == "false":
-        
 
         # очистить детектор ивента
         info["pastHasEvent"] = None
@@ -425,7 +413,7 @@ def passEpisode(info: dict, history: list, statsEnds: dict, recursive=False):
         if falseButton != "None":
             buttons.append(falseButton)
 
-    print('info["notAppliedStats"]',info["notAppliedStats"])
+    print('info["notAppliedStats"]', info["notAppliedStats"])
 
     result = formateEpisodeInfo(episodeInfo)  # отформатировать инфу с респонса эпизода
     result["stats"] = info["stats"]  # добавить в результат еще текущую статистику

@@ -10,7 +10,7 @@ def getResponse(event, allDialogs=None):
 
 
 def isTriggered(event):
-    return isInCommandOr(event, ['чё','что','че',]) and isInCommandOr(event, WhatDoYouCanIntents)
+    return isInCommandOr(event, ['чё', 'что', 'че', ]) and isInCommandOr(event, WhatDoYouCanIntents)
 
 
 whatYouCan = {"getResponse": getResponse, "isTriggered": isTriggered}

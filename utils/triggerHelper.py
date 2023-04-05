@@ -1,5 +1,6 @@
 import re
 
+
 # есть стейт или нет
 def haveState(event, state):
     return 'state' in event and state in event['state']['session']
@@ -18,15 +19,17 @@ def isNewSession(event):
 def isAuthorized(event):
     return 'session' in event and 'user' in event["session"] and "user_id" in event["session"]["user"]
 
+
 def isDangerousContext(event):
-    return 'markup' in event['request'] and 'dangerous_context' in event['request'] and event['request']['dangerous_context'] 
+    return 'markup' in event['request'] and 'dangerous_context' in event['request'] and event['request'][
+        'dangerous_context']
 
 
 # является ли хоть один элемент массива подстрокой пришедшей команды
 def isInCommandOr(event, arr):
     command = event["request"]['command']
     for elem in arr:
-        
+
         if isinstance(elem, re.Pattern):
             print('repattern')
             if re.search(elem, command):
@@ -51,7 +54,7 @@ def isInCommandAnd(event, arr):
     for elem in arr:
         if isinstance(elem, re.Pattern):
             if not re.search(elem, command):
-                return False        
+                return False
         elif not (elem in command):
             return False
     return True
