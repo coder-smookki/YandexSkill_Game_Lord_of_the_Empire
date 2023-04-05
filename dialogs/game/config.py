@@ -444,19 +444,19 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # "mainMenu": mainMenu,
     if isMenuChange(event, canLastChoicedArr, HowToUseIntents):
         print('!!!!howToUse')
-        return howToUseGetConfig(event, allDialogs)
+        return howToUseGetConfig(event)
 
     if isMenuChange(event, canLastChoicedArr, WhatDoYouCanIntents):
         print('!!!!WhatDoYouCan')
-        return whatYouCanGetConfig(event, allDialogs)
+        return whatYouCanGetConfig(event)
     
     if isMenuChange(event, canLastChoicedArr, HelpIntents):
         print('!!!!Help')
-        return helpGetConfig(event, allDialogs)
+        return helpGetConfig(event)
 
     if isMenuChange(event, canLastChoicedArr, MenuIntents):
         print('!!!!Menu')
-        return mainMenuGetConfig(event, allDialogs)
+        return mainMenuGetConfig(event)
 
 
     # вернуть прошлый эпизод, если игрок попросил повторить
