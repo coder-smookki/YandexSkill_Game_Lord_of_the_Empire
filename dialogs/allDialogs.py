@@ -17,13 +17,14 @@ allDialogs = {
     'dontUnderstandDangerous': dontUnderstandDangerous,
     "exitConfirm": exitConfirm,
     
+    'game': game,
     
     "howToUse": howToUse,
     "howToContactDevelopers": howToContactDeveloveps,
     "whatYouCan": whatYouCan,
     "help": help,
     "mainMenu": mainMenu,
-    'game': game,
+    
     'resetGame': resetGame,
     'stats': stats,
     "whoAreCreators": whoAreCreators,
