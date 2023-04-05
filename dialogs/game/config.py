@@ -3,7 +3,7 @@ import re
 
 from dialogs.dontUnderstand.config import getConfig as dontUnderstandConfig
 from utils.globalStorage import *
-from utils.intents import LetsPlayIntents, RepeatIntents
+from utils.intents import RepeatIntents, HowToUseIntents, WhatDoYouCanIntents, HelpIntents, MenuIntents
 from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.triggerHelper import *
@@ -13,6 +13,11 @@ from utils.image_gen.get_id import get_id
 from dialogs.mainMenu.config import getConfig as getMainMenuConfig
 from utils.intents import RepeatIntents
 from utils.branchHandler import getDialogResponseFromEnd
+
+# "howToUse": howToUse,
+    # "whatYouCan": whatYouCan,
+    # "help": help,
+    # "mainMenu": mainMenu,
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -107,6 +112,32 @@ def isReplicaSimilar(replica, arr):
         elif elem in replica:
             return True
     return False
+
+# надо ли включить какое-то меню
+def isMenuChange(event, canLastChoicedArr, intents):
+    # 1. проверить реилку на сходность
+    # 2. проверить ответы на сходность
+    # если сходство в реплике, но нет сходства в ответе: true
+    # иначе: false
+
+    isChoiceSim = False
+    isCommandSim = False
+
+    for choice in canLastChoicedArr:
+        if isReplicaSimilar(choice, intents):
+            isChoiceSim = True
+            break
+    
+    if isInCommandOr(event, intents):
+        isCommandSim = True
+    
+    if not isChoiceSim and isCommandSim:
+        return True
+    
+    return False
+
+    
+
 
 def addStatsInInfo(info, episode):
     stats = episode['stats']
@@ -398,14 +429,48 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         lastEpisode = None
         canLastChoicedArr = None
 
+
+    # "howToUse": howToUse,
+    # "whatYouCan": whatYouCan,
+    # "help": help,
+    # "mainMenu": mainMenu,
+    if isMenuChange(event, canLastChoicedArr, HowToUseIntents):
+        return allDialogs['howToUse']['getResponse'](event, allDialogs)
+
+    if isMenuChange(event, canLastChoicedArr, WhatDoYouCanIntents):
+        return allDialogs['whatYouCan']['getResponse'](event, allDialogs)
+    
+    if isMenuChange(event, canLastChoicedArr, HelpIntents):
+        return allDialogs['help']['getResponse'](event, allDialogs)
+
+    if isMenuChange(event, canLastChoicedArr, MenuIntents):
+        return allDialogs['mainMenu']['getResponse'](event, allDialogs)
+
+
     # вернуть прошлый эпизод, если игрок попросил повторить
     if isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0):
-        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        canLastState = {'canLastChoiced': canLastChoicedArr}
+        if not "user_state_update" in config:
+            config["user_state_update"] = canLastState
+        else:
+            config["user_state_update"] = {
+                **config["user_state_update"],
+                **canLastState,
+            }
 
     if repeat and (canLastChoicedArr and len(canLastChoicedArr) != 0):
         print('nadristal')
         print(lastEpisode)
-        return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+        canLastState = {'canLastChoiced': canLastChoicedArr}
+        if not "user_state_update" in config:
+            config["user_state_update"] = canLastState
+        else:
+            config["user_state_update"] = {
+                **config["user_state_update"],
+                **canLastState,
+            }
 
     # получить команду
     command = getCommand(event)
@@ -418,17 +483,35 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             if not haveGlobalState(event, "playedBefore") or not getGlobalState(
                 event, "playedBefore"
             ):
-                return compileConfigFromEpisode(
+                config = compileConfigFromEpisode(
                     event,
                     lastEpisode,
                     haveInterface,
                     userStateUpdate={"playedBefore": True},
                 )
 
+                canLastState = {'canLastChoiced': canLastChoicedArr}
+                if not "user_state_update" in config:
+                    config["user_state_update"] = canLastState
+                else:
+                    config["user_state_update"] = {
+                        **config["user_state_update"],
+                        **canLastState,
+                    }
+                return config
+
             print('arbuzi')
 
             # вернуть последний эпизод
-            return compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+            config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
+            canLastState = {'canLastChoiced': canLastChoicedArr}
+            if not "user_state_update" in config:
+                config["user_state_update"] = canLastState
+            else:
+                config["user_state_update"] = {
+                    **config["user_state_update"],
+                    **canLastState,
+                }
 
         # соединение с БД
         conn = globalStorage["mariaDBconn"]

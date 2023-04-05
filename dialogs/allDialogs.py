@@ -16,6 +16,8 @@ from dialogs.dontUnderstand.dontUnderstand import dontUnderstandDangerous
 allDialogs = {
     'dontUnderstandDangerous': dontUnderstandDangerous,
     "exitConfirm": exitConfirm,
+    
+    
     "howToUse": howToUse,
     "howToContactDevelopers": howToContactDeveloveps,
     "whatYouCan": whatYouCan,
