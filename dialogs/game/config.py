@@ -4,6 +4,12 @@ import re
 from dialogs.dontUnderstand.config import getConfig as dontUnderstandConfig
 from utils.globalStorage import *
 from utils.intents import RepeatIntents, HowToUseIntents, WhatDoYouCanIntents, HelpIntents, MenuIntents
+
+from dialogs.howToUse.config import getConfig as howToUseGetConfig
+from dialogs.whatYouCan.config import getConfig as whatYouCanGetConfig
+from dialogs.help.config import getConfig as helpGetConfig
+from dialogs.mainMenu.config import getConfig as mainMenuGetConfig
+
 from utils.responseHelper import *
 from utils.dbHandler import *
 from utils.triggerHelper import *
@@ -438,19 +444,19 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # "mainMenu": mainMenu,
     if isMenuChange(event, canLastChoicedArr, HowToUseIntents):
         print('!!!!howToUse')
-        return allDialogs['howToUse']['getResponse'](event, allDialogs)
+        return howToUseGetConfig(event, allDialogs)
 
     if isMenuChange(event, canLastChoicedArr, WhatDoYouCanIntents):
         print('!!!!WhatDoYouCan')
-        return allDialogs['whatYouCan']['getResponse'](event, allDialogs)
+        return whatYouCanGetConfig(event, allDialogs)
     
     if isMenuChange(event, canLastChoicedArr, HelpIntents):
         print('!!!!Help')
-        return allDialogs['help']['getResponse'](event, allDialogs)
+        return helpGetConfig(event, allDialogs)
 
     if isMenuChange(event, canLastChoicedArr, MenuIntents):
         print('!!!!Menu')
-        return allDialogs['mainMenu']['getResponse'](event, allDialogs)
+        return mainMenuGetConfig(event, allDialogs)
 
 
     # вернуть прошлый эпизод, если игрок попросил повторить
