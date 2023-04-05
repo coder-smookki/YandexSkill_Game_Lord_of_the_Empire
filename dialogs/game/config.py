@@ -466,7 +466,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         return mainMenuGetConfig(event)
 
     # вернуть прошлый эпизод, если игрок попросил повторить
-    if isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0):
+    if (isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0)) or not fromGame:
         config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
         canLastState = {'canLastChoiced': canLastChoicedArr}
         if not "user_state_update" in config:
@@ -656,7 +656,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 info['playEnding'] = True
                 info['whatPlayEnding'] = [fraction,'full']
                 updateSave(conn,userId,info)
-                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True)
             elif nowStats[fraction] <= 0:
                 saveStats = info['stats']
                 info = createStartInfo(statsEnds[fraction]['empty'])
@@ -664,7 +664,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 info['playEnding'] = True
                 info['whatPlayEnding'] = [fraction,'empty']
                 updateSave(conn,userId,info)
-                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+                return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True)
 
 
 
