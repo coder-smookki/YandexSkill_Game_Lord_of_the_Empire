@@ -123,10 +123,12 @@ def isMenuChange(event, canLastChoicedArr, intents):
     isChoiceSim = False
     isCommandSim = False
 
-    for choice in canLastChoicedArr:
-        if isReplicaSimilar(choice, intents):
-            isChoiceSim = True
-            break
+
+    if not canLastChoicedArr is None:
+        for choice in canLastChoicedArr:
+            if isReplicaSimilar(choice, intents):
+                isChoiceSim = True
+                break
     
     if isInCommandOr(event, intents):
         isCommandSim = True
