@@ -466,7 +466,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         return mainMenuGetConfig(event)
 
     # вернуть прошлый эпизод, если игрок попросил повторить
-    if isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0):
+    if isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0) or not fromGame:
         config = compileConfigFromEpisode(event, lastEpisode, haveUserInterface)
         canLastState = {'canLastChoiced': canLastChoicedArr}
         if not "user_state_update" in config:
@@ -579,7 +579,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             print("Выбор пользователя:", userChoice)
 
             # если определить выбор не удалось
-            if userChoice is None and not fromGame:
+            if userChoice is None:
                 # вернуть прошлый эпизод
                 # if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(
                 #     event, RepeatIntents
