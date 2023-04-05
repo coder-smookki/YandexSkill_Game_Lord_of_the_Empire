@@ -444,6 +444,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # "whatYouCan": whatYouCan,
     # "help": help,
     # "mainMenu": mainMenu,
+
+    # if isMenuChange(event, canLastChoicedArr, RepeatIntents):
+    #     if lastEpisode:
+
+
     if isMenuChange(event, canLastChoicedArr, HowToUseIntents):
         print('!!!!howToUse')
         return howToUseGetConfig(event)
@@ -471,6 +476,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 **config["user_state_update"],
                 **canLastState,
             }
+        return config
 
     if repeat and (canLastChoicedArr and len(canLastChoicedArr) != 0):
         print('nadristal')
