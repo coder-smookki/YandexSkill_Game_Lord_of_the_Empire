@@ -562,7 +562,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             print("Выбор пользователя:", userChoice)
 
             # если определить выбор не удалось
-            if userChoice is None:
+            if userChoice is None and fromGame:
                 # вернуть прошлый эпизод
                 # if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(
                 #     event, RepeatIntents
