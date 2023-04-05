@@ -438,7 +438,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         canLastChoicedArr = None
 
 
-    print(canLastChoicedArr)
+    print('amogus',canLastChoicedArr)
 
     # "howToUse": howToUse,
     # "whatYouCan": whatYouCan,
@@ -459,7 +459,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     if isMenuChange(event, canLastChoicedArr, MenuIntents):
         print('!!!!Menu')
         return mainMenuGetConfig(event)
-
 
     # вернуть прошлый эпизод, если игрок попросил повторить
     if isInCommandOr(event, RepeatIntents) and (canLastChoicedArr and len(canLastChoicedArr) != 0):
