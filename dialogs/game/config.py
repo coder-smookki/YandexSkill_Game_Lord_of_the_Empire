@@ -437,15 +437,19 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # "help": help,
     # "mainMenu": mainMenu,
     if isMenuChange(event, canLastChoicedArr, HowToUseIntents):
+        print('!!!!howToUse')
         return allDialogs['howToUse']['getResponse'](event, allDialogs)
 
     if isMenuChange(event, canLastChoicedArr, WhatDoYouCanIntents):
+        print('!!!!WhatDoYouCan')
         return allDialogs['whatYouCan']['getResponse'](event, allDialogs)
     
     if isMenuChange(event, canLastChoicedArr, HelpIntents):
+        print('!!!!Help')
         return allDialogs['help']['getResponse'](event, allDialogs)
 
     if isMenuChange(event, canLastChoicedArr, MenuIntents):
+        print('!!!!Menu')
         return allDialogs['mainMenu']['getResponse'](event, allDialogs)
 
 
