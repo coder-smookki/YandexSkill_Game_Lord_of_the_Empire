@@ -490,6 +490,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 **config["user_state_update"],
                 **canLastState,
             }
+        return config
 
     # получить команду
     command = getCommand(event)
