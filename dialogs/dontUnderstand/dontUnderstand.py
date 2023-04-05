@@ -4,7 +4,8 @@ from utils.triggerHelper import *
 from utils.responseHelper import *
 
 
-def getResponse(event, allDialogs=None):
+def getResponse(event, allDialogs=None):\
+    print('dontUnderst Dialog')
     config = getConfig(event)
     return createResponse(event, config)
 
