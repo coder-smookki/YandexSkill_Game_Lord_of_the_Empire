@@ -438,6 +438,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         canLastChoicedArr = None
 
 
+    print(canLastChoicedArr)
+
     # "howToUse": howToUse,
     # "whatYouCan": whatYouCan,
     # "help": help,
