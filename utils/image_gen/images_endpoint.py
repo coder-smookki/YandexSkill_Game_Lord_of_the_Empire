@@ -13,6 +13,7 @@ def images_endpoint(filename: str):
     """
 
     filename = "".join(c for c in filename if c.isalnum() or c in keepcharacters).strip()
+    print(images_path, filename)
     return flask.send_from_directory(images_path, filename, mimetype='image/png')
 
 
