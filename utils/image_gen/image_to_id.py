@@ -22,7 +22,7 @@ def image_to_id(filename: str) -> str | None:
     data = {
         "url": image_url
     }
-    yandex_response = requests.post(url, headers=headers, json=data)
+    yandex_response = requests.post(url, headers=headers, data=data)
 
     if not yandex_response:
         print(f'Возникла ошибка {yandex_response.status_code} "{yandex_response.text}"')
