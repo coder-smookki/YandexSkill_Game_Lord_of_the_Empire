@@ -14,6 +14,7 @@ temp_images = Path(__file__).parent.absolute() / 'temp_images'
 def image_to_id(filename: str) -> str | None:
     url = f'https://dialogs.yandex.net/api/v1/skills/{skill_id}/images/'
     image_url = f'http://{ip_vm}:{port}/images/{filename}'
+    image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/VK_Compact_Logo_%282021-present%29.svg/1200px-VK_Compact_Logo_%282021-present%29.svg.png"
     print(image_url)
 
     headers = {
