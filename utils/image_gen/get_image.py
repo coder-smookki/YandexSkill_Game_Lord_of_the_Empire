@@ -1,9 +1,8 @@
 import textwrap
-from uuid import uuid1
+from io import BytesIO
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
-
 
 # Всякий бред, который нужен по дефолтку
 MAX_VALUE = 100
@@ -16,7 +15,6 @@ text_color = (60, 44, 23)
 
 parent_path = Path(__file__).parent.absolute()
 images_path = parent_path / 'images'
-temp_images_path = parent_path / 'temp_images'
 persons_path = images_path / 'persons'
 name_font = ImageFont.truetype(str(parent_path / 'myraid.otf'), 63)  # Размер шрифта крутить тут
 emoji_font = ImageFont.truetype(str(parent_path / 'emoji.ttf'), 50)  # Размер шрифта крутить тут
@@ -65,13 +63,13 @@ big_step = 35
 black_line = 75
 
 
-def save_image(
+def get_image(
         *,
         person: str,
         replica: str,
         values: list[int] | tuple[int, int, int, int],
         name: str = ''
-) -> str:
+) -> bytes:
     """
     Генератор картинок три тысячи инатор (второй шаблон)
 
@@ -79,13 +77,13 @@ def save_image(
     :param replica: Реплика персонажа
     :param values: Текущие значения фракции, в порядке Церковь, Народ, Армия, Казна
     :param name: Имя правителя.
-    :return: Название файла
+    :return:
     """
 
     # Открытие шаблона и создание изображения (макета), на которое сначала будут накладываться картинки
     background = backgrounds['light_background2']
     layout_width, layout_height = background.size
-    layout = Image.new("RGB", (layout_width, layout_height), back_color)
+    layout = Image.new("RGBA", (layout_width, layout_height), back_color)
 
     # Открытие и наложение персонажа
     person = get_person(person, replica)
@@ -94,7 +92,7 @@ def save_image(
 
     # Создание прямоугольников для фракций
     rects = [Image.new(
-        "RGB",
+        "RGBA",
         (fract_width, fract_height),
         ok_color
     )
@@ -133,9 +131,10 @@ def save_image(
     # draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
 
     # Итог
-    filename = f'{str(uuid1()).replace("-", "")}.jpeg'
-    layout.save(temp_images_path / filename, format='jpeg')
-    return filename
+    img_byte_arr = BytesIO()
+    layout.save(img_byte_arr, format='PNG')
+    # layout.show()
+    return img_byte_arr.getvalue()
 
 
 def get_person(person: str | None, replica: str) -> Image:
@@ -149,7 +148,7 @@ def get_person(person: str | None, replica: str) -> Image:
         return persons.get(person, default_image)
 
     # Создание фона
-    layout = Image.new("RGB", (block, block), text_card_color)
+    layout = Image.new("RGBA", (block, block), text_card_color)
     draw = ImageDraw.Draw(layout)
 
     # Подготовка линий текста
@@ -166,7 +165,7 @@ def get_person(person: str | None, replica: str) -> Image:
 
     return layout
 
-# save_image(
+# get_image(
 #     person='',
 #     replica='*Призрак тоскливо смотрит на вас и исчезает. Вы входите в тронный зал.*',
 #     values=[50, 40, 30, 20],
