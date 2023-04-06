@@ -1,10 +1,7 @@
-import os
-
 import flask
 from pathlib import Path
 
 
-host = "0.0.0.0"
 images_path = Path(__file__).parent.absolute() / 'temp_images'
 default_image = images_path / 'error404.png'
 keepcharacters = (' ','.','_', '-')
@@ -19,7 +16,5 @@ def images_endpoint(filename: str):
     return flask.send_from_directory(images_path, filename, mimetype='image/png')
 
 
-def register_image_endpoint():
-    local_app = flask.Flask(__name__)
-    local_app.add_url_rule('/images/<filename>', view_func=images_endpoint)
-    local_app.run(host=host, port=443)
+def register_image_endpoint(app: flask.Flask):
+    app.add_url_rule('/images/<filename>', view_func=images_endpoint)
