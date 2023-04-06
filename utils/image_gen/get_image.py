@@ -134,7 +134,7 @@ def save_image(
 
     # Итог
     filename = f'{str(uuid1()).replace("-", "")}.jpg'
-    layout.save(temp_images_path / filename, format='JPG')
+    layout.save(temp_images_path / filename, format='jpg')
     return filename
 
 
