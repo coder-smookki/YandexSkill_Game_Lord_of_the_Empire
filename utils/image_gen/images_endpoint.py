@@ -4,7 +4,7 @@ import flask
 from pathlib import Path
 
 
-host = os.environ.get('HOST') or '127.0.0.1'
+host = "0.0.0.0"
 images_path = Path(__file__).parent.absolute() / 'temp_images'
 default_image = images_path / 'error404.png'
 keepcharacters = (' ','.','_', '-')
