@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 images_path = Path(__file__).parent.absolute() / 'temp_images'
-default_image = images_path / 'error404.jpg'
+default_image = images_path / 'error404.jpeg'
 keepcharacters = (' ','.','_', '-')
 
 
@@ -17,8 +17,8 @@ def images_endpoint(filename: str):
 
     filename = "".join(c for c in filename if c.isalnum() or c in keepcharacters).strip()
     if os.path.exists(images_path / filename):
-        return flask.send_from_directory(images_path, filename, mimetype='image/jpg')
-    return flask.send_from_directory(images_path, 'error404.jpg', mimetype='image/jpg')
+        return flask.send_from_directory(images_path, filename, mimetype='image/jpeg')
+    return flask.send_from_directory(images_path, 'error404.jpeg', mimetype='image/jpeg')
 
 
 def register_image_endpoint(app: flask.Flask):

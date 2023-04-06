@@ -133,8 +133,8 @@ def save_image(
     # draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
 
     # Итог
-    filename = f'{str(uuid1()).replace("-", "")}.jpg'
-    layout.save(temp_images_path / filename, format='jpg')
+    filename = f'{str(uuid1()).replace("-", "")}.jpeg'
+    layout.save(temp_images_path / filename, format='jpeg')
     return filename
 
 
