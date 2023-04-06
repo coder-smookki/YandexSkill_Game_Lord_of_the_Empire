@@ -85,7 +85,7 @@ def save_image(
     # Открытие шаблона и создание изображения (макета), на которое сначала будут накладываться картинки
     background = backgrounds['light_background2']
     layout_width, layout_height = background.size
-    layout = Image.new("RGBA", (layout_width, layout_height), back_color)
+    layout = Image.new("RGB", (layout_width, layout_height), back_color)
 
     # Открытие и наложение персонажа
     person = get_person(person, replica)
@@ -94,7 +94,7 @@ def save_image(
 
     # Создание прямоугольников для фракций
     rects = [Image.new(
-        "RGBA",
+        "RGB",
         (fract_width, fract_height),
         ok_color
     )
@@ -149,7 +149,7 @@ def get_person(person: str | None, replica: str) -> Image:
         return persons.get(person, default_image)
 
     # Создание фона
-    layout = Image.new("RGBA", (block, block), text_card_color)
+    layout = Image.new("RGB", (block, block), text_card_color)
     draw = ImageDraw.Draw(layout)
 
     # Подготовка линий текста
