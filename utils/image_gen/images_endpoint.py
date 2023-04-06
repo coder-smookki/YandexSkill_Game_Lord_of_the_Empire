@@ -4,7 +4,7 @@ from pathlib import Path
 
 images_path = Path(__file__).parent.absolute() / 'temp_images'
 default_image = images_path / 'error404.png'
-keepcharacters = (' ','.','_')
+keepcharacters = (' ','.','_', '-')
 
 
 def images_endpoint(filename: str):
