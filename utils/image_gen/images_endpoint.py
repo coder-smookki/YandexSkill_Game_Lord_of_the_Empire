@@ -1,3 +1,5 @@
+import os.path
+
 import flask
 from pathlib import Path
 
@@ -13,7 +15,9 @@ def images_endpoint(filename: str):
     """
 
     filename = "".join(c for c in filename if c.isalnum() or c in keepcharacters).strip()
-    return flask.send_from_directory(images_path, filename, mimetype='image/png')
+    if os.path.exists(images_path / filename):
+        return flask.send_from_directory(images_path, filename, mimetype='image/png')
+    return flask.send_from_directory(images_path, 'error404.png', mimetype='image/png')
 
 
 def register_image_endpoint(app: flask.Flask):
