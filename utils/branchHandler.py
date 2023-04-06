@@ -47,6 +47,6 @@ def getDialogResponseFromEnd(event, dialogNumber, dialogs):
     #     elif 'text':
     #         response["response"]['text'] = 'Назад уже некуда. ' + response["response"]['text']
     #     response["response"]['tts'] = 'Назад уже некуда. ' + response["response"]['tts']
-        
+
     #     return response
     return dialogs[branchList[-dialogNumber]]['getResponse'](event, None)

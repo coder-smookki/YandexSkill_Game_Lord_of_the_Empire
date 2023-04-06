@@ -23,4 +23,5 @@ def getResponse(event, allDialogs=None):
 def isTriggered(event):
     return isInCommandOr(event, ExitIntents) or isInLastContext(event, 'exitConfirm')
 
+
 exitConfirm = {"getResponse": getResponse, "isTriggered": isTriggered}

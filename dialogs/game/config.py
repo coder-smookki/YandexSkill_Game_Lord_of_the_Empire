@@ -21,9 +21,9 @@ from utils.intents import RepeatIntents
 from utils.branchHandler import getDialogResponseFromEnd
 
 # "howToUse": howToUse,
-    # "whatYouCan": whatYouCan,
-    # "help": help,
-    # "mainMenu": mainMenu,
+# "whatYouCan": whatYouCan,
+# "help": help,
+# "mainMenu": mainMenu,
 
 sfx = [
     '<speaker audio="dialogs-upload/4b310008-3fd4-4d8d-842c-34753abee342/f1d3a69c-3002-4cf7-9e28-e3c7b3514ac1.opus">',
@@ -105,8 +105,10 @@ names = list(
     }
 )
 
-pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Мне не ясно, что вы имели в виду.", "Прошу прощения, я не смог понять ваше сообщение.",
-            "Прошу прощения, но я не смог понять ваше намерение.", "Я извиняюсь, но мне нужна более точная информация. Что именно вы хотите сделать?"]
+pre_ttss = ["Я вас не понял.", "Не удалось распознать выбор.", "Мне не ясно, что вы имели в виду.",
+            "Прошу прощения, я не смог понять ваше сообщение.",
+            "Прошу прощения, но я не смог понять ваше намерение.",
+            "Я извиняюсь, но мне нужна более точная информация. Что именно вы хотите сделать?"]
 
 
 def isReplicaSimilar(replica, arr):
@@ -119,6 +121,7 @@ def isReplicaSimilar(replica, arr):
             return True
     return False
 
+
 # надо ли включить какое-то меню
 def isMenuChange(event, canLastChoicedArr, intents):
     # 1. проверить реилку на сходность
@@ -129,22 +132,19 @@ def isMenuChange(event, canLastChoicedArr, intents):
     isChoiceSim = False
     isCommandSim = False
 
-
     if not canLastChoicedArr is None:
         for choice in canLastChoicedArr:
             if isReplicaSimilar(choice, intents):
                 isChoiceSim = True
                 break
-    
+
     if isInCommandOr(event, intents):
         isCommandSim = True
-    
+
     if not isChoiceSim and isCommandSim:
         return True
-    
-    return False
 
-    
+    return False
 
 
 def addStatsInInfo(info, episode):
@@ -159,13 +159,12 @@ def addStatsInInfo(info, episode):
     for fraction in info['stats']:
         info['stats'][fraction] += stats['fraction']
 
-    
 
 # preTts - фраза "я вас не понял, повторяю" когда не понял ход
 def compileConfigFromEpisode(
-    event, episode, haveInterface, preTts="", userStateUpdate=None
+        event, episode, haveInterface, preTts="", userStateUpdate=None
 ):
-    print('abobaEpisode',episode)
+    print('abobaEpisode', episode)
     # получить статы
     stats = episode["stats"]
 
@@ -252,7 +251,7 @@ def compileConfigFromEpisode(
 
             # добавить в tts кнопки
             config["tts"] = (
-                config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
+                    config["tts"] + ". " + "Варианты ответа, " + buttonsStr + "."
             )
         else:
             config["card"]["title"] = "КОНЕЦ"
@@ -380,7 +379,6 @@ def checkIfLastChoiceSimiliar(command, firstLastChoiceCommand, secondLastChoiceC
 
 
 def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=False):
-    
     haveUserInterface = haveInterface(event)
     # haveUserInterface = False
 
@@ -418,11 +416,9 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             # вставить это сохранение в БД
             insertSave(conn, userId, random.choice(names), info)
 
-
     print('repeat?', repeat)
-    print('####start pos',info['posEpisode'])
-    print('####start maxPos',info['maxPosEpisode'])
-    
+    print('####start pos', info['posEpisode'])
+    print('####start maxPos', info['maxPosEpisode'])
 
     # если в текущем сохранении есть прошлый эпизод
     if "lastEpisode" in info and not info["lastEpisode"] is None:
@@ -437,8 +433,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         lastEpisode = None
         canLastChoicedArr = None
 
-
-    print('amogus',canLastChoicedArr)
+    print('amogus', canLastChoicedArr)
 
     # "howToUse": howToUse,
     # "whatYouCan": whatYouCan,
@@ -448,7 +443,6 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # if isMenuChange(event, canLastChoicedArr, RepeatIntents):
     #     if lastEpisode:
 
-
     if isMenuChange(event, canLastChoicedArr, HowToUseIntents):
         print('!!!!howToUse')
         return howToUseGetConfig(event)
@@ -456,7 +450,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     if isMenuChange(event, canLastChoicedArr, WhatDoYouCanIntents):
         print('!!!!WhatDoYouCan')
         return whatYouCanGetConfig(event)
-    
+
     if isMenuChange(event, canLastChoicedArr, HelpIntents):
         print('!!!!Help')
         return helpGetConfig(event)
@@ -501,7 +495,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
         if isInCommandOr(event, RepeatIntents):
             # если это первая игра
             if not haveGlobalState(event, "playedBefore") or not getGlobalState(
-                event, "playedBefore"
+                    event, "playedBefore"
             ):
                 config = compileConfigFromEpisode(
                     event,
@@ -553,8 +547,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
         # если это первая концовка игрока, то добавить глобальным стейтом "playedBefore"
         if (
-            not haveGlobalState(event, "playedBefore")
-            or getGlobalState(event, "playedBefore") == False
+                not haveGlobalState(event, "playedBefore")
+                or getGlobalState(event, "playedBefore") == False
         ):
             if not "user_state_update" in config:
                 config["user_state_update"] = userState
@@ -585,7 +579,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 # if isInCommandOr(event, LetsPlayIntents) or isInCommandOr(
                 #     event, RepeatIntents
                 # ):
-                    
+
                 config = dontUnderstandConfig(
                     event, variants_of_the_choice=canLastChoicedArr, branch="game"
                 )
@@ -595,12 +589,12 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
                 config['session_state']['fromGame'] = True
                 return config
-                    # if repeat:
-                    #     return compileConfigFromEpisode(
-                    #         event, lastEpisode, haveUserInterface
-                    #     )
-            
-                    
+                # if repeat:
+                #     return compileConfigFromEpisode(
+                #         event, lastEpisode, haveUserInterface
+                #     )
+
+
             else:
                 # иначе установить выбор в сохранении
                 info["choice"] = userChoice
@@ -613,40 +607,38 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
 
     # пройти к следующему эпизоду, если это первая игра
     if not haveGlobalState(event, "playedBefore") or not getGlobalState(
-        event, "playedBefore"
+            event, "playedBefore"
     ):
         if 'playEnding' in info and info['playEnding'] == True:
             episode = passEpisode(info, statsEnds[info['whatPlayEnding'][0]][info['whatPlayEnding'][1]], statsEnds)
         else:
             episode = passEpisode(info, firstGameHistory, statsEnds)
-        
-        
+
+
     # пройти к следующему эпизоду, если юзер уже играл
     else:
-    # info = createStartInfo(statsEnds[fraction]['full'])
-    # info['playEnding'] = True
-    # info['whatPlayEnding'] = [fraction,'full']
-    # updateSave(conn,userId,info)
-    # return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
+        # info = createStartInfo(statsEnds[fraction]['full'])
+        # info['playEnding'] = True
+        # info['whatPlayEnding'] = [fraction,'full']
+        # updateSave(conn,userId,info)
+        # return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=False)
 
-    
         if 'playEnding' in info and info['playEnding'] == True:
             episode = passEpisode(info, statsEnds[info['whatPlayEnding'][0]][info['whatPlayEnding'][1]], statsEnds)
         else:
             episode = passEpisode(info, history, statsEnds)
 
-    print('####pos',info['posEpisode'])
-    print('####maxPos',info['maxPosEpisode'])
+    print('####pos', info['posEpisode'])
+    print('####maxPos', info['maxPosEpisode'])
 
     nowStats = info['stats']
-    print('nowStats',nowStats)
+    print('nowStats', nowStats)
 
     # если навык закончился
     if episode == 'its all':
         # удалить последнее сохранение
         removeSave(conn, userId)
         return getConfig(event, allDialogs, needCreateNewInfo=True, fromGame=fromGame, repeat=repeat)
-
 
     if not 'playEnding' in info or info['playEnding'] != True:
         for fraction in nowStats:
@@ -655,25 +647,23 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
                 info = createStartInfo(statsEnds[fraction]['full'])
                 info['stats'] = saveStats
                 info['playEnding'] = True
-                info['whatPlayEnding'] = [fraction,'full']
-                updateSave(conn,userId,info)
+                info['whatPlayEnding'] = [fraction, 'full']
+                updateSave(conn, userId, info)
                 return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True)
             elif nowStats[fraction] <= 0:
                 saveStats = info['stats']
                 info = createStartInfo(statsEnds[fraction]['empty'])
                 info['stats'] = saveStats
                 info['playEnding'] = True
-                info['whatPlayEnding'] = [fraction,'empty']
-                updateSave(conn,userId,info)
+                info['whatPlayEnding'] = [fraction, 'empty']
+                updateSave(conn, userId, info)
                 return getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True)
-
-
 
     # если надо принудительно повторить
     if repeat and lastEpisode:
         # если это первая игра
         if not haveGlobalState(event, "playedBefore") or not getGlobalState(
-            event, "playedBefore"
+                event, "playedBefore"
         ):
             return compileConfigFromEpisode(
                 event,
@@ -693,14 +683,11 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     # закинуть текущий эпизод в качестве последнего для следующего вызова
     info["lastEpisode"] = json.dumps(episode, ensure_ascii=False)
 
-
     # "true": [0, 0, 0, 0],
     #   "false": [0, 0, 0, 0],
     #   "always": [0, 0, 0, 0],
-    #xcv
+    # xcv
     # info['notAppliedStats']
-
-    
 
     # скомпилировать конфиг из эпизода и вернуть его
     config = compileConfigFromEpisode(event, episode, haveUserInterface)
@@ -708,8 +695,8 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
     if len(episode["buttons"]) == 0:
         addStatsState = []
         if (
-            haveGlobalState(event, "addStats")
-            and type(getGlobalState(event, "addStats")) == list
+                haveGlobalState(event, "addStats")
+                and type(getGlobalState(event, "addStats")) == list
         ):
             stats = getGlobalState(event, "addStats")
             stats.append([1, lastEpisode["message"]])
@@ -718,7 +705,7 @@ def getConfig(event, allDialogs, needCreateNewInfo=False, fromGame=True, repeat=
             addStatsState = [[1, lastEpisode["message"]]]
 
         if not "user_state_update" in config:
-            config["user_state_update"] = {"addStats": addStatsState} 
+            config["user_state_update"] = {"addStats": addStatsState}
         else:
             config["user_state_update"] = {
                 **config["user_state_update"],

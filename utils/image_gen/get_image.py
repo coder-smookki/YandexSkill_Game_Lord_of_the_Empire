@@ -1,8 +1,9 @@
 import textwrap
-from io import BytesIO
+from uuid import uuid1
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+
 
 # Всякий бред, который нужен по дефолтку
 MAX_VALUE = 100
@@ -15,6 +16,7 @@ text_color = (60, 44, 23)
 
 parent_path = Path(__file__).parent.absolute()
 images_path = parent_path / 'images'
+temp_images_path = parent_path / 'temp_images'
 persons_path = images_path / 'persons'
 name_font = ImageFont.truetype(str(parent_path / 'myraid.otf'), 63)  # Размер шрифта крутить тут
 emoji_font = ImageFont.truetype(str(parent_path / 'emoji.ttf'), 50)  # Размер шрифта крутить тут
@@ -22,7 +24,6 @@ text_font = ImageFont.truetype(str(parent_path / 'blacker_sans_pro.woff'), 50)  
 green_arrow = Image.open(images_path / 'green_arrow.png', mode='r', formats=["PNG"])
 red_arrow = Image.open(images_path / 'red_arrow.png', mode='r', formats=["PNG"])
 default_image = Image.open(images_path / 'default_image.png', mode='r', formats=["PNG"])  # заглушка
-
 
 persons = {
     "Кошка с вселившимся демоном": Image.open(persons_path / 'cat_demon600.png', mode='r', formats=["PNG"]),
@@ -53,7 +54,6 @@ backgrounds = {
     'light_background2': Image.open(images_path / f'light_background2.png', mode='r', formats=["PNG"]),
 }
 
-
 # Константы для второго генератора!!!
 small_border = 44
 big_border = 117.5
@@ -65,13 +65,13 @@ big_step = 35
 black_line = 75
 
 
-def get_image(
+def save_image(
         *,
         person: str,
         replica: str,
         values: list[int] | tuple[int, int, int, int],
         name: str = ''
-) -> bytes:
+) -> str:
     """
     Генератор картинок три тысячи инатор (второй шаблон)
 
@@ -79,7 +79,7 @@ def get_image(
     :param replica: Реплика персонажа
     :param values: Текущие значения фракции, в порядке Церковь, Народ, Армия, Казна
     :param name: Имя правителя.
-    :return:
+    :return: Название файла
     """
 
     # Открытие шаблона и создание изображения (макета), на которое сначала будут накладываться картинки
@@ -133,10 +133,9 @@ def get_image(
     # draw.text((text_x, text_y), '👑', font=emoji_font, fill=name_color)
 
     # Итог
-    img_byte_arr = BytesIO()
-    layout.save(img_byte_arr, format='PNG')
-    # layout.show()
-    return img_byte_arr.getvalue()
+    filename = f'{str(uuid1()).replace("-", "")}.jpg'
+    layout.save(temp_images_path / filename, format='jpg')
+    return filename
 
 
 def get_person(person: str | None, replica: str) -> Image:
@@ -167,8 +166,7 @@ def get_person(person: str | None, replica: str) -> Image:
 
     return layout
 
-
-# get_image(
+# save_image(
 #     person='',
 #     replica='*Призрак тоскливо смотрит на вас и исчезает. Вы входите в тронный зал.*',
 #     values=[50, 40, 30, 20],
