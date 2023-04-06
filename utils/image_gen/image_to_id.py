@@ -4,6 +4,7 @@ import requests
 from pathlib import Path
 
 webhook_url = os.environ.get('URL')
+ip_vm = os.environ.get('IP')
 port = os.environ.get('PORT')
 oauth_key = os.environ.get('OAUTH_IMAGE_KEY')
 skill_id = os.environ.get("SKILL_ID")
@@ -12,7 +13,7 @@ temp_images = Path(__file__).parent.absolute() / 'temp_images'
 
 def image_to_id(filename: str) -> str | None:
     url = f'https://dialogs.yandex.net/api/v1/skills/{skill_id}/images/'
-    image_url = f'https://{webhook_url}:{port}/images/{filename}'
+    image_url = f'http://{ip_vm}:{port}/images/{filename}'
     print(image_url)
 
     headers = {
