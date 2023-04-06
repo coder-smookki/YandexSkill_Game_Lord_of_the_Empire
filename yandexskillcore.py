@@ -80,7 +80,7 @@ def startServer(
     # метод запуска сервера
     def start():
         print(colored("+", "green"), "Сервер запускается...")
-        register_image_endpoint(app)
+        Thread(target=register_image_endpoint).start()
         app.run(host=host, port=port)
         print(colored("-", "red"), "Остановка!")
 
