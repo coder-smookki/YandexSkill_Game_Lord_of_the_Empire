@@ -10,9 +10,10 @@ skill_id = os.environ.get("SKILL_ID")
 temp_images = Path(__file__).parent.absolute() / 'temp_images'
 
 
-def image_to_id(filename: str) -> str:
+def image_to_id(filename: str) -> str | None:
     url = f'https://dialogs.yandex.net/api/v1/skills/{skill_id}/images/'
     image_url = f'https://{webhook_url}:{port}/images/{filename}'
+    print(image_url)
 
     headers = {
         "Authorization": f'OAuth {oauth_key}',
@@ -25,7 +26,7 @@ def image_to_id(filename: str) -> str:
 
     if not yandex_response:
         print(f'Возникла ошибка {yandex_response.status_code} "{yandex_response.text}"')
-        return "997614/ca506e7918d405f24764"  # какая-то затычка
+        return None
 
     image_id = yandex_response.json()["image"]["id"]
 

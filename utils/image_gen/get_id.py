@@ -21,8 +21,11 @@ def get_id(
     )
 
     image_id = image_to_id(filename)
-
-    Timer(5, delete_image_anywhere, args=(filename, image_id)).start()
+    if image_id:
+        pass
+        # Timer(5, delete_image_anywhere, args=(filename, image_id)).start()
+    else:
+        image_id = "997614/ca506e7918d405f24764"
 
     print(time.time() - start)
 
