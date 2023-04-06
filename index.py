@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()  # Вынес сюда, чтобы точно загрузились все переменные
+
 from utils.globalStorage import globalStorage
 
 from gameCore.episodes.Opening.Opening import *
@@ -11,14 +14,15 @@ from yandexskillcore import startServer
 from utils.responseHelper import createCard
 from handler import handler
 import sys
-from dotenv import load_dotenv
+
 import os
 
-load_dotenv()
+
 
 sys.setrecursionlimit(5000)
 
 host = os.environ.get('HOST')
+port = int(os.environ.get('PORT') or 80)
 emulator = os.environ.get('EMULATOR')
 
 if emulator == 'true':
@@ -26,7 +30,7 @@ if emulator == 'true':
 else:
     if host:
         print(colored("+", "green"), 'HOST найден:', host)
-        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, host=host, handler=handler)
+        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, host=host, handler=handler, port=port)
     else:
         print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
-        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, handler=handler)
+        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, handler=handler, port=port)
