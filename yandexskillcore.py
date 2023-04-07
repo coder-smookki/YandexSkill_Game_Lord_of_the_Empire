@@ -7,8 +7,6 @@ from utils.dbHandler import *
 from utils.asyncHalper import *
 import os
 
-from utils.image_gen.images_endpoint import register_image_endpoint
-
 
 # функция для удобного запуска фласка
 def startServer(
@@ -80,7 +78,6 @@ def startServer(
     # метод запуска сервера
     def start():
         print(colored("+", "green"), "Сервер запускается...")
-        register_image_endpoint(app)
         app.run(host=host, port=port)
         print(colored("-", "red"), "Остановка!")
 

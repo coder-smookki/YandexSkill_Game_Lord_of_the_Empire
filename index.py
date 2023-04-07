@@ -1,6 +1,3 @@
-from dotenv import load_dotenv
-load_dotenv()  # Вынес сюда, чтобы точно загрузились все переменные
-
 from utils.globalStorage import globalStorage
 
 from gameCore.episodes.Opening.Opening import *
@@ -14,15 +11,15 @@ from yandexskillcore import startServer
 from utils.responseHelper import createCard
 from handler import handler
 import sys
-
+from dotenv import load_dotenv
 import os
 
-
+load_dotenv()
 
 sys.setrecursionlimit(5000)
 
 host = os.environ.get('HOST')
-port = int(os.environ.get('PORT') or 80)
+port = int(os.environ.get('PORT'))
 emulator = os.environ.get('EMULATOR')
 
 if emulator == 'true':
