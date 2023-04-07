@@ -9,6 +9,7 @@ import os
 
 
 def handler(event):
+    # если айди навыка не соответствует нашему, то даувай даусвидания
     if (
         "session" in event
         and "skill_id" in event["session"]
@@ -61,10 +62,9 @@ def handler(event):
         
         # branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
 
-
-
-
+        # если надо сбросить все сохранения в стейтах, то += 0.1 к checkVersion 
         checkVersion = 1.6
+        # если версия не совпадает
         if (
             haveGlobalState(event, "version")
             and getGlobalState(event, "version") != checkVersion
@@ -91,4 +91,5 @@ def handler(event):
 
         return branchedResponse
 
+    # вернуть респонс
     return response
