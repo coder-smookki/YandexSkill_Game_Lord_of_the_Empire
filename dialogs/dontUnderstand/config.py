@@ -8,10 +8,8 @@ ttss = [
     "Извините, но я не улавливаю Вашу мысль. Прошу повторить ещё раз. Варианты ответа: В главное меню, Что ты умеешь?, Помощь, Назад, Выход."
 ]
 
-
 def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
     tts = choice(ttss)
-    title = choice(titlee)
     config = {
         "tts": f"""{tts}...""",
 
@@ -25,7 +23,7 @@ def getConfig(event, variants_of_the_choice: list[str] = '', branch='mainMenu'):
         "card": {
             "type": "BigImage",
             "image_id": "1521359/3349afd66fa90845fd03",
-            "title": title,
+            "title": "ИЗВИНИТЕ, Я ВАС НЕ ПОНИМАЮ",
             "description": tts,
         },
     }
