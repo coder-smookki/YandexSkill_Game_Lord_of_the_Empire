@@ -39,12 +39,12 @@ def getConfig(event):
 
     config['tts'] += '\nСмерти: ' + str(stats['deaths']) + '.'
     config['tts'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 23.'
-    config['tts'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 21.'
+    config['tts'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 20.'
     config['tts'] += '\nВарианты ответа для продолжения использования навыка. Повторить ещё раз, Помощь, Что ты умеешь?, Назад, Выход.'
 
     config['card']['description'] += '\nСмерти: ' + str(stats['deaths']) + '.'
     config['card']['description'] += '\nОткрыто концовок: ' + str(len(stats['openEnds'])) + ' из 23.'
-    config['card']['description'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 21.'
+    config['card']['description'] += '\nВстречено героев: ' + str(len(stats['meetedCharacters'])) + ' из 20.'
 
     # deaths, openEnds, meetedCharacters
 

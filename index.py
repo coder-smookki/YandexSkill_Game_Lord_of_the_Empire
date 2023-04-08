@@ -19,6 +19,7 @@ load_dotenv()
 sys.setrecursionlimit(5000)
 
 host = os.environ.get('HOST')
+port = int(os.environ.get('PORT'))
 emulator = os.environ.get('EMULATOR')
 
 if emulator == 'true':
@@ -26,7 +27,7 @@ if emulator == 'true':
 else:
     if host:
         print(colored("+", "green"), 'HOST найден:', host)
-        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, host=host, handler=handler)
+        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, host=host, handler=handler, port=port)
     else:
         print(colored("-", "red"), 'HOST не найден! Запускаю сервер на 127.0.0.1')
-        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, handler=handler)
+        startServer(Opening, ShuffledScenario, StatsEnds, Cashed, handler=handler, port=port)
