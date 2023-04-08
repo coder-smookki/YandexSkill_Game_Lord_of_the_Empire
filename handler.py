@@ -10,9 +10,9 @@ import os
 
 def handler(event):
     if (
-        "session" in event
-        and "skill_id" in event["session"]
-        and event["session"]["skill_id"] != os.environ["SKILL_ID"]
+            "session" in event
+            and "skill_id" in event["session"]
+            and event["session"]["skill_id"] != os.environ["SKILL_ID"]
     ):
         return "привет =)"
 
@@ -57,17 +57,12 @@ def handler(event):
             print("Брэнчей нет")
         print("---------------------------")
 
-        
-        
         # branchedResponse['user_state_update'] = {'wasBefore': None, 'playedBefore': None, 'endGame': None, 'addStats': None}
-
-
-
 
         checkVersion = 1.5
         if (
-            haveGlobalState(event, "version")
-            and getGlobalState(event, "version") != checkVersion
+                haveGlobalState(event, "version")
+                and getGlobalState(event, "version") != checkVersion
         ):
             if "user_state_update" in branchedResponse:
                 branchedResponse["user_state_update"]["version"] = checkVersion
