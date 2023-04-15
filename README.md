@@ -32,7 +32,7 @@
 ---
 
 ### 🌟 : About the project :
-The skill was created for the Yandex Alice Hackathon in 2023. The idea was to make a game of the prototype of the Reigns card game. Now an optimized, full version of Reigns without add-ons is also in Alice's Skill! To start the skill, say - "Алисы, запусти навык Владыка Империи"
+The skill was created for the Yandex Alice Hackathon in 2023. The idea was to make a game of the prototype of the Reigns card game. Now an optimized, full version of Reigns without add-ons is also in Alice's Skill! To start the skill, say - "Алиса, запусти навык Владыка Империи"
 
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=F7F7F7&background=8100FF&lines=What+is+included+in+the+project%3F)](https://git.io/typing-svg)
 
