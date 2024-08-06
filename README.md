@@ -7,23 +7,19 @@
   
   <img src="https://media.giphy.com/media/WFZvB7VIXBgiz3oDXE/giphy.gif" width="150"/>
   <div id="badges">
-  <a href="https://t.me/ShVePs86">
-    <img src="https://img.shields.io/badge/Telegram-blue?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram Badge"/>
+  <a href="https://github.com/coder-smookki/YandexSkill_Game_Lord_of_the_Empire/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-Apache License 2.0-green" alt="License Badge"/>
   </a>
-  <a href="https://www.youtube.com/channel/UCfOJ17JJcIP8gJ8Lrcu47Qg/videos">
-    <img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Youtube Badge"/>
+  <a href="https://img.shields.io/badge/python-=>3.10-orange">
+    <img src="https://img.shields.io/badge/python-=>3.10-orange" alt="Python Version Badge"/>
   </a>
-  <a href="https://vk.com/shveps78">
-    <img src="https://img.shields.io/badge/Vkontakte-blue?style=for-the-badge&logo=VK&logoColor=white" alt="Twitter Badge"/>
+  <a href="https://github.com/coder-smookki/YandexSkill_Game_Lord_of_the_Empire/stargazers">
+    <img src="https://img.shields.io/github/stars/coder-smookki/YandexSkill_Game_Lord_of_the_Empire?style=flat" alt="Stars Badge"/>
     </a>  
 </div>
   
   ---
   
-  <h1>
-  → Hello my dear friend! 
-  <img src="https://media.giphy.com/media/3og0IAzB7lmOo2q0Ss/giphy.gif" width="30px"/> ←
-</h1>
 </div>
 <div align="center">
   <img src="https://pic.rutubelist.ru/video/a8/4f/a84fa13a7005bd6c0b6b1d88b98afd92.jpg" width="720" height="360"/>
